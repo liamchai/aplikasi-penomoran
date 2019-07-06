@@ -17,9 +17,8 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        foreach ($roles as $role) {
-            echo $role->name;
-        }
+        $users = User::all();
+        return view('user.index', compact('username', 'roles', 'users'));
     }
 
     public function login()
@@ -60,5 +59,10 @@ class UserController extends Controller
         $login = User::where('username', $username)->where('password', $password)->first();
         // dd($login);
         return ($login != NULL) ? TRUE : FALSE;
+    }
+
+    public function register($user)
+    {
+        $user = \Auth::user();
     }
 }

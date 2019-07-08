@@ -30,8 +30,8 @@
                 @enderror
         </div>
         <div class="modal-footer mx-auto">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Register</button>
+                <a class="btn btn-primary" href={{ action('UserController@show', $username) }} role="button">Back</a>
                 @csrf
 </form> 
 @endsection

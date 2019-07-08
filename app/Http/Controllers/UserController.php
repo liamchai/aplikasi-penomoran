@@ -13,7 +13,12 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
-    public function show($user, $name)
+    public function update()
+    {
+        // dd(request());
+    }
+
+    public function edit($user, $name)
     {
         $access = Access::all();
         $user = \Auth::user();
@@ -29,7 +34,7 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function index($user)
+    public function show($user)
     {
         $user = \Auth::user();
         $username = $user->username;

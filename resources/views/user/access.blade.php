@@ -7,8 +7,9 @@
 
 @section('content')
     <h1>Access for {{ $name }}</h1>
-    <form method="POST" >
+    <form method="POST" action={{ action('UserController@update', [$username, $name]) }}>
         @csrf
+        @method('PATCH')
         <table class="table">
             <tr>
                 <td>Name</td>
@@ -23,7 +24,7 @@
         </table>
         <div class="mx-auto d-block w-25">
             <button type="submit" name="save" class="btn btn-primary">Save</button>
-            <a class="btn btn-primary" href={{ action('UserController@index', $username) }} role="button">Back</a>
+            <a class="btn btn-primary" href={{ action('UserController@show', $username) }} role="button">Back</a>
         </div>
     </form>
 

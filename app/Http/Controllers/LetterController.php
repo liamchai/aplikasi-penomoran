@@ -13,7 +13,9 @@ class LetterController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        $letter = Letter::find(1);
+        $letter = Letter::where('name', 'surat referensi')->first();
+        // $letter = Letter::find(1);
+        // dd($letter);
         $month = $this->getRomawi(date('n'));
         // $users = User::all();
         return view('user.surat', compact('username', 'roles', 'letter', 'month'));

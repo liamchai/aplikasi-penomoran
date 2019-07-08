@@ -13,13 +13,13 @@
 
 Route::view('/', 'login.login')->name('login');
 Route::post('/login', 'UserController@login');
-Route::get('/logout', 'UserController@logout');
+Route::get('/logout', 'UserController@logout')->name('logout');
 
-Route::get('/{user}', 'UserController@index')->name('admin');
+Route::get('/{user}', 'UserController@show')->name('admin');
 Route::get('/{user}/register', 'UserController@register');
 Route::post('/{user}/store', 'UserController@store');
 
 Route::get('/{user}/suratreferensi', 'LetterController@index');
 
-Route::get('/{user}/{name}', 'UserController@show');
-// Route::post('/{user}/{name}', 'UserController@update');
+Route::get('/{user}/{name}', 'UserController@edit');
+Route::patch('/{user}/{name}', 'UserController@update');

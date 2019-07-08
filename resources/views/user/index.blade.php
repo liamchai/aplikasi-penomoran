@@ -28,7 +28,7 @@
             <tr>
                 <td>{{ $user->id }} </td>
                 <td>{{ $user->username }} </td>
-                <td><a href={{"/". $username ."/". $user->username}}>Show</td>
+                <td><a href="{{"/". $username ."/" . $user->username}}" >Show/Edit</td>
             </td>
         @endforeach
     </tbody>

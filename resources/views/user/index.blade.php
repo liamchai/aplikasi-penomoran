@@ -9,6 +9,11 @@
 <h1>User List</h1>
 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New User</button> --}}
 <a><a href={{ action('UserController@register', $username) }} class="btn btn-primary">Register New User</a></a>
+@if (session('msg'))
+    <div class="alert alert-success mt-2" role="alert">
+        {{ session('msg') }}
+    </div>
+@endif
 <table class="table mt-2">
     <thead>
         <tr>
@@ -23,7 +28,7 @@
             <tr>
                 <td>{{ $user->id }} </td>
                 <td>{{ $user->username }} </td>
-                <td><a href={{$username ."/". $user->username}}>Show</td>
+                <td><a href={{"/". $username ."/". $user->username}}>Show</td>
             </td>
         @endforeach
     </tbody>

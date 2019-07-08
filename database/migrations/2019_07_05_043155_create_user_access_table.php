@@ -17,6 +17,7 @@ class CreateUserAccessTable extends Migration
             $table->bigIncrements('id');
             $table->integer('access_id');
             $table->integer('user_id');
+            $table->integer('active')->default(0);
             $table->timestamps();
         });
     }

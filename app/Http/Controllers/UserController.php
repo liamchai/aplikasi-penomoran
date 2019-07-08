@@ -13,17 +13,23 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
-    public function show($username, $name)
+    public function show($user, $name)
     {
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        return view('user.access', compact('access', 'roles', 'username'));
+        $name = $name;
+        return view('user.access', compact('access', 'roles', 'username', 'name'));
     }
 
+    public function logout()
+    {
+        \Auth::logout();
+        return redirect('/');
+    }
 
-    public function index($username)
+    public function index($user)
     {
         $user = \Auth::user();
         $username = $user->username;
@@ -64,12 +70,10 @@ class UserController extends Controller
     public function checkData()
     {
         $username = request('username');
-        // $password = password_hash(request('password'), PASSWORD_DEFAULT);
         $password = request('password');
 
-        $login = User::where('username', $username)->where('password', $password)->first();
-        // dd($login);
-        return ($login != NULL) ? TRUE : FALSE;
+        $login = User::where('username', $username)->first();
+        return (password_verify($password, $login->password)) ? TRUE : FALSE;
     }
 
     public function register($user)
@@ -78,5 +82,38 @@ class UserController extends Controller
         $username = $user->username;
         $roles = $user->access;
         return view('user.register', compact('username', 'roles'));
+    }
+
+    public function store($user)
+    {
+        $user = \Auth::user();
+        if ($this->validateRegister()) {
+            $newuser = new User;
+            $newuser->username = request('username');
+            $newuser->password = \Hash::make(request('password'));
+            $newuser->save();
+            // $roles = Access::all();
+            // $newuser->access()->sync($roles);
+            return redirect()->action('UserController@index', $user->username)->with('msg', 'User Registered Successfully');
+        }
+    }
+
+    public function validateRegister()
+    {
+        $data = request()->validate(
+            [
+                'username' => 'required|unique:users',
+                'password' => 'required|min:6|same:password_confirmation',
+                'password_confirmation' => 'same:password'
+            ],
+            [
+                'username.required' => 'Harap masukkan username anda.',
+                'username.unique' => 'Username sudah digunakan',
+                'password.required' => 'Harap masukkan password anda.',
+                'password.same' => 'Silahkan ulangi password anda'
+            ]
+        );
+
+        return $data;
     }
 }

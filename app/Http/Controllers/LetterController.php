@@ -15,9 +15,12 @@ class LetterController extends Controller
         $roles = $user->access;
         $letter = Letter::find(1);
         $month = $this->getRomawi(date('n'));
-        $users = User::all();
+        // $users = User::all();
         return view('user.surat', compact('username', 'roles', 'letter', 'month'));
     }
+
+    public function store()
+    { }
 
     function getRomawi($bln)
     {

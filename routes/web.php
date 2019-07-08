@@ -17,6 +17,9 @@ Route::get('/logout', 'UserController@logout');
 
 Route::get('/{user}', 'UserController@index')->name('admin');
 Route::get('/{user}/register', 'UserController@register');
-Route::get('/{user}/{name}', 'UserController@show');
+Route::post('/{user}/store', 'UserController@store');
 
 Route::get('/{user}/suratreferensi', 'LetterController@index');
+
+Route::get('/{user}/{name}', 'UserController@show');
+// Route::post('/{user}/{name}', 'UserController@update');

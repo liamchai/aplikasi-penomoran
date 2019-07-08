@@ -17,7 +17,7 @@ class CreateLettersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('access_id');
-            $table->integer('number');
+            $table->integer('number')->default(0);
             $table->timestamps();
         });
     }

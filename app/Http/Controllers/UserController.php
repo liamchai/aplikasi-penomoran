@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Access;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,6 +12,16 @@ class UserController extends Controller
     {
         $this->middleware('auth')->except('login');
     }
+
+    public function show($username, $name)
+    {
+        $access = Access::all();
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        return view('user.access', compact('access', 'roles', 'username'));
+    }
+
 
     public function index($username)
     {
@@ -64,5 +75,8 @@ class UserController extends Controller
     public function register($user)
     {
         $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        return view('user.register', compact('username', 'roles'));
     }
 }

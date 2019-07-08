@@ -3,11 +3,12 @@
 @section('title', 'Dashboard')
 
 @include('user.header')
+@include('user.nav')
 
 @section('content')
 <h1>User List</h1>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New User</button>
-{{-- <a><a href={{ action('AdministratorController@register') }} class="btn btn-primary">Register New User</a></a> --}}
+{{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New User</button> --}}
+<a><a href={{ action('UserController@register', $username) }} class="btn btn-primary">Register New User</a></a>
 <table class="table mt-2">
     <thead>
         <tr>
@@ -22,17 +23,11 @@
             <tr>
                 <td>{{ $user->id }} </td>
                 <td>{{ $user->username }} </td>
-                <td><button type="button" class="btn btn-warning">Show</td>
+                <td><a href={{$username ."/". $user->username}}>Show</td>
             </td>
         @endforeach
     </tbody>
 </div>
-    {{ $username }}
-    @foreach ($roles as $role)
-        {{ $role->name }}
-
-    @endforeach
-    
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -69,4 +64,15 @@
         </div>
         </div>
     </div>
+
+{{-- <script>
+    $("#exampleModal").submit(function(e) {
+        e.preventDefault();
+        var name = $("#username").val();
+        var name = $("#password").val();
+        var name = $("#password_confirmation").val();
+        $("exampleModal")
+    });
+
+</script> --}}
 @endsection

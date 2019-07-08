@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAccessesTable extends Migration
+class CreateLettersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateAccessesTable extends Migration
      */
     public function up()
     {
-        Schema::create('accesses', function (Blueprint $table) {
+        Schema::create('letters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('surat_id')->nullable();
+            $table->integer('access_id');
+            $table->integer('number');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateAccessesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accesses');
+        Schema::dropIfExists('letters');
     }
 }

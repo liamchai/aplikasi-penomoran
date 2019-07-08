@@ -15,5 +15,8 @@ Route::view('/', 'login.login')->name('login');
 Route::post('/login', 'UserController@login');
 Route::get('/logout', 'UserController@logout');
 
-Route::get('/{user}', 'UserController@index');
-Route::post('/{user}/register', 'UserController@register');
+Route::get('/{user}', 'UserController@index')->name('admin');
+Route::get('/{user}/register', 'UserController@register');
+Route::get('/{user}/{name}', 'UserController@show');
+
+Route::get('/{user}/suratreferensi', 'LetterController@index');

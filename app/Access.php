@@ -11,4 +11,9 @@ class Access extends Model
     {
         return $this->belongsToMany('App\User', 'access_user');
     }
+
+    public function letter()
+    {
+        return $this->hasOne('App\Letter');
+    }
 }

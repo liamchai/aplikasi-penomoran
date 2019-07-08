@@ -4,7 +4,7 @@
 <body>
     <div class="container w-25 mt-5">
         <h1 class="text-center">Login</h1>
-        <form method="POST" action="{{ action('UserController@login') }}">
+        <form method="POST" id="form" action="{{ action('UserController@login') }}">
             <div class="form-group">
                 <label for="username">Username : </label>
                 <input type="text" class="form-control" id="username" name="username" value={{ old('username') }}>
@@ -29,4 +29,21 @@
             @csrf
         </form>
     </div>
+    {{-- <script>
+        $("#form").submit(function(e) {
+            e.preventDefault();
+            var form = $('#form').serialize();
+            var name = $("#username").val();
+            var name = $("#password").val();
+            $.ajax({
+                url : 'login',
+                type : 'POST',
+                data: {
+                    username: username, 
+                    password: password
+                    }
+            });
+        });
+        
+        </script> --}}
 @endsection

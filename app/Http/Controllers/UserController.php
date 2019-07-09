@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Access;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -13,9 +14,15 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
-    public function update()
+    public function update($user, $name)
     {
-        // dd(request());
+        $access = Input::all('access');
+        $users = User::where('username', $name)->first();
+        foreach ($access as $access) {
+            $users->access()->sync($access);
+            // echo $access;
+        }
+        return redirect()->route('admin', $user)->with('msg', 'User Access is Updated');
     }
 
     public function edit($user, $name)
@@ -24,8 +31,15 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        $name = $name;
-        return view('user.access', compact('access', 'roles', 'username', 'name'));
+        $useraccess = User::where('username', $name)->first();
+        $useraccess = $useraccess->access()->get();
+        // dd($useraccess);
+        $usergranted = [];
+        foreach ($useraccess as $useraccess) {
+            array_push($usergranted, $useraccess->id);
+        }
+        $count = count($usergranted);
+        return view('user.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
     public function logout()
@@ -50,7 +64,7 @@ class UserController extends Controller
             $username = request('username');
             $user = User::where('username', $username)->first();
             \Auth::login($user, true);
-            return redirect()->action('UserController@index', $user->username);
+            return redirect()->action('UserController@show', $user->username);
         } else {
             return redirect()->back()->withInput(request()->only('username'))->withErrors(['msg' => 'Username atau Password anda salah']);
         }
@@ -99,7 +113,7 @@ class UserController extends Controller
             $newuser->save();
             // $roles = Access::all();
             // $newuser->access()->sync($roles);
-            return redirect()->action('UserController@index', $user->username)->with('msg', 'User Registered Successfully');
+            return redirect()->action('UserController@show', $user->username)->with('msg', 'User Registered Successfully');
         }
     }
 

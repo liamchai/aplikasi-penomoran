@@ -17,8 +17,13 @@
             </tr>
             @foreach ($access as $access)
                 <tr>
-                    <td> {{ $access->name }}</td>
-                    <td> <input type="checkbox" name="access" value="{{ $access->id }}"></td>
+                    <td>{{ $access->name }}</td>
+                    <td><input type="checkbox" name="access[]" value="{{ $access->id }}"
+                        @for ($i = 0; $i < $count; $i++)
+                            @if ($usergranted[$i] == $access->id)
+                                {{ "checked" }}
+                            @endif
+                        @endfor></td>
                 </tr>
             @endforeach
         </table>

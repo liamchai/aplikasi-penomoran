@@ -10,7 +10,7 @@
         <tr>
             <td>No </td>
             <td>:</td>
-            <td>{{ ++$letter->number }}/HRD/{{$month}}/{{ date('Y') }}</td>
+            <td>{{ ++$letter->number }} / HRD / {{$month}} / {{ date('Y') }}</td>
         </tr>
         <tr>
             <td>Kepada </td>

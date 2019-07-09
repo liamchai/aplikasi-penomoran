@@ -2,7 +2,7 @@
     <div class="col-2 bg-primary">
         <ul>
             @foreach ($roles as $role)
-                <li>{{ $role->name }}</li>
+                <li><a class="text-dark" href="{{"/" . $username . "/" . $role->url }}">{{$role->name}}</a></li>
             @endforeach
         </ul>
     </div>

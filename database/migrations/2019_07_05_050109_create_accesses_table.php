@@ -16,7 +16,8 @@ class CreateAccessesTable extends Migration
         Schema::create('accesses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('surat_id')->nullable();
+            $table->string('url');
+            $table->integer('nomor')->default('0');
             $table->timestamps();
         });
     }

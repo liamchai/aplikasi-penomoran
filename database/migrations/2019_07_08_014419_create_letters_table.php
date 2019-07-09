@@ -16,8 +16,8 @@ class CreateLettersTable extends Migration
         Schema::create('letters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('access_id');
-            $table->integer('number')->default(0);
+            $table->integer('nomor');
+            $table->string('submitted by');
             $table->timestamps();
         });
     }

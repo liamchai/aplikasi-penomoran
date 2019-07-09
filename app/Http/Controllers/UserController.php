@@ -14,32 +14,22 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
+    public function index()
+    {
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        return view('user.home', compact('username', 'roles'));
+    }
+
     public function update($user, $name)
     {
         $access = Input::all('access');
         $users = User::where('username', $name)->first();
         foreach ($access as $access) {
             $users->access()->sync($access);
-            // echo $access;
         }
         return redirect()->route('admin', $user)->with('msg', 'User Access is Updated');
-    }
-
-    public function edit($user, $name)
-    {
-        $access = Access::all();
-        $user = \Auth::user();
-        $username = $user->username;
-        $roles = $user->access;
-        $useraccess = User::where('username', $name)->first();
-        $useraccess = $useraccess->access()->get();
-        // dd($useraccess);
-        $usergranted = [];
-        foreach ($useraccess as $useraccess) {
-            array_push($usergranted, $useraccess->id);
-        }
-        $count = count($usergranted);
-        return view('user.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
     public function logout()
@@ -62,9 +52,9 @@ class UserController extends Controller
         $this->validation();
         if ($this->checkData()) {
             $username = request('username');
-            $user = User::where('username', $username)->first();
+            $user = User::where('username', $username)->firstorFail();
             \Auth::login($user, true);
-            return redirect()->action('UserController@show', $user->username);
+            return redirect()->action('UserController@index', $user->username);
         } else {
             return redirect()->back()->withInput(request()->only('username'))->withErrors(['msg' => 'Username atau Password anda salah']);
         }
@@ -90,8 +80,8 @@ class UserController extends Controller
     {
         $username = request('username');
         $password = request('password');
-
-        $login = User::where('username', $username)->first();
+        // dd(\Hash::make($password));
+        $login = User::where('username', $username)->firstOrfail();
         return (password_verify($password, $login->password)) ? TRUE : FALSE;
     }
 
@@ -129,10 +119,35 @@ class UserController extends Controller
                 'username.required' => 'Harap masukkan username anda.',
                 'username.unique' => 'Username sudah digunakan',
                 'password.required' => 'Harap masukkan password anda.',
-                'password.same' => 'Silahkan ulangi password anda'
+                'password.min' => 'Minimal 6 karakter',
+                'password.same' => 'Silahkan ulangi password anda',
+                'password_confirmation.same' => 'Password harus sama dengan password diatas'
             ]
         );
-
         return $data;
+    }
+    public function edit($user, $name)
+    {
+        $access = Access::all();
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        $useraccess = User::where('username', $name)->first();
+        $useraccess = $useraccess->access()->get();
+        $usergranted = [];
+        foreach ($useraccess as $useraccess) {
+            array_push($usergranted, $useraccess->id);
+        }
+        $count = count($usergranted);
+        return view('user.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
+    }
+
+    public function accesslist()
+    {
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        $access = Access::all();
+        return view('user.accesslist', compact('username', 'roles', 'access'));
     }
 }

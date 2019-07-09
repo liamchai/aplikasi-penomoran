@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Letter;
+use App\Access;
 use Illuminate\Http\Request;
 
 class LetterController extends Controller
 {
-    public function index()
+    public function index($user, $letter)
     {
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        $letter = Letter::where('name', 'surat referensi')->first();
+        dd($letter);
+        $letter = Access::find()->where('url', $letter)->first();
+        // dd($letter);
         // $letter = Letter::find(1);
         // dd($letter);
         $month = $this->getRomawi(date('n'));

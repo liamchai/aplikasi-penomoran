@@ -20,7 +20,6 @@
             <th scope="col">#</th>
             <th scope="col">Username</th>
             <th scope="col">Access</th>
-            {{-- <th scope="col">Handle</th> --}}
         </tr>
     </thead>
     <tbody>

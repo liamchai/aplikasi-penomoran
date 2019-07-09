@@ -6,8 +6,9 @@
 @include('user.nav')
 
 @section('content')
-    <table class="table">
-        <h1>Access List</h1>
+<h1>Access List</h1>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New Access</button>
+<table class="table mt-2">
         <tr>
             <td>Name</td>
             <td>URL</td>

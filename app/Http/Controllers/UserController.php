@@ -81,8 +81,11 @@ class UserController extends Controller
         $username = request('username');
         $password = request('password');
         // dd(\Hash::make($password));
-        $login = User::where('username', $username)->firstOrfail();
-        return (password_verify($password, $login->password)) ? TRUE : FALSE;
+        $login = User::where('username', $username)->first();
+        if ($login != NULL)
+            return (password_verify($password, $login->password)) ? TRUE : FALSE;
+        else
+            return FALSE;
     }
 
     public function register($user)

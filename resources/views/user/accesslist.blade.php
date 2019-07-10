@@ -1,12 +1,12 @@
 @extends('layouts.layout')
 
-@section('title', 'Dashboard')
+@section('title', $title)
 
 @include('user.header')
 @include('user.nav')
 
 @section('content')
-<h1>Access List</h1>
+<h1>{{$title}}</h1>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New Access</button>
 <table class="table mt-2">
         <tr>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Access extends Model
 {
+    protected $guarded = [];
     public function users()
     {
         return $this->belongsToMany('App\User', 'access_user');

@@ -44,7 +44,10 @@ class UserController extends Controller
         $username = $user->username;
         $roles = $user->access;
         $users = User::all();
-        return view('user.index', compact('username', 'roles', 'users'));
+        $title = (last(request()->segments()));
+        $title = Access::where('url', $title)->first();
+        $title = $title->name;
+        return view('user.index', compact('username', 'roles', 'users', 'title'));
     }
 
     public function login()
@@ -104,8 +107,6 @@ class UserController extends Controller
             $newuser->username = request('username');
             $newuser->password = \Hash::make(request('password'));
             $newuser->save();
-            // $roles = Access::all();
-            // $newuser->access()->sync($roles);
             return redirect()->action('UserController@show', $user->username)->with('msg', 'User Registered Successfully');
         }
     }
@@ -150,7 +151,10 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
+        $title = (last(request()->segments()));
+        $title = Access::where('url', $title)->first();
+        $title = $title->name;
         $access = Access::all();
-        return view('user.accesslist', compact('username', 'roles', 'access'));
+        return view('user.accesslist', compact('username', 'roles', 'access', 'title'));
     }
 }

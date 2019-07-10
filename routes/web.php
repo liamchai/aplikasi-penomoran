@@ -22,6 +22,7 @@ Route::get('/{user}/register', 'UserController@register');
 Route::post('/{user}/store', 'UserController@store');
 
 Route::get('/{user}/surat/{namasurat}', 'LetterController@index');
+Route::post('/{user}/surat/{namasurat}', 'LetterController@store');
 // Route::get('/{user}/surat peringatan', 'LetterController@index');
 
 Route::get('/{user}/{name}', 'UserController@edit');

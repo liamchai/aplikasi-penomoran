@@ -14,18 +14,34 @@ class LetterController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        dd($letter);
-        $letter = Access::find()->where('url', $letter)->first();
-        // dd($letter);
-        // $letter = Letter::find(1);
-        // dd($letter);
+        $url = $letter;
+        $letter = "surat/" . $letter;
+        $letter = Access::where('url', $letter)->first();
         $month = $this->getRomawi(date('n'));
-        // $users = User::all();
-        return view('user.surat', compact('username', 'roles', 'letter', 'month'));
+        $no = $this->checkDigit(++$letter->nomor);
+        $title = $letter->name;
+        return view('user.surat', compact('username', 'roles', 'letter', 'month', 'no', 'title', 'url'));
     }
 
-    public function store()
-    { }
+    public function store($user, $letter)
+    {
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        $test = request('nomor') . "/" . request('month') . "/" . request('year');
+        $nomor = (int) ltrim(request('nomor'), "00");
+        $url = $letter;
+        $letter = "surat/" . $letter;
+        $letter = Access::where('url', $letter)->first();
+        $title = $letter->name;
+        $newletter = new Letter;
+        $newletter->name = $letter->name;
+        $newletter->nomor = $nomor;
+        $newletter->submitted_by = $username;
+        $newletter->save();
+        $letter->update(["nomor" => $nomor]);
+        // return view('user.surat', compact('user', 'letter', 'title', 'username', 'roles'));
+    }
 
     function getRomawi($bln)
     {
@@ -65,6 +81,22 @@ class LetterController extends Controller
                 break;
             case 12:
                 return "XII";
+                break;
+        }
+    }
+
+    function checkDigit($no)
+    {
+        $len = strlen($no);
+        switch ($len) {
+            case 1:
+                return "00" . $no;
+                break;
+            case 2:
+                return "0" . $no;
+                break;
+            case 3:
+                return $no;
                 break;
         }
     }

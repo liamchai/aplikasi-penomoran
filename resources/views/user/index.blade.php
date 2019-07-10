@@ -2,13 +2,13 @@
 
 @section('title', $title)
 
-@include('user.header')
-@include('user.nav')
+@include('layouts.header')
+@include('layouts.nav')
 
 @section('content')
     <h1>{{$title}}</h1>
 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New User</button> --}}
-<a><a href={{ action('UserController@register', $username) }} class="btn btn-primary">Register New User</a></a>
+<a href={{ action('UserController@register', $username) }} class="btn btn-primary">Register New User</a>
 @if (session('msg'))
     <div class="alert alert-success mt-2" role="alert">
         {{ session('msg') }}

@@ -19,6 +19,7 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
+        // dd($roles);
         return view('user.home', compact('username', 'roles'));
     }
 
@@ -143,7 +144,7 @@ class UserController extends Controller
             array_push($usergranted, $useraccess->id);
         }
         $count = count($usergranted);
-        return view('user.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
+        return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
     public function accesslist()
@@ -154,7 +155,50 @@ class UserController extends Controller
         $title = (last(request()->segments()));
         $title = Access::where('url', $title)->first();
         $title = $title->name;
-        $access = Access::all();
-        return view('user.accesslist', compact('username', 'roles', 'access', 'title'));
+        $access = Access::paginate(5);
+        return view('user.access.accesslist', compact('username', 'roles', 'access', 'title'));
+    }
+
+    public function accesslistregister()
+    {
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        return view('user.access.register', compact('username', 'roles'));
+    }
+
+    public function accessliststore()
+    {
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access;
+        if ($this->validateAccess()) {
+            $newaccess = new Access;
+            $newaccess->name = request('name');
+            $newaccess->url = request('URL');
+            $newaccess->departemen = request('departemen');
+            $newaccess->save();
+            return redirect()->action('UserController@accesslist', $username)->with('msg', 'Access baru berhasil di tambahkan');
+        } else {
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function validateAccess()
+    {
+        $data = request()->validate(
+            [
+                'name' => 'required|unique:accesses',
+                'URL' => 'required|unique:accesses'
+            ],
+            [
+                'name.required' => 'Access harus di isi',
+                'URL.required' => 'URL harus di isi',
+                'name.unique' => 'Access sudah terdaftar',
+                'URL.unique' => 'URL sudah terdaftar'
+            ]
+        );
+
+        return $data;
     }
 }

@@ -2,8 +2,8 @@
 
 @section('title', 'Dashboard')
 
-@include('user.header')
-@include('user.nav')
+@include('layouts.header')
+@include('layouts.nav')
 
 @section('content')
     <h1>Access for {{ $name }}</h1>

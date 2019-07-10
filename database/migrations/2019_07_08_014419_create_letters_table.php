@@ -15,9 +15,12 @@ class CreateLettersTable extends Migration
     {
         Schema::create('letters', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nomor_surat');
             $table->string('name');
             $table->integer('nomor');
             $table->string('submitted_by');
+            $table->date('tanggal');
+            $table->integer('confirmed')->default(0);
             $table->timestamps();
         });
     }

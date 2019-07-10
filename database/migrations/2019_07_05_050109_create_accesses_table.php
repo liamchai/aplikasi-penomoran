@@ -17,6 +17,7 @@ class CreateAccessesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('url');
+            $table->string('departemen')->nullable();
             $table->integer('nomor')->default('0');
             $table->timestamps();
         });

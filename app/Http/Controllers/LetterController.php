@@ -4,12 +4,24 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Letter;
+use Carbon\Carbon;
 use App\Access;
 use Illuminate\Http\Request;
 
 class LetterController extends Controller
 {
-    public function index($user, $letter)
+    public function index($user)
+    {
+        $users = \Auth::user();
+        $username = $users->username;
+        $roles = $users->access;
+        $surats = Letter::where('submitted_by', $user)->paginate(10);
+        // dd($surats);
+        return view('user.surat.listsurat', compact('surats', 'username', 'roles'));
+    }
+
+
+    public function list($user, $letter)
     {
         $user = \Auth::user();
         $username = $user->username;
@@ -19,8 +31,9 @@ class LetterController extends Controller
         $letter = Access::where('url', $letter)->first();
         $month = $this->getRomawi(date('n'));
         $no = $this->checkDigit(++$letter->nomor);
+        $departemen = $letter->departemen;
         $title = $letter->name;
-        return view('user.surat', compact('username', 'roles', 'letter', 'month', 'no', 'title', 'url'));
+        return view('user.surat', compact('username', 'roles', 'letter', 'month', 'no', 'title', 'url', 'departemen'));
     }
 
     public function store($user, $letter)
@@ -28,13 +41,15 @@ class LetterController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access;
-        $test = request('nomor') . "/" . request('month') . "/" . request('year');
+        $test = request('nomor') . "/" . request('departemen') . "/" . request('month') . "/" . request('year');
         $nomor = (int) ltrim(request('nomor'), "00");
         $url = $letter;
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
         $title = $letter->name;
         $newletter = new Letter;
+        $newletter->tanggal = Carbon::now();
+        $newletter->nomor_surat = $test;
         $newletter->name = $letter->name;
         $newletter->nomor = $nomor;
         $newletter->submitted_by = $username;

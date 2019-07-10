@@ -19,12 +19,12 @@
                     <span class="text-danger pl-2">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="checkbox">
+            {{-- <div class="checkbox">
                 <label><input type="checkbox"> Remember me</label>
                 @error('msg')
                     <div class="text-danger pl-2 mb-2">{{ $message }}</div>
                 @endif
-            </div>
+            </div> --}}
             <button type="submit" class="btn btn-primary w-100">Login</button>
             @csrf
         </form>

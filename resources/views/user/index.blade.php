@@ -14,18 +14,21 @@
         {{ session('msg') }}
     </div>
 @endif
-<table class="table mt-2">
-    <thead>
+<table class="table mt-2 table-striped">
+    <thead class="thead-light">
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">No</th>
             <th scope="col">Username</th>
             <th scope="col">Access</th>
         </tr>
     </thead>
+    @php
+    $i = ($users->currentPage()-1) * $users->perPage()+1 
+    @endphp
     <tbody>
         @foreach ($users as $user)
             <tr>
-                <td>{{ $user->id }} </td>
+                <td scope="row">{{ $i++ }} </td>
                 <td>{{ $user->username }} </td>
                 <td><a href="{{"/". $username ."/" . $user->username}}" >Show/Edit</td>
             </td>

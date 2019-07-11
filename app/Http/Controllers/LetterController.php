@@ -10,22 +10,44 @@ use Illuminate\Http\Request;
 
 class LetterController extends Controller
 {
+    public function __construct()
+    {
+        $check = false;
+        $user = request()->segment(1);
+        $user = User::where('username', $user)->firstorfail();
+        $roles = $user->access()->get();
+        $url = "surat/" . last(request()->segments());
+        foreach ($roles as $roles) {
+            if ($url == $roles->url) {
+                $check = true;
+                break;
+            }
+        }
+        if ($check == false) {
+            return abort(403);
+        }
+        $this->middleware('auth');
+    }
+
+
     public function index($user)
     {
         $users = \Auth::user();
         $username = $users->username;
-        $roles = $users->access;
-        $surats = Letter::where('submitted_by', $user)->paginate(10);
-        // dd($surats);
-        return view('user.surat.listsurat', compact('surats', 'username', 'roles'));
+        $roles = $users->access()->orderby('access_id', 'asc')->get();
+        if ($user != "test") {
+            $surats = Letter::where('submitted_by', $user)->orderby('id', 'desc')->paginate(10);
+        } else {
+            $surats = Letter::orderby('id', 'desc')->paginate(10);
+        }
+        return view('user.surat.listsurat', compact('surats', 'username', 'roles', 'user'));
     }
-
 
     public function list($user, $letter)
     {
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
         $url = $letter;
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
@@ -38,24 +60,19 @@ class LetterController extends Controller
 
     public function store($user, $letter)
     {
-        $user = \Auth::user();
-        $username = $user->username;
-        $roles = $user->access;
         $test = request('nomor') . "/" . request('departemen') . "/" . request('month') . "/" . request('year');
         $nomor = (int) ltrim(request('nomor'), "00");
-        $url = $letter;
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
-        $title = $letter->name;
         $newletter = new Letter;
         $newletter->tanggal = Carbon::now();
         $newletter->nomor_surat = $test;
         $newletter->name = $letter->name;
         $newletter->nomor = $nomor;
-        $newletter->submitted_by = $username;
+        $newletter->submitted_by = $user;
         $newletter->save();
         $letter->update(["nomor" => $nomor]);
-        // return view('user.surat', compact('user', 'letter', 'title', 'username', 'roles'));
+        return redirect()->action('LetterController@index', $user)->with('msg', 'Surat berhasil di tambahkan');
     }
 
     function getRomawi($bln)

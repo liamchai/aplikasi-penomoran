@@ -14,12 +14,29 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
+    public function checkAccess()
+    {
+        $check = false;
+        $user = request()->segment(1);
+        $user = User::where('username', $user)->firstorfail();
+        $roles = $user->access()->get();
+        $url = last(request()->segments());
+        foreach ($roles as $roles) {
+            if ($url == $roles->url) {
+                $check = true;
+                break;
+            }
+        }
+        if ($check == false) {
+            return abort(403);
+        }
+    }
+
     public function index()
     {
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
-        // dd($roles);
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
         return view('user.home', compact('username', 'roles'));
     }
 
@@ -41,11 +58,12 @@ class UserController extends Controller
 
     public function show($user)
     {
+        $this->checkAccess();
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
-        $users = User::all();
-        $title = (last(request()->segments()));
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
+        $users = User::paginate(10);
+        $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
         return view('user.index', compact('username', 'roles', 'users', 'title'));
@@ -96,7 +114,7 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
         return view('user.register', compact('username', 'roles'));
     }
 
@@ -136,7 +154,7 @@ class UserController extends Controller
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
         $useraccess = User::where('username', $name)->first();
         $useraccess = $useraccess->access()->get();
         $usergranted = [];
@@ -149,13 +167,14 @@ class UserController extends Controller
 
     public function accesslist()
     {
+        $this->checkAccess();
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
         $title = (last(request()->segments()));
         $title = Access::where('url', $title)->first();
         $title = $title->name;
-        $access = Access::paginate(5);
+        $access = Access::paginate(10);
         return view('user.access.accesslist', compact('username', 'roles', 'access', 'title'));
     }
 
@@ -163,7 +182,7 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access;
+        $roles = $user->access()->orderby('access_id', 'asc')->get();
         return view('user.access.register', compact('username', 'roles'));
     }
 

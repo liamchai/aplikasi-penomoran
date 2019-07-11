@@ -36,7 +36,8 @@
                 <td>{{ $username }}</td>
             </tr>
             <tr>
-                <td><button class="btn btn-primary" type="submit">Simpan</button></td>
+                <td><button class="btn btn-primary" type="submit">Simpan</button>
+                    <a class="btn btn-primary" href={{ action('LetterController@index', $username) }} role="button">Kembali</a></td>
             </tr> 
         </table>
     </form>

@@ -14,13 +14,20 @@
         {{ session('msg') }}
     </div>
 @endif
-<table class="table mt-2">
+<table class="table mt-2 table-striped">
+    <thead class="thead-light">
         <tr>
-            <td>Name</td>
-            <td>URL</td>
+            <th scope="col">No</th>
+            <th scope="col">Name</th>
+            <th scope="col">URL</th>
         </tr>
+    </thead>
+    @php
+    $i = ($access->currentPage()-1) * $access->perPage()+1 
+    @endphp
         @foreach ($access as $acc)
         <tr>
+            <td scope="row">{{$i++}}</td>
             <td>{{$acc->name}}</td>
             <td>{{$acc->url}}</td>
         </tr>

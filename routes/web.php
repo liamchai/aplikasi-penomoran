@@ -12,7 +12,7 @@
 */
 
 Route::view('/', 'login.login')->name('login');
-Route::post('/login', 'UserController@login');
+Route::post('/login', 'UserController@login')->name('logged');
 Route::get('/logout', 'UserController@logout')->name('logout');
 
 Route::get('/{user}', 'UserController@index');

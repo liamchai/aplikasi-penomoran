@@ -9,21 +9,21 @@
 <form role="form" class="w-50 mx-auto" id="newModalForm" method="POST" action={{ action('UserController@accessliststore', $username) }}>
     <div class="form-group">
             <label for="name">Access Name : </label>
-            <input autocomplete="off" type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+            <input autocomplete="off" type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh : Surat Referensi, Surat Peringatan">
             @error('name')
                 <span class="text-danger pl-2">{{ $message }}</span>
             @enderror
     </div>
     <div class="form-group">
             <label for="URL">URL : </label>
-            <input autocomplete="off" type="text" class="form-control" id="URL" name="URL" value="{{ old('URL') }}">
+            <input autocomplete="off" type="text" class="form-control" id="URL" name="URL" value="{{ old('URL') }}" placeholder="Contoh : surat/suratreferensi, surat/suratperingatan">
             @error('URL')
                 <span class="text-danger pl-2">{{ $message }}</span>
             @enderror
     </div>
     <div class="form-group">
         <label for="departemen">Departemen : </label>
-        <input autocomplete="off" type="text" class="form-control" id="departemen" name="departemen" value="{{ old('departemen') }}">
+        <input autocomplete="off" type="text" class="form-control" id="departemen" name="departemen" value="{{ old('departemen') }}" placeholder="Contoh: HRD, Admin">
         @error('departemen')
             <span class="text-danger pl-2">{{ $message }}</span>
         @enderror

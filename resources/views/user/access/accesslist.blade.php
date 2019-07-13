@@ -32,7 +32,6 @@
             <td>{{$acc->url}}</td>
         </tr>
         @endforeach
-        <tr>
-        <td colspan="2">{{ $access->links() }}</td>
-        </tr>
+    </table>
+        <div>{{ $access->links() }}</div>
 @endsection

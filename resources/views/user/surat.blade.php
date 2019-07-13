@@ -33,7 +33,7 @@
             <tr>
                 <td>Dikeluarkan oleh </td>
                 <td>:</td>
-                <td>{{ $username }}</td>
+                <td>&nbsp;{{ $username }}</td>
             </tr>
             <tr>
                 <td><button class="btn btn-primary" type="submit">Simpan</button>

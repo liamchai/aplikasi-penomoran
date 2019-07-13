@@ -20,11 +20,11 @@
                 @enderror
             </div>
             {{-- <div class="checkbox">
-                <label><input type="checkbox"> Remember me</label>
+                <label><input type="checkbox"> Remember me</label> --}}
                 @error('msg')
                     <div class="text-danger pl-2 mb-2">{{ $message }}</div>
-                @endif
-            </div> --}}
+                @enderror
+            {{-- </div> --}}
             <button type="submit" class="btn btn-primary w-100">Login</button>
             @csrf
         </form>
@@ -32,16 +32,29 @@
     {{-- <script>
         $("#form").submit(function(e) {
             e.preventDefault();
-            var form = $('#form').serialize();
+            // var form = $('#form').serialize();
             var name = $("#username").val();
-            var name = $("#password").val();
+            var password = $("#password").val();
+            var token = $("#token").val();
             $.ajax({
-                url : 'login',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url : "{{ route('logged') }}",
                 type : 'POST',
                 data: {
-                    username: username, 
-                    password: password
+                    username: name, 
+                    password: password,
+                    _token : token
+                },
+                success: function(data){
+                    window.location = '/login';
+                },
+                error: function(err){
+                    if(err.status == 422){
+                        console.log(err.responseJSON);
                     }
+                }
             });
         });
         

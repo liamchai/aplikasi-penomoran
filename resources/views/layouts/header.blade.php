@@ -1,4 +1,3 @@
-@extends('layouts.layout')
 
 <div class="row bg-dark text-white">
     <header class="col-10">

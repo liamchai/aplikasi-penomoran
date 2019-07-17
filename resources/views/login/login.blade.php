@@ -1,62 +1,63 @@
 @extends('layouts.layout')
 
 @section('content')
-<body>
     <div class="container w-25 mt-5">
         <h1 class="text-center">Login</h1>
-        <form method="POST" id="form" action="{{ action('UserController@login') }}">
+        <form method="POST" id="login_form" action="{{ action('UserController@login') }}">
             <div class="form-group">
                 <label for="username">Username : </label>
-                <input type="text" class="form-control" id="username" name="username" value={{ old('username') }}>
-                @error('username')
-                    <span class="text-danger pl-2">{{ $message }}</span>
-                @enderror
+                <input type="text" class="form-control username" id="username" name="username" value={{ old('username') }}>
             </div>
             <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password">
-                @error('password')
-                    <span class="text-danger pl-2">{{ $message }}</span>
-                @enderror
+                <label for="password">Password : </label>
+                <input type="password" class="form-control password" id="password" name="password">
             </div>
-            {{-- <div class="checkbox">
-                <label><input type="checkbox"> Remember me</label> --}}
-                @error('msg')
-                    <div class="text-danger pl-2 mb-2">{{ $message }}</div>
-                @enderror
-            {{-- </div> --}}
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+                <p class="message"></p>
+            <input type="submit" class="btn btn-primary w-100" value="Login">
             @csrf
         </form>
     </div>
-    {{-- <script>
-        $("#form").submit(function(e) {
-            e.preventDefault();
-            // var form = $('#form').serialize();
-            var name = $("#username").val();
-            var password = $("#password").val();
-            var token = $("#token").val();
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url : "{{ route('logged') }}",
-                type : 'POST',
-                data: {
-                    username: name, 
-                    password: password,
-                    _token : token
-                },
-                success: function(data){
-                    window.location = '/login';
-                },
-                error: function(err){
-                    if(err.status == 422){
-                        console.log(err.responseJSON);
-                    }
-                }
-            });
+</div>
+    <script>
+$(document).ready(function () {
+
+    var form = $('#login_form');
+    form.submit(function(e) {
+        e.preventDefault();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
-        
-        </script> --}}
+
+        $.ajax({
+            url     : form.attr('action'),
+            type    : form.attr('method'),
+            data    : form.serialize(),
+            success : function ( json )
+            {
+                // Success
+                // Do something like redirect them to the dashboard...
+                window.location.href =  this.url;
+            },
+            error: function( json )
+            {
+                form.find('.text-danger').remove();
+                if(json.status === 422) {
+                    var res = json.responseJSON;
+                    $.each(res.errors, function (key, value) {
+                        $('.'+key).closest('.form-group')
+                                .append('<span class="text-danger">'+ value +'</span>');
+                    });
+                } else if(json.status === 401){
+                    var res = json.responseJSON;
+                    form.find('.password').val("");
+                    form.find('.message').append('<span class="text-danger">'+ res.message +'</span>');
+                }
+            }
+        });
+    });
+});
+</script>
 @endsection

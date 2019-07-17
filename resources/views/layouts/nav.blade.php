@@ -6,5 +6,5 @@
             @endforeach
         </ul>
     </div>
-    <div class="col-10">
+<div class="col-10">
 

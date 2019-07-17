@@ -71,14 +71,14 @@ class UserController extends Controller
 
     public function login()
     {
-        $this->validation();
+        ($this->validation());
         if ($this->checkData()) {
             $username = request('username');
             $user = User::where('username', $username)->firstorFail();
             \Auth::login($user, true);
             return redirect()->action('UserController@index', $user->username);
         } else {
-            return redirect()->back()->withInput(request()->only('username'))->withErrors(['msg' => 'Username atau Password anda salah']);
+            return response()->json(['message' => 'Username atau password anda salah'], $status = 401);
         }
     }
 
@@ -94,8 +94,7 @@ class UserController extends Controller
                 'password.required' => 'Harap masukkan password anda.',
             ]
         );
-
-        return $data;
+        // return response()->json(['message' => $data, $status = 422]);
     }
 
     public function checkData()
@@ -126,8 +125,10 @@ class UserController extends Controller
             $newuser->username = request('username');
             $newuser->password = \Hash::make(request('password'));
             $newuser->save();
+            dd($newuser);
             return redirect()->action('UserController@show', $user->username)->with('msg', 'User Registered Successfully');
         }
+        return response()->json(["msg" => "gagal"], 402);
     }
 
     public function validateRegister()
@@ -136,14 +137,15 @@ class UserController extends Controller
             [
                 'username' => 'required|unique:users',
                 'password' => 'required|min:6|same:password_confirmation',
-                'password_confirmation' => 'same:password'
+                'password_confirmation' => 'same:password|required'
             ],
             [
                 'username.required' => 'Harap masukkan username anda.',
                 'username.unique' => 'Username sudah digunakan',
                 'password.required' => 'Harap masukkan password anda.',
                 'password.min' => 'Minimal 6 karakter',
-                'password.same' => 'Silahkan ulangi password anda',
+                'password.same' => 'Password harus sama dengan password dibawah',
+                'password_confirmation.required' => 'Confirm Password harus di isi',
                 'password_confirmation.same' => 'Password harus sama dengan password diatas'
             ]
         );

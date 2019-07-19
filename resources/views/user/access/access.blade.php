@@ -2,10 +2,10 @@
 
 @section('title', 'Dashboard')
 
+@section('content')
+
 @include('layouts.header')
 @include('layouts.nav')
-
-@section('content')
     <h1>Access for {{ $name }}</h1>
     <form method="POST" action={{ action('UserController@update', [$username, $name]) }}>
         @csrf

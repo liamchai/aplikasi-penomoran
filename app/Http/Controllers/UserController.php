@@ -37,10 +37,56 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access()->orderby('access_id', 'asc')->get();
-        return view('user.home', compact('username', 'roles'));
+        foreach ($roles as $role) {
+            if ($role->name === "Daftar User") {
+                return redirect()->action('UserController@show', $user->username);
+            } else if ($role->name === "List Surat") {
+                return redirect()->action('LetterController@index', $user->username);
+            }
+        }
+    }
+
+    public function edit($user, $name)
+    {
+        $user = \Auth::user();
+        $username = $user->username;
+        return response()->json(compact('name'), 200);
     }
 
     public function update($user, $name)
+    {
+        $this->validateUpdate();
+        $user = \Auth::user();
+        $users = User::where('username', $name)->first();
+        $password = request('password');
+        if (password_verify($password, $users->password)) {
+            $newPassword = \Hash::make(request('password_confirmation'));
+            $users->update(['password' => $newPassword]);
+            return response()->json([$users], 200);
+        } else {
+            return response()->json(['msg' => 'Password lama anda tidak sesuai'], 401);
+        }
+    }
+
+    public function validateUpdate()
+    {
+        $data = request()->validate(
+            [
+                'username' => 'required',
+                'password' => 'required',
+                'password_confirmation' => 'required|min:6'
+            ],
+            [
+                'password.required' => 'Harap masukkan password lama anda.',
+                'password_confirmation.required' => 'Harap masukkan password baru anda.',
+                'password_confirmation.min' => 'Minimal 6 karakter.'
+            ]
+        );
+        return $data;
+    }
+
+
+    public function updateAccess($user, $name)
     {
         $access = Input::all('access');
         $users = User::where('username', $name)->first();
@@ -62,16 +108,19 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access()->orderby('access_id', 'asc')->get();
-        $users = User::paginate(10);
+        $users = User::orderby('id', 'desc')->paginate(10);
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
+        if (request()->ajax()) {
+            return view('user.indexlist', compact('username', 'roles', 'users', 'title'))->render();
+        }
         return view('user.index', compact('username', 'roles', 'users', 'title'));
     }
 
     public function login()
     {
-        ($this->validation());
+        $this->validation();
         if ($this->checkData()) {
             $username = request('username');
             $user = User::where('username', $username)->firstorFail();
@@ -125,7 +174,6 @@ class UserController extends Controller
             $newuser->username = request('username');
             $newuser->password = \Hash::make(request('password'));
             $newuser->save();
-            dd($newuser);
             return redirect()->action('UserController@show', $user->username)->with('msg', 'User Registered Successfully');
         }
         return response()->json(["msg" => "gagal"], 402);
@@ -145,13 +193,14 @@ class UserController extends Controller
                 'password.required' => 'Harap masukkan password anda.',
                 'password.min' => 'Minimal 6 karakter',
                 'password.same' => 'Password harus sama dengan password dibawah',
-                'password_confirmation.required' => 'Confirm Password harus di isi',
+                'password_confirmation.required' => 'Harap masukkan ulangi password.',
                 'password_confirmation.same' => 'Password harus sama dengan password diatas'
             ]
         );
         return $data;
     }
-    public function edit($user, $name)
+
+    public function editAcess($user, $name)
     {
         $access = Access::all();
         $user = \Auth::user();
@@ -164,7 +213,8 @@ class UserController extends Controller
             array_push($usergranted, $useraccess->id);
         }
         $count = count($usergranted);
-        return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
+        return response()->json(['msg' => "success"], 200);
+        // return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
     public function accesslist()
@@ -221,5 +271,13 @@ class UserController extends Controller
         );
 
         return $data;
+    }
+
+    public function destroy($user, $name)
+    {
+        $user = \Auth::user();
+        User::where('username', $name)->delete();
+        // return response()->json();
+        return redirect()->action('UserController@show', $user->username);
     }
 }

@@ -16,7 +16,7 @@ Route::post('/login', 'UserController@login')->name('logged');
 Route::get('/logout', 'UserController@logout')->name('logout');
 
 Route::get('/{user}', 'UserController@index');
-Route::get('/{user}/userlist', 'UserController@show')->name('admin');
+Route::get('/{user}/daftaruser', 'UserController@show')->name('admin');
 Route::get('/{user}/accesslist', 'UserController@accesslist')->name('accesslist');
 Route::get('/{user}/accesslist/register', 'UserController@accesslistregister')->name('accesslist');
 Route::post('/{user}/accesslist', 'UserController@accessliststore')->name('accesslist');
@@ -31,3 +31,4 @@ Route::post('/{user}/surat/{namasurat}', 'LetterController@store');
 
 Route::get('/{user}/{name}', 'UserController@edit');
 Route::patch('/{user}/{name}', 'UserController@update');
+Route::delete('/{user}/{name}', 'UserController@destroy');

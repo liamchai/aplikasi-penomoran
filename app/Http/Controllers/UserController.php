@@ -14,23 +14,7 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
-    public function checkAccess()
-    {
-        $check = false;
-        $user = request()->segment(1);
-        $user = User::where('username', $user)->firstorfail();
-        $roles = $user->access()->get();
-        $url = last(request()->segments());
-        foreach ($roles as $roles) {
-            if ($url == $roles->url) {
-                $check = true;
-                break;
-            }
-        }
-        if ($check == false) {
-            return abort(403);
-        }
-    }
+
 
     public function index()
     {
@@ -85,6 +69,23 @@ class UserController extends Controller
         return $data;
     }
 
+    public function checkAccess()
+    {
+        $check = false;
+        $user = request()->segment(1);
+        $user = User::where('username', $user)->firstorfail();
+        $roles = $user->access()->get();
+        $url = last(request()->segments());
+        foreach ($roles as $roles) {
+            if ($url == $roles->url) {
+                $check = true;
+                break;
+            }
+        }
+        if ($check == false) {
+            return abort(403);
+        }
+    }
 
     public function updateAccess($user, $name)
     {
@@ -93,7 +94,7 @@ class UserController extends Controller
         foreach ($access as $access) {
             $users->access()->sync($access);
         }
-        return redirect()->route('admin', $user)->with('msg', 'User Access is Updated');
+        return response()->json(['msg' => 'User Akses berhasil di update'], 200);
     }
 
     public function logout()
@@ -107,8 +108,9 @@ class UserController extends Controller
         $this->checkAccess();
         $user = \Auth::user();
         $username = $user->username;
+        $filter = request('filter');
         $roles = $user->access()->orderby('access_id', 'asc')->get();
-        $users = User::orderby('id', 'desc')->paginate(10);
+        $users = User::orderby('id', 'desc')->where('username', 'like', '%' . $filter . '%')->paginate(10);
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
@@ -150,7 +152,6 @@ class UserController extends Controller
     {
         $username = request('username');
         $password = request('password');
-        // dd(\Hash::make($password));
         $login = User::where('username', $username)->first();
         if ($login != NULL)
             return (password_verify($password, $login->password)) ? TRUE : FALSE;
@@ -200,12 +201,14 @@ class UserController extends Controller
         return $data;
     }
 
-    public function editAcess($user, $name)
+    public function editAccess($user, $name)
     {
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;
+        // utk yg sedang login
         $roles = $user->access()->orderby('access_id', 'asc')->get();
+        // acces utk di edit
         $useraccess = User::where('username', $name)->first();
         $useraccess = $useraccess->access()->get();
         $usergranted = [];
@@ -213,22 +216,11 @@ class UserController extends Controller
             array_push($usergranted, $useraccess->id);
         }
         $count = count($usergranted);
-        return response()->json(['msg' => "success"], 200);
+        return response()->json(compact('access', 'roles', 'count', 'username',  'usergranted', 'name'), 200);
         // return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
-    public function accesslist()
-    {
-        $this->checkAccess();
-        $user = \Auth::user();
-        $username = $user->username;
-        $roles = $user->access()->orderby('access_id', 'asc')->get();
-        $title = (last(request()->segments()));
-        $title = Access::where('url', $title)->first();
-        $title = $title->name;
-        $access = Access::paginate(10);
-        return view('user.access.accesslist', compact('username', 'roles', 'access', 'title'));
-    }
+
 
     public function accesslistregister()
     {
@@ -277,7 +269,6 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         User::where('username', $name)->delete();
-        // return response()->json();
         return redirect()->action('UserController@show', $user->username);
     }
 }

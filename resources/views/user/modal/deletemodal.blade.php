@@ -26,7 +26,7 @@
 </div>
 
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
     $(document).on('click', '#delete-user', function (e) {
         e.preventDefault();
         $('#DeleteModal').modal('show');
@@ -34,7 +34,7 @@
         var id = $(this).data('id');
         var url = $(this).attr('href');
         $.get(url, function (data) {
-                //success data
+                // success data
                 // console.log(id);
                 $('#id').val(id);
                 $('#username_delete').html(data.name);
@@ -72,13 +72,15 @@
                     $('#DeleteModal').modal('hide');
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
-                    $('#'+ this.id).closest("tr").remove();
                     $('.users').html(json);
-                    console.log(json);
+                    $('#deletemsg').removeClass('d-none');
+                    setTimeout(function(){
+                        $('#deletemsg').addClass('d-none'); }, 5000
+                    );
                 },
                 error: function (json)
                 {
-                    console.log(json);
+                    alert('gagal menghapus.');
                 },
             });
         });

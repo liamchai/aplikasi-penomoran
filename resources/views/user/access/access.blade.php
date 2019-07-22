@@ -7,7 +7,7 @@
 @include('layouts.header')
 @include('layouts.nav')
     <h1>Access for {{ $name }}</h1>
-    <form method="POST" action={{ action('UserController@update', [$username, $name]) }}>
+    <form method="POST" action={{ action('UserController@updateAccess', [$username, $name]) }}>
         @csrf
         @method('PATCH')
         <table class="table">
@@ -32,5 +32,4 @@
             <a class="btn btn-primary" href={{ action('UserController@show', $username) }} role="button">Back</a>
         </div>
     </form>
-
 @endsection

@@ -1,9 +1,8 @@
-<table class="table mt-2 table-striped table-hover" id="datatable">
+<table class="table mt-2 table-striped table-hover text-center" id="datatable">
         <thead class="thead-light">
             <tr>
                 <th scope="col">No</th>
                 <th scope="col">Username</th>
-                <th scope="col">Access</th>
                 <th scope="col">Control</th>
             </tr>
         </thead>
@@ -13,15 +12,14 @@
         <tbody>
             @foreach ($users as $user)
                 <tr class="delete" id="{{$user->id}}">
-                    <td scope="row">{{ $i++ }} </td>
+                    <td scope="row" class="text-right">{{ $i++ }} </td>
                     <td>{{ $user->username }} <input type="hidden" value="{{$user->id}}" ></td>
-                    <td><a href="{{"/". $username ."/" . $user->username}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Show/Edit</td>
-                    <td>
-                        <a href="{{"/". $username ."/" . $user->username}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Edit</a>
-                        <a href="{{"/". $username ."/" . $user->username}}" id="delete-user" data-id="{{ $user->id }}" class="btn btn-danger">Hapus</a>
+                    <td><a href="{{"/". $username . "/editaccess/" . $user->username}}" id="edit-user-access" data-id="{{ $user->id }}" class="btn btn-success">Edit Akses</a>
+                        <a href="{{"/". $username ."/" . $user->username}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Edit User</a>
+                        <a href="{{"/". $username ."/" . $user->username}}" id="delete-user" data-id="{{ $user->id }}" class="btn btn-danger">Hapus User</a>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-<span>{{ $users->links() }}</span>
+<div class="d-flex justify-content-center">{{ $users->links() }}</div>

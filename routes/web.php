@@ -17,17 +17,18 @@ Route::get('/logout', 'UserController@logout')->name('logout');
 
 Route::get('/{user}', 'UserController@index');
 Route::get('/{user}/daftaruser', 'UserController@show')->name('admin');
-Route::get('/{user}/accesslist', 'UserController@accesslist')->name('accesslist');
-Route::get('/{user}/accesslist/register', 'UserController@accesslistregister')->name('accesslist');
-Route::post('/{user}/accesslist', 'UserController@accessliststore')->name('accesslist');
-
 Route::get('/{user}/register', 'UserController@register');
 Route::post('/{user}/store', 'UserController@store');
+Route::get('/{user}/editaccess/{name}', 'UserController@editAccess');
+Route::patch('/{user}/editaccess/{name}', 'UserController@updateAccess');
+
+Route::get('/{user}/daftarakses', 'AccessController@index')->name('accesslist');
+Route::get('/{user}/accesslist/register', 'UserController@accesslistregister')->name('accesslist');
+Route::post('/{user}/accesslist', 'UserController@accessliststore')->name('accesslist');
 
 Route::get('/{user}/surat/listsurat', 'LetterController@index');
 Route::get('/{user}/surat/{namasurat}', 'LetterController@list');
 Route::post('/{user}/surat/{namasurat}', 'LetterController@store');
-// Route::get('/{user}/surat peringatan', 'LetterController@index');
 
 Route::get('/{user}/{name}', 'UserController@edit');
 Route::patch('/{user}/{name}', 'UserController@update');

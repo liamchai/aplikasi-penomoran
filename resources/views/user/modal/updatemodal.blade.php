@@ -13,7 +13,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                             <label for="username">Username : </label>
-                            <input type="text" class="form-control username" id="username_edit" name="username">
+                            <input type="text" class="form-control username" readonly id="username_edit" name="username">
                     </div>
                     <div class="form-group">
                             <label for="password">Password Lama: </label>
@@ -84,8 +84,8 @@ $(document).ready(function () {
                     console.log(json);
                     $('#updatemsg').removeClass('d-none');
                         setTimeout(function(){
-                    $('#updatemsg').addClass('d-none'); }, 5000
-                );
+                            $('#updatemsg').addClass('d-none'); }, 5000
+                    );
                     // Do something like redirect them to the dashboard...
                 },
                 error: function( json )

@@ -1,25 +1,10 @@
-@extends('layouts.layout')
-
-@section('title', $title)
-
-@include('layouts.header')
-@include('layouts.nav')
-
-@section('content')
-<h1>{{$title}}</h1>
-    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Register New Access</button> --}}
-    <a href={{ action('UserController@accesslistregister', $username) }} class="btn btn-primary">Register New Access</a>
-    @if (session('msg'))
-    <div class="alert alert-success mt-2" role="alert">
-        {{ session('msg') }}
-    </div>
-@endif
-<table class="table mt-2 table-striped">
-    <thead class="thead-light">
+<table class="table mt-2 table-striped table-hover" id="datatable">
+        <thead class="thead-light">
         <tr>
             <th scope="col">No</th>
             <th scope="col">Name</th>
             <th scope="col">URL</th>
+            <th scope="col">Control</th>
         </tr>
     </thead>
     @php
@@ -30,8 +15,12 @@
             <td scope="row">{{$i++}}</td>
             <td>{{$acc->name}}</td>
             <td>{{$acc->url}}</td>
+            <td>
+                <a href="{{"/". $username . "/daftarakses/" . $acc->id}}" data-id="{{ $acc->id }}" id="show-access" class="btn btn-success">Lihat</a>
+                <a href="{{"/". $username . "/daftarakses/" . $acc->id . "/edit"}}" data-id="{{ $acc->id }}" id="edit-access" class="btn btn-info">Edit</a>
+                <a href="{{"/". $username . "/daftarakses/" . $acc->id}}" data-id="{{ $acc->id }}" id="delete-access" class="btn btn-danger">Hapus</a>
+            </td>
         </tr>
         @endforeach
     </table>
-        <div>{{ $access->links() }}</div>
-@endsection
+<div class="d-flex justify-content-center">{{ $access->links() }}</div>

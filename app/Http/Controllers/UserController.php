@@ -14,8 +14,6 @@ class UserController extends Controller
         $this->middleware('auth')->except('login');
     }
 
-
-
     public function index()
     {
         $user = \Auth::user();
@@ -24,7 +22,7 @@ class UserController extends Controller
         foreach ($roles as $role) {
             if ($role->name === "Daftar User") {
                 return redirect()->action('UserController@show', $user->username);
-            } else if ($role->name === "List Surat") {
+            } else if ($role->name === "Daftar Surat") {
                 return redirect()->action('LetterController@index', $user->username);
             }
         }
@@ -220,49 +218,12 @@ class UserController extends Controller
         // return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
-
-
     public function accesslistregister()
     {
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access()->orderby('access_id', 'asc')->get();
         return view('user.access.register', compact('username', 'roles'));
-    }
-
-    public function accessliststore()
-    {
-        $user = \Auth::user();
-        $username = $user->username;
-        $roles = $user->access;
-        if ($this->validateAccess()) {
-            $newaccess = new Access;
-            $newaccess->name = request('name');
-            $newaccess->url = request('URL');
-            $newaccess->departemen = request('departemen');
-            $newaccess->save();
-            return redirect()->action('UserController@accesslist', $username)->with('msg', 'Access baru berhasil di tambahkan');
-        } else {
-            return redirect()->back()->withInput();
-        }
-    }
-
-    public function validateAccess()
-    {
-        $data = request()->validate(
-            [
-                'name' => 'required|unique:accesses',
-                'URL' => 'required|unique:accesses'
-            ],
-            [
-                'name.required' => 'Access harus di isi',
-                'URL.required' => 'URL harus di isi',
-                'name.unique' => 'Access sudah terdaftar',
-                'URL.unique' => 'URL sudah terdaftar'
-            ]
-        );
-
-        return $data;
     }
 
     public function destroy($user, $name)

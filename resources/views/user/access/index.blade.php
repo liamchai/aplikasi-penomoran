@@ -10,38 +10,27 @@
 <h1 class="display-4">{{$title}}</h1>
 <div class="row">
     <div class="col-3">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">User Baru</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#RegisterAccessModal">Akses Baru</button>
     </div>
+    {{-- <a href={{ action('UserController@accesslistregister', $username) }} class="btn btn-primary">Register New Access</a> --}}
     <div class="col-5">
-    </div>
+        </div>
     <div class="col-4">
-        <input type="text" name="filter" id="filter" class="d-block pl-2" placeholder="Cari Data">
-        <input type="hidden" name="page_hidden" id="page_hidden">
-        <input type="hidden" name="url_hidden" id="url_hidden">
+    <input type="hidden" name="page_hidden" id="page_hidden">
+    <input type="hidden" name="url_hidden" id="url_hidden">
+    <input type="text" name="filter" id="filter" class="pl-2" placeholder="Cari Data">
     </div>
 </div>
-    <div class="alert alert-success mt-2 d-none" id="registermsg" role="alert">
-        User Baru Berhasil di tambahkan
-    </div>
-    <div class="alert alert-success mt-2 d-none" id="updatemsg" role="alert">
-        User berhasil di edit
-    </div>
-    <div class="alert alert-success mt-2 d-none" id="deletemsg" role="alert">
-        User Berhasil di hapus
-    </div>
-    <div class="alert alert-success mt-2 d-none" id="accessmsg" role="alert">
-        Akses User Berhasil di update
-    </div>
-@if (count($users) > 0)
-    <section class="users">
-        @include('user.indexlist')
+@if (count($access) > 0)
+    <section class="access">
+        @include('user.access.accesslist')
     </section>  
 @endif
 
-@include('user.modal.user.registermodal')
-@include('user.modal.user.updatemodal')
-@include('user.modal.user.deletemodal')
-@include('user.modal.user.edituseraccessmodal')
+@include('user.modal.access.registermodal')
+@include('user.modal.access.showmodal')
+@include('user.modal.access.editmodal')
+@include('user.modal.access.deletemodal')
 
 <script>
 $(document).ready(function () {
@@ -71,11 +60,13 @@ $(document).ready(function () {
     function fetch_data(url, page, query='') {
         $.ajax({
             url : url + '?page=' + page + '&filter=' + query
+            // console.log(url);
         }).done(function (data) {
-            $('.users').html(data);
+            $('.access').html(data);
             console.log(data);
-        }).fail(function () {
+        }).fail(function (data) {
             alert('Data Tidak Ditemukan');
+            // console.log(data);
         });
     }
 });

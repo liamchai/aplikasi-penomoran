@@ -1,17 +1,3 @@
-@extends('layouts.layout')
-
-@section('title', 'List Surat')
-
-@include('layouts.header')
-@include('layouts.nav')
-
-@section('content')
-<h1>List Surat</h1>
-@if (session('msg'))
-    <div class="alert alert-success mt-2" role="alert">
-        {{ session('msg') }}
-    </div>
-@endif
 <table class="table mt-2 table-striped">
     <thead class="thead-light">
         <tr>
@@ -22,6 +8,7 @@
                 <th scope="col">Dibuat oleh</th>
             @endif
             <th scope="col">Tanggal</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     @php
@@ -36,10 +23,12 @@
                 <td>{{ $surat->submitted_by }}</td>
             @endif
             <td>{{date('d M Y', strtotime($surat->tanggal))}}</td>
+            <td>
+                <a href="{{ "/" .$user . "/daftarsurat/" . $surat->id }}" id="show-surat" data-id="{{ $surat->id }}" class="btn btn-success">Lihat</a>
+                <a href="#" id="edit-surat" data-id="{{ $surat->id }}" class="btn btn-info">Edit</a>
+                <a href="{{ "/" .$user . "/daftarsurat/" . $surat->id }}" id="delete-surat" data-id="{{ $surat->id }}" class="btn btn-danger">Hapus</a>
+            </td>
         </tr>
         @endforeach
     </table>
-    <div class="text-center mx-auto d-block">
-        <span>{{ $surats->links() }}</span>
-    </div>
-@endsection
+        <div class="d-flex justify-content-center">{{ $surats->links() }}</div>

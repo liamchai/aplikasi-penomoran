@@ -12,8 +12,8 @@
                         {{-- <input type="hidden" name="username_edit_access" id="username_edit_access"> --}}
                         <table class="table">
                                 <tr class="items">
-                                    <td>Name</td>
-                                    <td>Active</td>
+                                    <td>Nama</td>
+                                    <td>Akses</td>
                                 </tr>
                             </table>
                 </div>

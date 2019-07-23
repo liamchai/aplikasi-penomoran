@@ -44,6 +44,7 @@ $(document).ready(function () {
             error: function( json )
             {
                 form.find('.text-danger').remove();
+                console.log(json);
                 if(json.status === 422) {
                     var res = json.responseJSON;
                     $.each(res.errors, function (key, value) {

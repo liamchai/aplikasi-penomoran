@@ -12,11 +12,16 @@ class LetterController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
+    }
+
+    public function checkAccess()
+    {
         $check = false;
         $user = request()->segment(1);
         $user = User::where('username', $user)->firstorfail();
         $roles = $user->access()->get();
-        $url = "surat/" . last(request()->segments());
+        $url = last(request()->segments());
         foreach ($roles as $roles) {
             if ($url == $roles->url) {
                 $check = true;
@@ -26,21 +31,33 @@ class LetterController extends Controller
         if ($check == false) {
             return abort(403);
         }
-        $this->middleware('auth');
     }
 
+    public function show($user, $id)
+    {
+        $surat = Letter::where('id', $id)->firstOrFail();
+        return response()->json($surat, 200);
+    }
 
     public function index($user)
     {
         $users = \Auth::user();
         $username = $users->username;
+        $filter = request('filter');
         $roles = $users->access()->orderby('access_id', 'asc')->get();
+        $surats = Letter::where('nomor_surat', 'LIKE', '%' . $filter . '%')
+            ->orWhere('name', 'LIKE', '%' . $filter . '%')
+            ->orWhere('submitted_by', 'LIKE', '%' . $filter . '%')
+            ->orWhere('tanggal', 'LIKE', '%' . $filter . '%')
+            ->orderby('id', 'desc')->paginate(10);
+
         if ($user != "test") {
-            $surats = Letter::where('submitted_by', $user)->orderby('id', 'desc')->paginate(10);
-        } else {
-            $surats = Letter::orderby('id', 'desc')->paginate(10);
+            $surats = $surats->where('submitted_by', $user);
         }
-        return view('user.surat.listsurat', compact('surats', 'username', 'roles', 'user'));
+        if (request()->ajax()) {
+            return view('user.surat.listsurat', compact('username', 'roles', 'users', 'surats', 'user'))->render();
+        }
+        return view('user.surat.index', compact('surats', 'username', 'roles', 'user'));
     }
 
     public function list($user, $letter)

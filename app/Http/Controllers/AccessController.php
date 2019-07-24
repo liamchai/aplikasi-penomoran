@@ -20,7 +20,7 @@ class AccessController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $filter = request('filter');
-        $roles = $user->access()->orderby('access_id', 'asc')->get();
+        $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;

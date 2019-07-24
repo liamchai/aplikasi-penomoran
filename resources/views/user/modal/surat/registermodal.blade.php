@@ -3,27 +3,43 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="userCrudModal">Akses Baru</h4>
+                    <h4 class="modal-title" id="userCrudModal">Surat Baru</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-            <form role="form" id="SuratForm" method="POST" action={{ action('AccessController@store', $username) }}>
+            <form role="form" id="SuratForm" method="POST" action={{ action('LetterController@store', $username) }}>
                 <div class="modal-body">
+                    <input type="hidden" name="user" id="user" value={{$username}}>
+                    <input type="hidden" name="url" id="url">
+                    <input type="hidden" name="nomor" id="nomor">
                     <div class="form-group">
-                        <label for="name">Nama Akses : </label>
-                        <input autocomplete="off" type="text" class="form-control name" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh : Surat Referensi, Surat Peringatan">
+                        <label for="nama">Jenis Surat : </label>
+                        <select name="nama" id="nama" name="select_nama_surat" class="form-control">
+                            <option disabled selected>Silahkan pilih Jenis Surat</option>
+                            @foreach ($dropdown as $list)
+                                <option value="{{ $list->url }}">{{ $list->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="URL">URL : </label>
-                        <input autocomplete="off" type="text" class="form-control URL" id="URL" name="URL" value="{{ old('URL') }}" placeholder="Contoh : surat/suratreferensi, surat/suratperingatan">
+                        <label for="nomor">Nomor Surat : </label>
+                        <input readonly autocomplete="off" type="text" class="form-control" id="register_nomor" name="nomor_surat">
                     </div>
                     <div class="form-group">
-                        <label for="departemen">Departemen <span class="text-muted font-italic">Optional </span>: </label>
-                        <input autocomplete="off" type="text" class="form-control" id="departemen" name="departemen" value="{{ old('departemen') }}" placeholder="Contoh: HRD, Admin">
+                        <label for="tanggal">Tanggal Keluar : </label>
+                        <input readonly autocomplete="off" type="text" class="form-control" id="register_tanggal" name="tanggal">
+                    </div>
+                    <div class="form-group">
+                        <label for="pembuat">Dikeluarkan oleh : </label>
+                        <input readonly autocomplete="off" type="text" class="form-control" id="register_pembuat" name="pembuat">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomor">Kepada : </label>
+                        <input autocomplete="off" type="text" class="form-control" id="register_penerima" name="penerima">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Daftarkan Akses</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             @csrf
             </form>
@@ -45,6 +61,23 @@ $(document).ready(function () {
         $(this).find('form').trigger('reset');
     })
 
+    $('select[name="nama"]').on('change', function (e) {
+        var url = "/" + $('#user').val() + "/" + $('#nama').val();
+        console.log(url);
+        $.get(url, function (data) {
+            var nomor = data.no + "/" + data.departemen + "/" + data.month + "/" + data.year;
+            var tanggal = data.date;
+            var pembuat = data.username;
+            var url = data.url;
+            console.log(data);
+            $('#url').val(url);
+            $('#nomor').val(data.no);
+            $('#register_nomor').val(nomor);
+            $('#register_tanggal').val(tanggal);
+            $('#register_pembuat').val(pembuat);
+        })
+    })
+
 var form = $('#SuratForm');
     form.submit(function(e) {
         e.preventDefault();
@@ -61,12 +94,12 @@ var form = $('#SuratForm');
             data    : form.serialize(),
             success : function ( json )
             {
-                $('#RegisterAccessModal').modal('hide');
+                $('#SuratModal').modal('hide');
                 $(document.body).removeClass("modal-open");
                 $(".modal-backdrop").remove();
                 // Success
                 // Do something like redirect them to the dashboard...
-                $('.access').html(json);
+                $('.surats').html(json);
                 console.log(json);
             },
             error: function( json )

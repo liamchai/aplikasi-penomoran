@@ -20,6 +20,7 @@ class CreateLettersTable extends Migration
             $table->integer('nomor');
             $table->string('submitted_by');
             $table->date('tanggal');
+            $table->string('penerima');
             $table->integer('confirmed')->default(0);
             $table->timestamps();
         });

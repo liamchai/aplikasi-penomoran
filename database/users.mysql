@@ -1,0 +1,104 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 24, 2019 at 09:33 AM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.3.6
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `penomoran`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'test', '$2y$10$LQvmInqXqHH.bbymTo7wHe3kuabpy6e9DKY4sXDiqtwg8JKyflruW', 'WuMI95KiajliXAkn16gfNPG1Br5kW9SoloTw2WKINKo5Cryb6I3nRRK7MQMA', NULL, NULL),
+(2, 'newuser', '$2y$10$GIQgxxXL3LKbkxdVDl0IkeiE01CHEVlavG1q3n0fVGyKRZlYekblW', '9cNAbNMs76yNqKV153hOhnA4a0WmLXw00iIHLY79dTc485Ht0XP124fxN1oK', '2019-07-10 01:32:44', '2019-07-10 01:32:44'),
+(3, 'wow', '$2y$10$VhytT5rquQvdVUJwb7cKhOmFAaUXTqU6Uw7YOp2wBLbMZTTWEl2wO', NULL, '2019-07-16 20:58:15', '2019-07-16 20:58:15'),
+(4, '123', '$2y$10$fZybd1B3E5Mnz2WPLcDHce9LnEC8jFyXRoD8QYptJS.5LUR9kYP0i', NULL, '2019-07-16 21:09:05', '2019-07-21 18:20:45'),
+(6, '12345', '$2y$10$pVXO1Ix9oUlFkPP.AUQUIeMLbU9cOVL2/mUuChC/f4a1Wgaj8o68G', NULL, '2019-07-16 21:13:54', '2019-07-16 21:13:54'),
+(7, 'test2', '$2y$10$Iy0qi3stKENTj/Nv60Z4BuYJQ79LcCkYiFekzJ1pcwbMrKwAB8a76', NULL, '2019-07-16 23:21:49', '2019-07-16 23:21:49'),
+(8, 'test123', '$2y$10$ylS4WFEDqZShTqPJeodJoOR4omHeAYra1lznVWPicZ0r/L5OVZ1Ya', NULL, '2019-07-16 23:23:04', '2019-07-16 23:23:04'),
+(9, 'test1234', '$2y$10$DAb1bcY5aftkTmY.Fvs8/eUoW9GKixjcFZ1aa18nNjyrIhmQCiXee', NULL, '2019-07-16 23:30:43', '2019-07-16 23:30:43'),
+(10, 'test5', '$2y$10$yl2RusEKoQIvdRVuCW9mVe1miBUQQLTDvE5Bl8MY4ce32WYq3Qj7O', NULL, '2019-07-16 23:31:20', '2019-07-16 23:31:20'),
+(11, 'test56', '$2y$10$fPGgDeP5Uy2pVSnpxKG/AeXvhzp8WX4Tkf6wvvSeMBI8InpZnGFvy', NULL, '2019-07-16 23:31:43', '2019-07-16 23:31:43'),
+(12, 'test12', '$2y$10$xQFmrrWW2T.IPIMsWYNa4utSQotnYhe0sbTo.CF0I2a9CrKjJkXGa', NULL, '2019-07-16 23:34:05', '2019-07-16 23:34:05'),
+(13, '54564564', '$2y$10$SnXwWjf2MDXSbmXuKFfP5ubG8MDiL6cja6Z9uXqXQV19A3mAaQTo2', NULL, '2019-07-16 23:35:35', '2019-07-16 23:35:35'),
+(14, 'test4', '$2y$10$koNyxWlXnbwBurEKAnRhuObWYNtkaJ3WXkUO.I1/1Ign/qmMAmSqe', NULL, '2019-07-16 23:43:32', '2019-07-16 23:43:32'),
+(15, 'testz', '$2y$10$T7L9q/P.OH1Ufvh.MMYlMu.pMnMA/N./F5dVOui/CHK.D2biqurZa', NULL, '2019-07-16 23:51:57', '2019-07-16 23:51:57'),
+(16, 'testzz', '$2y$10$0DUxtJ9ig7py/58vTg0jVuO8HbSiv8QDFf9APu9kciLMqK5G/bPBe', NULL, '2019-07-16 23:52:25', '2019-07-16 23:52:25'),
+(17, 'test1235', '$2y$10$KerREgNLwLck0IOrDuIHxegUUbsjyu1kP6npmeaF08A7F8Ns0KyIW', NULL, '2019-07-16 23:55:00', '2019-07-16 23:55:00'),
+(18, 'test123456', '$2y$10$Ho.G.1s5JCEtle9XUkvo.eSZWvlPGL5Bx1mlLb/S35mQ4N2EHrvcu', NULL, '2019-07-16 23:59:02', '2019-07-18 21:27:11'),
+(19, 'testb', '$2y$10$F9Ff5k9rBRNl4SOXVv1.Z.vCXND1jU6IXOtRA4CpCADOsEaTyLF3e', NULL, '2019-07-16 23:59:48', '2019-07-16 23:59:48'),
+(20, 'testbb', '$2y$10$cfz/8MAXV23I1D5TIlk5Mu3SLfLMdSUbGF4bJFo6BMUGuREdd87ly', NULL, '2019-07-17 00:02:06', '2019-07-17 00:02:06'),
+(22, 'testzz2', '$2y$10$T3TJxlmWopn4CXowqN4HG.nmmHUo.S0RvLy5CV5beZhyTW..7FRJ2', NULL, '2019-07-17 00:16:21', '2019-07-17 00:16:21'),
+(23, 'test123z', '$2y$10$nxjmUNUzJFZm88H9ZlRjdurT4qgAxp1oU0c6QB/sS7jmZczlOR7Nq', NULL, '2019-07-17 00:16:51', '2019-07-17 00:16:51'),
+(24, '123456', '$2y$10$2/DX5VTwGdSkNBBf.qG6OOl.q0WxwCWuQ8Z5.gKxrQfTy4Sio2NDu', 'nRhmBxzY0pw6vhiCSJPLuSRcOOiD8EkQ871lWlGIPh0Dxufh4Al8OFHfcIl4', '2019-07-17 00:18:28', '2019-07-17 00:18:28'),
+(25, '1234566', '$2y$10$VtR7rbzETYK8YdPb37CAKOmaFYevKcWvgmDHfaaA4KJzU0u8m4p/C', NULL, '2019-07-17 00:18:36', '2019-07-17 00:18:36'),
+(26, 'testzzzz', '$2y$10$WEZ7Jf2XRcKlVEo5DDyMnOE68ECjvsFJEUkR1yVXv5cyyzA68HXS.', NULL, '2019-07-17 00:19:01', '2019-07-17 00:19:01'),
+(27, 'test132', '$2y$10$1czKFCfHNNTII67wfuQo.ePTnI8UzoKw4xKudKcD3mMnmL9L78SHK', NULL, '2019-07-17 00:40:30', '2019-07-17 00:40:30'),
+(29, 'test99', '$2y$10$L.PGCU4I4ZE7GGziXu0MkOJvLWJKxh9kRKKHfrJw7Fs/xKfo10LFy', NULL, '2019-07-17 00:46:51', '2019-07-17 00:46:51'),
+(31, 'test33', '$2y$10$mrWykmjfZzKZlR2hD9qb7OCQWGv9valDdGAeqEV0hh8K/lT2n2OoW', NULL, '2019-07-17 00:50:31', '2019-07-17 00:50:31'),
+(32, 'test991', '$2y$10$qnW.hYadHxOrXJUNTvNsLO6yXP8xQ0C7n4Cvk3RC52l.4Ij/fCJTS', NULL, '2019-07-17 00:51:02', '2019-07-17 00:51:02'),
+(34, 'new', '$2y$10$.6G29qX8h9H3RtjlF7oYqum82P2T8eaTrAXDFnppvYhac6d6N4Xc6', NULL, '2019-07-17 01:05:50', '2019-07-17 01:05:50'),
+(35, 'newz', '$2y$10$wV3txfFXCtwd6S9qRrVH.edQG0.jAnpasY/bc9NNi0jrdJio/8bg6', NULL, '2019-07-17 01:06:11', '2019-07-17 01:06:11'),
+(36, 'testz2', '$2y$10$rvtQ/6VpL.2BHHMPLZsJOOU1DEPZlm1NgracgG.0kCW1P9EAnOYHW', NULL, '2019-07-17 01:06:22', '2019-07-17 01:06:22'),
+(37, 'test44', '$2y$10$mr3tr/8Izl/94h3LRKmsPuNHn1BY9Uhe2o20Mmw/6lwyj.Vxrqhd6', NULL, '2019-07-17 01:06:40', '2019-07-21 18:20:16'),
+(93, 'newuser123', '$2y$10$jQAkYXa8WBJQLwd.Hd269OcsDiJb9SN1EullHq6l4ww7vhPi4fAoa', NULL, '2019-07-21 21:51:07', '2019-07-21 21:51:07'),
+(95, 'newz1', '$2y$10$k0JFwOj.gQB9YQaQvErmp.lYRvYgO2NGHIiaM2tCFEMcalzt2dNnG', 'wb7sJ4ve566j2n0CjwNscbKllwia6qlwv9gK6dlC5FLQRFk6wfzAwdDaooyt', '2019-07-22 02:12:55', '2019-07-22 23:20:49');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_username_unique` (`username`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

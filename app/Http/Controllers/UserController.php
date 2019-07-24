@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access()->orderby('access_id', 'asc')->get();
+        $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         foreach ($roles as $role) {
             if ($role->name === "Daftar User") {
                 return redirect()->action('UserController@show', $user->username);
@@ -107,7 +107,7 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $filter = request('filter');
-        $roles = $user->access()->orderby('access_id', 'asc')->get();
+        $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         $users = User::orderby('id', 'desc')->where('username', 'like', '%' . $filter . '%')->paginate(10);
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();

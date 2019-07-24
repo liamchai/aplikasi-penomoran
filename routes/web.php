@@ -39,7 +39,7 @@ Route::patch('/{user}/daftarsurat/{id}', 'LetterController@update');
 Route::delete('/{user}/daftarsurat/{id}', 'LetterController@destroy');
 
 Route::get('/{user}/surat/{namasurat}', 'LetterController@list');
-Route::post('/{user}/surat/{namasurat}', 'LetterController@store');
+// Route::post('/{user}/surat/{namasurat}', 'LetterController@store');
 
 Route::get('/{user}/{name}', 'UserController@edit');
 Route::patch('/{user}/{name}', 'UserController@update');

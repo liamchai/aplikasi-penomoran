@@ -36,6 +36,10 @@ class LetterController extends Controller
     public function show($user, $id)
     {
         $surat = Letter::where('id', $id)->firstOrFail();
+        $surat->tanggal = date('d M Y', strtotime($surat->tanggal));
+        if ($surat->submitted_by != $user && $user != 'test') {
+            abort(403);
+        }
         return response()->json($surat, 200);
     }
 
@@ -44,41 +48,48 @@ class LetterController extends Controller
         $users = \Auth::user();
         $username = $users->username;
         $filter = request('filter');
-        $roles = $users->access()->orderby('access_id', 'asc')->get();
-        $surats = Letter::where('nomor_surat', 'LIKE', '%' . $filter . '%')
-            ->orWhere('name', 'LIKE', '%' . $filter . '%')
-            ->orWhere('submitted_by', 'LIKE', '%' . $filter . '%')
-            ->orWhere('tanggal', 'LIKE', '%' . $filter . '%')
-            ->orderby('id', 'desc')->paginate(10);
-
+        $roles = $users->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
+        $dropdown = $users->access()->orderby('access_id', 'asc')->where('url', 'LIKE', 'surat/%')->get();
         if ($user != "test") {
-            $surats = $surats->where('submitted_by', $user);
+            $surats = Letter::where('submitted_by', $user)->orderby('id', 'desc');
+        } else {
+            $surats = Letter::orderby('id', 'desc');
         }
+        $surats = $surats->where(function ($query) use ($filter) {
+            $query->where('nomor_surat', 'LIKE', '%' . $filter . '%')
+                ->orWhere('name', 'LIKE', '%' . $filter . '%')
+                ->orWhere('submitted_by', 'LIKE', '%' . $filter . '%')
+                ->orWhere('tanggal', 'LIKE', '%' . $filter . '%');
+        })->orderby('id', 'desc')->paginate(10);
+
         if (request()->ajax()) {
             return view('user.surat.listsurat', compact('username', 'roles', 'users', 'surats', 'user'))->render();
         }
-        return view('user.surat.index', compact('surats', 'username', 'roles', 'user'));
+        return view('user.surat.index', compact('surats', 'username', 'roles', 'user', 'dropdown'));
     }
 
     public function list($user, $letter)
     {
         $user = \Auth::user();
         $username = $user->username;
-        $roles = $user->access()->orderby('access_id', 'asc')->get();
         $url = $letter;
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
         $month = $this->getRomawi(date('n'));
         $no = $this->checkDigit(++$letter->nomor);
+        $year = date('Y');
+        $date =  date('d M Y', strtotime('now'));
         $departemen = $letter->departemen;
         $title = $letter->name;
-        return view('user.surat', compact('username', 'roles', 'letter', 'month', 'no', 'title', 'url', 'departemen'));
+        return response()->json(compact('username', 'date', 'year', 'letter', 'month', 'no', 'title', 'url', 'departemen'));
     }
 
-    public function store($user, $letter)
+    public function store($user)
     {
-        $test = request('nomor') . "/" . request('departemen') . "/" . request('month') . "/" . request('year');
+        $test = request('nomor_surat');
+        $penerima = request('penerima');
         $nomor = (int) ltrim(request('nomor'), "00");
+        $letter = request('url');
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
         $newletter = new Letter;
@@ -86,10 +97,32 @@ class LetterController extends Controller
         $newletter->nomor_surat = $test;
         $newletter->name = $letter->name;
         $newletter->nomor = $nomor;
+        $newletter->penerima = $penerima;
         $newletter->submitted_by = $user;
         $newletter->save();
         $letter->update(["nomor" => $nomor]);
-        return redirect()->action('LetterController@index', $user)->with('msg', 'Surat berhasil di tambahkan');
+        return redirect()->action('LetterController@index', $user);
+    }
+
+    public function update($user, $id)
+    {
+        $letter = Letter::where('id', $id)->first();
+        $penerima = request('penerima');
+        $letter->update(['penerima' => $penerima]);
+        return redirect()->action('LetterController@index', $user);
+    }
+
+    public function edit($user, $id)
+    {
+        $letter = Letter::where('id', $id)->first();
+        $letter->tanggal = date('d M Y', strtotime($letter->tanggal));
+        return response()->json($letter, 200);
+    }
+
+    public function destroy($user, $id)
+    {
+        Letter::where('id', $id)->delete();
+        return redirect()->action('LetterController@index', $user);
     }
 
     function getRomawi($bln)

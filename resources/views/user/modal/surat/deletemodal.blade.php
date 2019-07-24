@@ -97,7 +97,7 @@
                         $('#DeleteModal').modal('hide');
                         $(document.body).removeClass("modal-open");
                         $(".modal-backdrop").remove();
-                        $('.access').html(json);
+                        $('.surats').html(json);
                     },
                     error: function (json)
                     {

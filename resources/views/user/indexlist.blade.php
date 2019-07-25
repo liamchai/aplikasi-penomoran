@@ -9,6 +9,9 @@
         @php
         $i = ($users->currentPage()-1) * $users->perPage()+1 
         @endphp
+        @if (isset($msg) && $msg != "")
+            <tr><td colspan=3 class="text-center">{{$msg}}</td></tr>
+        @endif
         <tbody>
             @foreach ($users as $user)
                 <tr class="delete" id="{{$user->id}}">

@@ -11,11 +11,11 @@
                 <div class="modal-body">
                         {{-- <input type="hidden" name="username_edit_access" id="username_edit_access"> --}}
                         <table class="table">
-                                <tr class="items">
-                                    <td>Nama</td>
-                                    <td>Akses</td>
-                                </tr>
-                            </table>
+                            <tr class="items">
+                                <td>Nama</td>
+                                <td>Akses</td>
+                            </tr>
+                        </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

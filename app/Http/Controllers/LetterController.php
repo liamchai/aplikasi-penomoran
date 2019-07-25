@@ -47,6 +47,11 @@ class LetterController extends Controller
     {
         $users = \Auth::user();
         $username = $users->username;
+        $start_date = request('start_date');
+        $end_date = request('end_date');
+        $title = last(request()->segments());
+        $title = Access::where('url', $title)->first();
+        $title = $title->name;
         $filter = request('filter');
         $roles = $users->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         $dropdown = $users->access()->orderby('access_id', 'asc')->where('url', 'LIKE', 'surat/%')->get();
@@ -55,6 +60,9 @@ class LetterController extends Controller
         } else {
             $surats = Letter::orderby('id', 'desc');
         }
+        if ($start_date != "" && $end_date != "")
+            $surats = $surats->whereBetween('tanggal', array($start_date, $end_date));
+
         $surats = $surats->where(function ($query) use ($filter) {
             $query->where('nomor_surat', 'LIKE', '%' . $filter . '%')
                 ->orWhere('name', 'LIKE', '%' . $filter . '%')
@@ -62,10 +70,12 @@ class LetterController extends Controller
                 ->orWhere('tanggal', 'LIKE', '%' . $filter . '%');
         })->orderby('id', 'desc')->paginate(10);
 
+        $count = $surats->count();
+        $msg = ($count != 0) ? "" : "Data tidak ditemukan";
         if (request()->ajax()) {
-            return view('user.surat.listsurat', compact('username', 'roles', 'users', 'surats', 'user'))->render();
+            return view('user.surat.listsurat', compact('username', 'roles', 'users', 'surats', 'user', 'msg'))->render();
         }
-        return view('user.surat.index', compact('surats', 'username', 'roles', 'user', 'dropdown'));
+        return view('user.surat.index', compact('surats', 'title', 'username', 'roles', 'user', 'dropdown'));
     }
 
     public function list($user, $letter)

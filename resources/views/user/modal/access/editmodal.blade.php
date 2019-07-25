@@ -87,6 +87,10 @@ $(document).ready(function () {
                     $('#EditModal').modal('hide');
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
+                    $('#updatemsg').removeClass('d-none');
+                        setTimeout(function(){
+                            $('#updatemsg').addClass('d-none'); }, 5000
+                    );
                 },
                 error: function( json )
                 {

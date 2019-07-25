@@ -1,4 +1,4 @@
-<table class="table mt-2 table-striped">
+<table class="table mt-2 table-striped table-hover">
     <thead class="thead-light">
         <tr>
             <th scope="col">No</th>
@@ -15,8 +15,13 @@
     @php
         $i = ($surats->currentPage()-1) * $surats->perPage()+1 
     @endphp
+    @if (isset($msg) && $msg != "")
+        <tr><td colspan={{ ($user=='test') ? 7 : 6}} class="text-center">{{$msg}}</td></tr>
+    @endif
         @foreach ($surats as $surat)
-        <tr>
+        <tr class="item"
+        {{-- id="show-surat" style="cursor:pointer;" data-id="{{ $surat->id }}" href="{{ "/" .$user . "/daftarsurat/" . $surat->id }}" --}}
+        >
             <td scope="row">{{$i++}}</td>
             <td>{{$surat->nomor_surat}}</td>
             <td>{{$surat->name}}</td>

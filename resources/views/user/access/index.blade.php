@@ -21,6 +21,15 @@
     <input type="text" name="filter" id="filter" class="pl-2" placeholder="Cari Data">
     </div>
 </div>
+<div class="alert alert-success mt-2 d-none" id="registermsg" role="alert">
+        Akses Baru Berhasil di tambahkan
+    </div>
+    <div class="alert alert-success mt-2 d-none" id="updatemsg" role="alert">
+        Akses berhasil di edit
+    </div>
+    <div class="alert alert-success mt-2 d-none" id="deletemsg" role="alert">
+        Akses Berhasil di hapus
+    </div>
 @if (count($access) > 0)
     <section class="access">
         @include('user.access.accesslist')
@@ -51,7 +60,7 @@ $(document).ready(function () {
 //search code start
     $('#filter').on('keyup',function(e) {
         var query = $('#filter').val();
-        var page = $('#page_hidden').val();
+        var page = "";
         var url = $('#url_hidden').val();
         fetch_data(url, page, query);
 // end search

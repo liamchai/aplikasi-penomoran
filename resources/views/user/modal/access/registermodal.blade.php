@@ -66,6 +66,10 @@ var form = $('#RegisterAccessForm');
                 $(".modal-backdrop").remove();
                 // Success
                 // Do something like redirect them to the dashboard...
+                $('#registermsg').removeClass('d-none');
+                setTimeout(function(){
+                    $('#registermsg').addClass('d-none'); }, 5000
+                );
                 $('.access').html(json);
                 console.log(json);
             },

@@ -45,6 +45,7 @@
                     $('#url_delete').html(data.url);
                     $('#departemen_delete').html(data.departemen);
                     $('#DeleteModal').modal('show');
+                    
                 }) 
             })
         //end populate modal
@@ -80,6 +81,10 @@
                         $(document.body).removeClass("modal-open");
                         $(".modal-backdrop").remove();
                         $('.access').html(json);
+                        $('#deletemsg').removeClass('d-none');
+                        setTimeout(function(){
+                            $('#deletemsg').addClass('d-none'); }, 5000
+                        );
                     },
                     error: function (json)
                     {

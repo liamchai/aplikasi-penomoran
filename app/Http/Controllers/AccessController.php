@@ -25,10 +25,13 @@ class AccessController extends Controller
         $title = Access::where('url', $title)->first();
         $title = $title->name;
         $access = Access::where('name', 'LIKE', '%' . $filter . '%')->orWhere('URL', 'LIKE', '%' . $filter . '%')->orderby('id', 'desc')->paginate(10);
+
+        $count = $access->count();
+        $msg = ($count != 0) ? "" : "Data tidak ditemukan";
         if (request()->ajax()) {
-            return view('user.access.accesslist', compact('username', 'roles', 'access', 'title'))->render();
+            return view('user.access.accesslist', compact('username', 'roles', 'access', 'title', 'msg'))->render();
         }
-        return view('user.access.index', compact('username', 'roles', 'access', 'title'));
+        return view('user.access.index', compact('username', 'roles', 'access', 'title', 'msg'));
     }
 
     public function checkAccess()

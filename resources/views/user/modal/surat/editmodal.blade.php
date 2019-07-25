@@ -55,6 +55,7 @@ $(document).ready(function () {
 
     $(document).on('click', '#edit-surat', function (e) {
         e.preventDefault();
+        
 
     // populate modal
         var id = $(this).data('id');
@@ -63,6 +64,7 @@ $(document).ready(function () {
         $.get(url, function (data) {
                 //success data
                 console.log(data);
+                
                 $('#id').val(id);
                 $('#nama_surat').html(data.name);
                 $('#edit_penerima').val(data.penerima);
@@ -98,6 +100,10 @@ var form = $('#EditForm');
                 $(".modal-backdrop").remove();
                 // Success
                 // Do something like redirect them to the dashboard...
+                $('#updatemsg').removeClass('d-none');
+                    setTimeout(function(){
+                        $('#updatemsg').addClass('d-none'); }, 5000
+                );
                 $('.surats').html(json);
                 console.log(json);
             },

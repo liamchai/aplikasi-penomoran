@@ -98,6 +98,10 @@
                         $(document.body).removeClass("modal-open");
                         $(".modal-backdrop").remove();
                         $('.surats').html(json);
+                        $('#deletemsg').removeClass('d-none');
+                        setTimeout(function(){
+                            $('#deletemsg').addClass('d-none'); }, 5000
+                        );
                     },
                     error: function (json)
                     {

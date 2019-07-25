@@ -112,10 +112,12 @@ class UserController extends Controller
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
+        $count = $users->count();
+        $msg = ($count != 0) ? "" : "Data tidak ditemukan";
         if (request()->ajax()) {
-            return view('user.indexlist', compact('username', 'roles', 'users', 'title'))->render();
+            return view('user.indexlist', compact('username', 'roles', 'users', 'title', 'msg'))->render();
         }
-        return view('user.index', compact('username', 'roles', 'users', 'title'));
+        return view('user.index', compact('username', 'roles', 'users', 'title', 'msg'));
     }
 
     public function login()

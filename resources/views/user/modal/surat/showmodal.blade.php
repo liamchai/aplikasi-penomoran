@@ -47,13 +47,17 @@ $(document).ready(function () {
                 // var tanggal = Date.parse(tanggal).toString("dd MM YYYY");
                 // console.log(tanggal);
                 $('#nama_surat').html(data.name);
-                $('#show_penerima').val(data.penerima);
                 $('#show_nomor').val(data.nomor_surat);
                 $('#show_tanggal').val(data.tanggal);
                 $('#show_pembuat').val(data.submitted_by);
                 if (data.departemen == null){
                     data.departemen = '-'
                 }
+                console.log(data.penerima);
+                if (data.penerima == null || data.penerima == ""){
+                    data.penerima = '-'
+                }
+                $('#show_penerima').val(data.penerima);
                 $('#show_departemen').val(data.departemen);
                 $('#ShowModal').modal('show');
             }) 

@@ -10,6 +10,9 @@
     @php
     $i = ($access->currentPage()-1) * $access->perPage()+1 
     @endphp
+    @if (isset($msg) && $msg != "")
+        <tr><td colspan=4 class="text-center">{{$msg}}</td></tr>
+    @endif
         @foreach ($access as $acc)
         <tr>
             <td scope="row">{{$i++}}</td>

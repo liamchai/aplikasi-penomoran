@@ -62,7 +62,7 @@ $(document).ready(function () {
 //search code start
     $('#filter').on('keyup',function(e) {
         var query = $('#filter').val();
-        var page = $('#page_hidden').val();
+        var page = "";
         var url = $('#url_hidden').val();
         fetch_data(url, page, query);
 // end search

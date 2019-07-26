@@ -43,7 +43,7 @@ class LetterController extends Controller
         return response()->json($surat, 200);
     }
 
-    public function index($user)
+    public function index($user, $query = '')
     {
         $users = \Auth::user();
         $username = $users->username;
@@ -71,11 +71,12 @@ class LetterController extends Controller
         })->orderby('id', 'desc')->paginate(10);
 
         $count = $surats->count();
-        $msg = ($count != 0) ? "" : "Data tidak ditemukan";
         if (request()->ajax()) {
+            $msg = ($count != 0) ? "" : "Data tidak ditemukan";
             return view('user.surat.listsurat', compact('username', 'roles', 'users', 'surats', 'user', 'msg'))->render();
         }
-        return view('user.surat.index', compact('surats', 'title', 'username', 'roles', 'user', 'dropdown'));
+        $msg = ($count != 0) ? "" : "Belum ada data. Silahkan buat data baru";
+        return view('user.surat.index', compact('surats', 'title', 'username', 'roles', 'user', 'dropdown', 'msg'));
     }
 
     public function list($user, $letter)
@@ -116,10 +117,11 @@ class LetterController extends Controller
 
     public function update($user, $id)
     {
+        $query = $this->getQueryString();
         $letter = Letter::where('id', $id)->first();
         $penerima = request('penerima');
         $letter->update(['penerima' => $penerima]);
-        return redirect()->action('LetterController@index', $user);
+        return redirect()->action('LetterController@index', [$user, $query]);
     }
 
     public function edit($user, $id)
@@ -132,7 +134,17 @@ class LetterController extends Controller
     public function destroy($user, $id)
     {
         Letter::where('id', $id)->delete();
-        return redirect()->action('LetterController@index', $user);
+        $query = $this->getQueryString();
+        return redirect()->action('LetterController@index', [$user, $query]);
+    }
+
+    function getQueryString()
+    {
+        $page = '?page=' . request()->get('page');
+        $query = '&filter=' . request()->get('query');
+        $start_date = '&start_date=' . request()->get('tanggal_mulai');
+        $end_date = '&end_date=' . request()->get('tanggal_berakhir');
+        return $page . $query . $start_date . $end_date;
     }
 
     function getRomawi($bln)

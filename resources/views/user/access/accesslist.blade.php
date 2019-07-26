@@ -1,10 +1,10 @@
 <table class="table mt-2 table-striped table-hover" id="datatable">
         <thead class="thead-light">
         <tr>
-            <th scope="col">No</th>
-            <th scope="col">Name</th>
-            <th scope="col">URL</th>
-            <th scope="col">Control</th>
+            <th scope="col" class="align-middle">No</th>
+            <th scope="col" class="align-middle">Name</th>
+            <th scope="col" class="align-middle">URL</th>
+            <th scope="col" class="align-middle text-center">Control</th>
         </tr>
     </thead>
     @php
@@ -15,10 +15,10 @@
     @endif
         @foreach ($access as $acc)
         <tr>
-            <td scope="row">{{$i++}}</td>
-            <td>{{$acc->name}}</td>
-            <td>{{$acc->url}}</td>
-            <td>
+            <td class="align-middle"scope="row">{{$i++}}</td>
+            <td class="align-middle">{{$acc->name}}</td>
+            <td class="align-middle">{{$acc->url}}</td>
+            <td class="align-middle text-center">
                 <a href="{{"/". $username . "/daftarakses/" . $acc->id}}" data-id="{{ $acc->id }}" id="show-access" class="btn btn-success">Lihat</a>
                 <a href="{{"/". $username . "/daftarakses/" . $acc->id . "/edit"}}" data-id="{{ $acc->id }}" id="edit-access" class="btn btn-info">Edit</a>
                 <a href="{{"/". $username . "/daftarakses/" . $acc->id}}" data-id="{{ $acc->id }}" id="delete-access" class="btn btn-danger">Hapus</a>

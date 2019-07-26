@@ -15,12 +15,14 @@
     </div>
     <div class="col-8">
         <input type="text" name="filter" id="filter" class="pl-2" placeholder="Cari Data">
-        <input type="date" name="start_date" id="start_date" class="pl-2 mr-1">sampai
+        <input type="date" name="start_date" id="start_date" class="pl-2 mr-1"><sup>s</sup>/<sub>d</sub>
         <input type="date" name="end_date" id="end_date" class="pl-2">
         <input type="button" name="filter_date" id="filter_date" class="btn btn-primary" value="Filter">
         <input type="button" name="reset" id="reset" class="btn btn-warning" value="Reset">
-        <input type="hidden" name="page_hidden" id="page_hidden">
+        <input type="hidden" name="page_hidden" id="page_hidden" value="{{ isset($page) ? '?page=$page' : ''}}">
         <input type="hidden" name="url_hidden" id="url_hidden">
+        <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="id" />
+        <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="asc" />
     </div>
 </div>
 
@@ -34,7 +36,7 @@
     Surat Berhasil di hapus
 </div>
 
-@if (count($surats) > 0)
+@if (count($surats) >= 0)
     <section class="surats">
         @include('user.surat.listsurat')
     </section>  

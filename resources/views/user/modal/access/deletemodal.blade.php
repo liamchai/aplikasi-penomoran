@@ -11,13 +11,27 @@
                     @method('DELETE')
                     <div class="modal-body">
                         <p>Apakah Anda yakin ingin menghapus data ini?</p>
-                        <p>
-                            Akses : <span id="username_delete"></span><br>
-                            URL : <span id="url_delete"></span><br>
-                            Departemen : <span id="departemen_delete"></span><br>
-                        </p>
+                        <table>
+                            <tr>
+                                <td>Akses </td>
+                                <td> : </td>
+                                <td><span id="username_delete"></span></td>
+                            </tr>
+                            <tr>
+                                <td>URL </td>
+                                <td>:</td>
+                                <td> <span id="url_delete"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Departemen </td>
+                                <td>:</td>
+                                <td> <span id="departemen_delete"></span></td>
+                            </tr>
+                        </table>
                         <input type="hidden" id="delete_token"/>
                         <input type="hidden" id="id"/>
+                        <input type="hidden" name="page" id="page">
+                        <input type="hidden" name="query" id="query">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -37,8 +51,12 @@
         // populate modal
             var id = $(this).data('id');
             var url = $(this).attr('href');
+            var page = $('#page_hidden').val();
+            var filter = $('#filter').val();
             $.get(url, function (data) {
                     // success data
+                    $('#page').val(page);
+                    $('#query').val(filter);
                     // console.log(id);
                     $('#id').val(id);
                     $('#username_delete').html(data.name);
@@ -69,7 +87,7 @@
                 });
             
                 $.ajax({
-                    url     : form.attr('action') + "/" +  $('#id').val(),
+                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
                     type    : 'POST',
                     data    : form.serialize(),
                     id      : $('#id').val(),

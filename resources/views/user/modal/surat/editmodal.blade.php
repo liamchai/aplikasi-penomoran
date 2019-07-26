@@ -12,6 +12,10 @@
                     <input type="hidden" name="user" id="user" value={{$username}}>
                     <input type="hidden" name="nomor" id="nomor">
                     <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="page" id="page">
+                    <input type="hidden" name="query" id="query">
+                    <input type="hidden" name="tanggal_mulai" id="tanggal_mulai">
+                    <input type="hidden" name="tanggal_berakhir" id="tanggal_berakhir">
                     <div class="form-group">
                         <label for="nomor">Nomor Surat : </label>
                         <input readonly autocomplete="off" type="text" class="form-control" id="edit_nomor" name="nomor_surat">
@@ -60,12 +64,21 @@ $(document).ready(function () {
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
-        
+        var page = $('#page_hidden').val();
+        var filter = $('#filter').val();
+        var tanggal_mulai = $('#start_date').val();        
+        var tanggal_berakhir = $('#end_date').val();        
         $.get(url, function (data) {
                 //success data
-                console.log(data);
+                console.log(page);
                 
                 $('#id').val(id);
+                // untuk pagination
+                $('#page').val(page);
+                $('#query').val(filter);
+                $('#tanggal_mulai').val(tanggal_mulai);
+                $('#tanggal_berakhir').val(tanggal_berakhir);
+                // akhir pagination
                 $('#nama_surat').html(data.name);
                 $('#edit_penerima').val(data.penerima);
                 $('#edit_nomor').val(data.nomor_surat);
@@ -90,8 +103,8 @@ var form = $('#EditForm');
         });
 
         $.ajax({
-            url     : form.attr('action') + "/" + $('#id').val(),
-            type    : form.attr('method'),
+            url     : form.attr('action') + "/" + $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val() + '&start_date=' + $('#tanggal_mulai').val() + '&end_date=' + $('#tanggal_berakhir').val(),
+            type    : 'POST',
             data    : form.serialize(),
             success : function ( json )
             {

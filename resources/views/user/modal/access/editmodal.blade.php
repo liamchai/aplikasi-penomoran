@@ -9,6 +9,8 @@
             <form role="form" id="EditForm" method="POST" action={{ action('AccessController@update', [$username, request('name')]) }}>
                 @method('PATCH')
                 <div class="modal-body">
+                    <input type="hidden" name="page" id="page">
+                    <input type="hidden" name="query" id="query">
                     <input type="hidden" id="edit_hidden_id" name="id">
                     <div class="form-group">
                         <label for="name">Nama Akses : </label>
@@ -53,8 +55,12 @@ $(document).ready(function () {
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
+        var page = $('#page_hidden').val();
+        var filter = $('#filter').val();
         $.get(url, function (data) {
-            //success data
+                // success data
+                $('#page').val(page);
+                $('#query').val(filter);
                 console.log(data);
                 $('#edit_hidden_id').val(data.id);
                 $('#edit_name').val(data.name);
@@ -79,7 +85,7 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#edit_hidden_id').val(),
+                url     : form.attr('action') + "/" +  $('#edit_hidden_id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 success : function ( json ){

@@ -101,7 +101,7 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function show($user)
+    public function show()
     {
         $this->checkAccess();
         $user = \Auth::user();
@@ -113,10 +113,11 @@ class UserController extends Controller
         $title = Access::where('url', $title)->first();
         $title = $title->name;
         $count = $users->count();
-        $msg = ($count != 0) ? "" : "Data tidak ditemukan";
         if (request()->ajax()) {
+            $msg = ($count != 0) ? "" : "Data tidak ditemukan";
             return view('user.indexlist', compact('username', 'roles', 'users', 'title', 'msg'))->render();
         }
+        $msg = ($count != 0) ? "" : "Belum ada data. Silahkan buat data baru";
         return view('user.index', compact('username', 'roles', 'users', 'title', 'msg'));
     }
 
@@ -232,6 +233,14 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         User::where('username', $name)->delete();
-        return redirect()->action('UserController@show', $user->username);
+        $query = $this->getQueryString();
+        return redirect()->action('UserController@show', [$user->username, $query]);
+    }
+
+    function getQueryString()
+    {
+        $page = '?page=' . request()->get('page');
+        $query = '&filter=' . request()->get('query');
+        return $page . $query;
     }
 }

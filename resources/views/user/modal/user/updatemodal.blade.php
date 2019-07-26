@@ -11,6 +11,8 @@
             <form role="form" id="update_form" method="POST" action={{ action('UserController@update', [$username, request('username')]) }}>
                 @method('PATCH')
                 <div class="modal-body">
+                    <input type="hidden" name="page" id="page">
+                    <input type="hidden" name="query" id="query">
                     <div class="form-group">
                             <label for="username">Username : </label>
                             <input type="text" class="form-control username" readonly id="username_edit" name="username">
@@ -44,7 +46,13 @@ $(document).ready(function () {
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
+        var page = $('#page_hidden').val();
+        var filter = $('#filter').val();
         $.get(url, function (data) {
+                // utk pagination
+                $('#page').val(page);
+                $('#query').val(filter);
+                // akhir pagination
                 //success data
                 console.log(data);
                 $('#username_edit').val(data.name);
@@ -72,7 +80,7 @@ $(document).ready(function () {
             });
         
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_edit').val(),
+                url     : form.attr('action') + "/" +  $('#username_edit').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
                 type    : 'PATCH',
                 data    : form.serialize(),
                 success : function ( json )

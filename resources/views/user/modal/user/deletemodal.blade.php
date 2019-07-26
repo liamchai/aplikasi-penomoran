@@ -10,6 +10,8 @@
             <form id="delete_form" method="POST" action={{ action('UserController@destroy', [$username, request('username')]) }}>
                 @method('DELETE')
                 <div class="modal-body">
+                    <input type="hidden" name="page" id="delete_page">
+                    <input type="hidden" name="query" id="delete_query">
                     <p>Apakah Anda yakin ingin menghapus data ini?</p>
                     <p>Username : <span id="username_delete"></span><br>
                     <input type="hidden" id="delete_token"/>
@@ -33,8 +35,14 @@ $(document).ready(function () {
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
+        var page = $('#page_hidden').val();
+        var filter = $('#filter').val();
         $.get(url, function (data) {
                 // success data
+                // utk pagination
+                $('#delete_page').val(page);
+                $('#delete_query').val(filter);
+                // akhir pagination
                 // console.log(id);
                 $('#id').val(id);
                 $('#username_delete').html(data.name);
@@ -62,7 +70,7 @@ $(document).ready(function () {
             });
         
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_delete').html(),
+                url     : form.attr('action') + "/" +  $('#username_delete').html()  + '?page=' + $('#delete_page').val() + '&filter=' + $('#delete_query').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 id      : $('#id').val(),

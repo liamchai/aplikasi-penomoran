@@ -14,7 +14,7 @@ class AccessController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index($user, $query = '')
     {
         $this->checkAccess();
         $user = \Auth::user();
@@ -27,10 +27,11 @@ class AccessController extends Controller
         $access = Access::where('name', 'LIKE', '%' . $filter . '%')->orWhere('URL', 'LIKE', '%' . $filter . '%')->orderby('id', 'desc')->paginate(10);
 
         $count = $access->count();
-        $msg = ($count != 0) ? "" : "Data tidak ditemukan";
         if (request()->ajax()) {
+            $msg = ($count != 0) ? "" : "Data tidak ditemukan";
             return view('user.access.accesslist', compact('username', 'roles', 'access', 'title', 'msg'))->render();
         }
+        $msg = ($count != 0) ? "" : "Belum ada data. Silahkan buat data baru";
         return view('user.access.index', compact('username', 'roles', 'access', 'title', 'msg'));
     }
 
@@ -107,13 +108,22 @@ class AccessController extends Controller
         $access->url = request('URL');
         $access->departemen = request('departemen');
         $access->Save();
-        return redirect()->action('AccessController@index', $user);
+        $query = $this->getQueryString();
+        return redirect()->action('AccessController@index', [$user, $query]);
         // return response()->json($access, 200);
     }
 
     public function destroy($user, $id)
     {
         Access::where('id', $id)->delete();
-        return redirect()->action('AccessController@index', $user);
+        $query = $this->getQueryString();
+        return redirect()->action('AccessController@index', [$user, $query]);
+    }
+
+    function getQueryString()
+    {
+        $page = '?page=' . request()->get('page');
+        $query = '&filter=' . request()->get('query');
+        return $page . $query;
     }
 }

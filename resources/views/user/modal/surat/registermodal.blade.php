@@ -119,6 +119,23 @@ var form = $('#SuratForm');
                                 .append('<span class="text-danger">'+ value[0] +'</span>');
                     });
                 }
+                else if(json.status === 409) {
+                    alert('Terjadi Error Silahkan Submit Sekali lagi');
+                    var url = "/" + $('#user').val() + "/" + $('#nama').val();
+                    console.log(url);
+                    $.get(url, function (data) {
+                        var nomor = data.no + "/" + data.departemen + "/" + data.month + "/" + data.year;
+                        var tanggal = data.date;
+                        var pembuat = data.username;
+                        var url = data.url;
+                        console.log(data);
+                        $('#url').val(url);
+                        $('#nomor').val(data.no);
+                        $('#register_nomor').val(nomor);
+                        $('#register_tanggal').val(tanggal);
+                        $('#register_pembuat').val(pembuat);
+                    })
+                }
             }
         });
     });

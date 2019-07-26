@@ -103,6 +103,10 @@ class LetterController extends Controller
         $letter = request('url');
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
+        $cek = Letter::where('name', $letter->name)->orderby('id', 'desc')->first();
+        if ($cek->nomor == $nomor) {
+            return response()->json(['message' => 'Nomor surat sudah terpakai'], 409);
+        }
         $newletter = new Letter;
         $newletter->tanggal = Carbon::now();
         $newletter->nomor_surat = $test;

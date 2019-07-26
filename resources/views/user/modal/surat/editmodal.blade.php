@@ -13,7 +13,7 @@
                     <input type="hidden" name="nomor" id="nomor">
                     <input type="hidden" name="id" id="id">
                     <input type="hidden" name="page" id="page">
-                    <input type="hidden" name="query" id="query">
+                    <input type="hidden" name="query" id="query_edit">
                     <input type="hidden" name="tanggal_mulai" id="tanggal_mulai">
                     <input type="hidden" name="tanggal_berakhir" id="tanggal_berakhir">
                     <div class="form-group">
@@ -75,7 +75,7 @@ $(document).ready(function () {
                 $('#id').val(id);
                 // untuk pagination
                 $('#page').val(page);
-                $('#query').val(filter);
+                $('#query_edit').val(filter);
                 $('#tanggal_mulai').val(tanggal_mulai);
                 $('#tanggal_berakhir').val(tanggal_berakhir);
                 // akhir pagination

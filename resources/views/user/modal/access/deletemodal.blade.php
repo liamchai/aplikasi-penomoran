@@ -30,8 +30,8 @@
                         </table>
                         <input type="hidden" id="delete_token"/>
                         <input type="hidden" id="id"/>
-                        <input type="hidden" name="page" id="page">
-                        <input type="hidden" name="query" id="query">
+                        <input type="hidden" name="page" id="page_delete">
+                        <input type="hidden" name="query" id="query_delete">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -47,7 +47,7 @@
     $(document).ready(function () {
         $(document).on('click', '#delete-access', function (e) {
             e.preventDefault();
-            $('#DeleteModal').modal('show');
+            
         // populate modal
             var id = $(this).data('id');
             var url = $(this).attr('href');
@@ -55,8 +55,8 @@
             var filter = $('#filter').val();
             $.get(url, function (data) {
                     // success data
-                    $('#page').val(page);
-                    $('#query').val(filter);
+                    $('#page_delete').val(page);
+                    $('#query_delete').val(filter);
                     // console.log(id);
                     $('#id').val(id);
                     $('#username_delete').html(data.name);
@@ -87,10 +87,10 @@
                 });
             
                 $.ajax({
-                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
+                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page_delete').val() + '&filter=' + $('#query_delete').val(),
                     type    : 'POST',
                     data    : form.serialize(),
-                    id      : $('#id').val(),
+                    // id      : $('#id').val(),
                     // timeout : 200,
                     success : function ( json )
                     {
@@ -106,7 +106,7 @@
                     },
                     error: function (json)
                     {
-                        alert('gagal menghapus.');
+                        console.log(json);
                     },
                 });
             });

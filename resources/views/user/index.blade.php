@@ -61,6 +61,7 @@ $(document).ready(function () {
 
 //search code start
     $('#filter').on('keyup',function(e) {
+        $('#page_hidden').val('');
         var query = $('#filter').val();
         var page = "";
         var url = $('#url_hidden').val();

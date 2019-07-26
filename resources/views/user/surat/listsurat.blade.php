@@ -1,3 +1,8 @@
+@if(session('message'))
+    <div class="alert alert-success mt-2" role="alert">
+        {{session('message')}}
+    </div>
+@endif
 <table class="table mt-2 table-striped table-hover">
     <thead class="thead-light">
         <tr>

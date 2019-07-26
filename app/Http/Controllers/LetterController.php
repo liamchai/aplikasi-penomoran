@@ -116,7 +116,8 @@ class LetterController extends Controller
         $newletter->submitted_by = $user;
         $newletter->save();
         $letter->update(["nomor" => $nomor]);
-        return redirect()->action('LetterController@index', $user);
+
+        return redirect()->action('LetterController@index', $user)->with('message', 'Surat Baru berhasil di buat');
     }
 
     public function update($user, $id)

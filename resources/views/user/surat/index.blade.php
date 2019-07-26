@@ -26,9 +26,6 @@
     </div>
 </div>
 
-<div class="alert alert-success mt-2 d-none" id="registermsg" role="alert">
-    Surat Baru Berhasil di tambahkan
-</div>
 <div class="alert alert-success mt-2 d-none" id="updatemsg" role="alert">
     Surat berhasil di edit
 </div>

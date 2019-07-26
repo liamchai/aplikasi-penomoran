@@ -11,9 +11,9 @@
                     @method('DELETE')
                     <div class="modal-body">
                         <input type="hidden" name="page" id="page">
-                        <input type="hidden" name="query" id="query">
-                        <input type="hidden" name="tanggal_mulai" id="tanggal_mulai">
-                        <input type="hidden" name="tanggal_berakhir" id="tanggal_berakhir">
+                        <input type="hidden" name="query" id="query_delete">
+                        <input type="hidden" name="tanggal_mulai" id="tanggal_mulai_delete">
+                        <input type="hidden" name="tanggal_berakhir" id="tanggal_berakhir_delete">
                         <p>Apakah Anda yakin ingin menghapus data ini?</p>
                         <table>
                             <tr>
@@ -67,9 +67,9 @@
                     console.log(data);
                     // untuk pagination
                     $('#page').val(page);
-                    $('#query').val(filter);
-                    $('#tanggal_mulai').val(tanggal_mulai);
-                    $('#tanggal_berakhir').val(tanggal_berakhir);
+                    $('#query_delete').val(filter);
+                    $('#tanggal_mulai_delete').val(tanggal_mulai);
+                    $('#tanggal_berakhir_delete').val(tanggal_berakhir);
                     // akhir pagination
                     $('#id').val(id);
                     $('#nama_delete').html(data.name);
@@ -100,7 +100,7 @@
                 });
             
                 $.ajax({
-                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val() + '&start_date=' + $('#tanggal_mulai').val() + '&end_date=' + $('#tanggal_berakhir').val(),
+                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query_delete').val() + '&start_date=' + $('#tanggal_mulai_delete').val() + '&end_date=' + $('#tanggal_berakhir_delete').val(),
                     type    : 'POST',
                     data    : form.serialize(),
                     id      : $('#id').val(),

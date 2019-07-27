@@ -69,7 +69,7 @@
         //end populate modal
         
         // sent http request
-        $(document).on('click', '#delete-access-btn', function (e) {
+        $('#delete-access-btn').one('click', function (e) {
     
             $('#DeleteModal').on('hidden.bs.modal', function () {
                 $(".text-danger").remove();

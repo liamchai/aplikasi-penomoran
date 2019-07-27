@@ -26,13 +26,6 @@
     </div>
 </div>
 
-<div class="alert alert-success mt-2 d-none" id="updatemsg" role="alert">
-    Surat berhasil di edit
-</div>
-<div class="alert alert-success mt-2 d-none" id="deletemsg" role="alert">
-    Surat Berhasil di hapus
-</div>
-
 @if (count($surats) >= 0)
     <section class="surats">
         @include('user.surat.listsurat')

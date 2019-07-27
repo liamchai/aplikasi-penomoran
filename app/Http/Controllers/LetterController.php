@@ -126,7 +126,7 @@ class LetterController extends Controller
         $letter = Letter::where('id', $id)->first();
         $penerima = request('penerima');
         $letter->update(['penerima' => $penerima]);
-        return redirect()->action('LetterController@index', [$user, $query]);
+        return redirect()->action('LetterController@index', [$user, $query])->with('message', 'Surat berhasil di update');
     }
 
     public function edit($user, $id)
@@ -140,7 +140,7 @@ class LetterController extends Controller
     {
         Letter::where('id', $id)->delete();
         $query = $this->getQueryString();
-        return redirect()->action('LetterController@index', [$user, $query]);
+        return redirect()->action('LetterController@index', [$user, $query])->with('message', 'Surat berhasil di hapus');;
     }
 
     function getQueryString()

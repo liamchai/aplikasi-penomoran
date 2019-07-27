@@ -20,18 +20,7 @@
         <input type="hidden" name="url_hidden" id="url_hidden">
     </div>
 </div>
-    <div class="alert alert-success mt-2 d-none" id="registermsg" role="alert">
-        User Baru Berhasil di tambahkan
-    </div>
-    <div class="alert alert-success mt-2 d-none" id="updatemsg" role="alert">
-        User berhasil di edit
-    </div>
-    <div class="alert alert-success mt-2 d-none" id="deletemsg" role="alert">
-        User Berhasil di hapus
-    </div>
-    <div class="alert alert-success mt-2 d-none" id="accessmsg" role="alert">
-        Akses User Berhasil di update
-    </div>
+
 @if (count($users) > 0)
     <section class="users">
         @include('user.indexlist')

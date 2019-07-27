@@ -39,12 +39,14 @@ class UserController extends Controller
     {
         $this->validateUpdate();
         $user = \Auth::user();
+        $username = $user->username;
         $users = User::where('username', $name)->first();
         $password = request('password');
         if (password_verify($password, $users->password)) {
             $newPassword = \Hash::make(request('password_confirmation'));
             $users->update(['password' => $newPassword]);
-            return response()->json([$users], 200);
+            $query = $this->getQueryString();
+            return redirect()->action('UserController@show', [$username, $query])->with('message', 'User berhasil di edit');
         } else {
             return response()->json(['msg' => 'Password lama anda tidak sesuai'], 401);
         }
@@ -92,7 +94,9 @@ class UserController extends Controller
         foreach ($access as $access) {
             $users->access()->sync($access);
         }
-        return response()->json(['msg' => 'User Akses berhasil di update'], 200);
+        $query = $this->getQueryString();
+        return redirect()->action('UserController@show', [$user, $query])->with('message', 'Akses berhasil di edit');
+        // return response()->json(['msg' => 'User Akses berhasil di update'], 200);
     }
 
     public function logout()
@@ -176,7 +180,8 @@ class UserController extends Controller
             $newuser->username = request('username');
             $newuser->password = \Hash::make(request('password'));
             $newuser->save();
-            return redirect()->action('UserController@show', $user->username)->with('msg', 'User Registered Successfully');
+            $query = $this->getQueryString();
+            return redirect()->action('UserController@show', [$user->username, $query])->with('message', 'User baru berhasil di buat');
         }
         return response()->json(["msg" => "gagal"], 402);
     }
@@ -234,7 +239,7 @@ class UserController extends Controller
         $user = \Auth::user();
         User::where('username', $name)->delete();
         $query = $this->getQueryString();
-        return redirect()->action('UserController@show', [$user->username, $query]);
+        return redirect()->action('UserController@show', [$user->username, $query])->with('message', 'user berhasil di hapus');
     }
 
     function getQueryString()

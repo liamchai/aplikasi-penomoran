@@ -64,7 +64,7 @@ class AccessController extends Controller
             $newaccess->url = request('URL');
             $newaccess->departemen = request('departemen');
             $newaccess->save();
-            return redirect()->action('AccessController@index', $username)->with('msg', 'Access baru berhasil di tambahkan');
+            return redirect()->action('AccessController@index', $username)->with('message', 'Access baru berhasil di tambahkan');
         } else {
             return response()->json(['msg' => 'Terjadi Kesalahan silahkan contact admin'], 401);
         }
@@ -109,7 +109,7 @@ class AccessController extends Controller
         $access->departemen = request('departemen');
         $access->Save();
         $query = $this->getQueryString();
-        return redirect()->action('AccessController@index', [$user, $query]);
+        return redirect()->action('AccessController@index', [$user, $query])->with('message', 'Akses berhasil di update');
         // return response()->json($access, 200);
     }
 
@@ -117,7 +117,7 @@ class AccessController extends Controller
     {
         Access::where('id', $id)->delete();
         $query = $this->getQueryString();
-        return redirect()->action('AccessController@index', [$user, $query]);
+        return redirect()->action('AccessController@index', [$user, $query])->with('message', 'Akses berhasil di hapus');
     }
 
     function getQueryString()

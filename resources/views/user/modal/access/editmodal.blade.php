@@ -49,7 +49,7 @@ $(document).ready(function () {
         $(this).find('form').trigger('reset');
     })
 
-    $(document).on('click', '#edit-access', function (e) {
+    $(document).on('click', '#edit-access',function (e) {
         e.preventDefault();
 
     // populate modal
@@ -73,7 +73,7 @@ $(document).ready(function () {
             }) 
         })
     //end populate 
-    $(document).on('click', '#edit-access-btn', function (e) {
+    $('#edit-access-btn').one('click', function (e) {
         var form = $('#EditForm');
         form.submit(function(e) {
             e.preventDefault();

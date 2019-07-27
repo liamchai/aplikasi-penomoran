@@ -54,7 +54,15 @@
     $(document).ready(function () {
         $(document).on('click', '#delete-surat', function (e) {
             e.preventDefault();
-            $('#DeleteModal').modal('show');
+            $('#SuratModal').on('hidden.bs.modal', function () {
+                $(".text-danger").remove();
+                $(this).find('form').trigger('reset');
+            })
+
+            $('#EditModal').on('hidden.bs.modal', function () {
+                $(".text-danger").remove();
+                $(this).find('form').trigger('reset');
+            })            
         // populate modal
             var id = $(this).data('id');
             var url = $(this).attr('href');
@@ -82,7 +90,7 @@
         //end populate modal
         
         // sent http request
-        $(document).on('click', '#delete-surat-btn', function (e) {
+        $('#delete-surat-btn').one('click', function (e) {
     
             $('#DeleteModal').on('hidden.bs.modal', function () {
                 $(".text-danger").remove();
@@ -103,7 +111,6 @@
                     url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query_delete').val() + '&start_date=' + $('#tanggal_mulai_delete').val() + '&end_date=' + $('#tanggal_berakhir_delete').val(),
                     type    : 'POST',
                     data    : form.serialize(),
-                    id      : $('#id').val(),
                     // timeout : 200,
                     success : function ( json )
                     {
@@ -112,15 +119,14 @@
                         $(document.body).removeClass("modal-open");
                         $(".modal-backdrop").remove();
                         $('.surats').html(json);
-                        $('#deletemsg').removeClass('d-none');
-                        setTimeout(function(){
-                            $('#deletemsg').addClass('d-none'); }, 5000
-                        );
                     },
                     error: function (json)
                     {
                         alert('gagal menghapus.');
                     },
+                    complete: function (json){
+
+                    }
                 });
             });
         });

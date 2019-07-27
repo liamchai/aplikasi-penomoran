@@ -52,7 +52,7 @@ $(document).ready(function () {
     //end populate modal
     
     // sent http request
-    $(document).on('click', '#delete-btn', function (e) {
+    $('#delete-btn').one('click', function (e) {
 
         $('#DeleteModal').on('hidden.bs.modal', function () {
             $(".text-danger").remove();

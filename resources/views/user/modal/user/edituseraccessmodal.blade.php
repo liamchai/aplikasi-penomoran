@@ -16,6 +16,8 @@
                                 <td>Akses</td>
                             </tr>
                         </table>
+                        <input type="hidden" name="page" id="page_edit_access">
+                        <input type="hidden" name="query" id="query_edit_access">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -38,9 +40,13 @@ $(document).ready(function () {
     $(document).on('click', '#edit-user-access', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
+        var page = $('#page_hidden').val();
+        var filter = $('#filter').val();
         var url = $(this).attr('href');
         $.get(url, function (data) {
                 $('#username_edit_access').html(data.name);
+                $('#page_edit_access').val(page);
+                $('#query_edit_access').val(filter);
                 var count = data.count;
                 var usergranted = data.usergranted;
                 $.each(data.access, function (key, value){
@@ -64,7 +70,7 @@ $(document).ready(function () {
 
     // sent http request
 
-    $(document).on('click', '#edit-user-access-btn', function (e) {
+    $('#edit-user-access-btn').one('click', function (e) {
         var form = $('#edit_access_form');
         form.submit(function(e) {
             e.preventDefault();
@@ -76,19 +82,18 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_edit_access').html(),
-                type    : 'PATCH',
+                url     : form.attr('action') + "/" +  $('#username_edit_access').html() + '?page=' + $('#page_edit_access').val() + '&filter=' + $('#query_edit_access').val(),
+                type    : 'POST',
                 data    : form.serialize(),
                 success : function ( json ){
                     $('#EditAccessModal').modal('hide');
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
-                    $('#accessmsg').removeClass('d-none');
-                    setTimeout(function(){
-                        $('#accessmsg').addClass('d-none'); }, 5000
-                    );               },
+                    $('.users').html(json);
+                },
                 error   : function( json )
                 {
+                    console.log(this.url);
                     console.log(json);
                 }
             })

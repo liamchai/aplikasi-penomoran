@@ -113,12 +113,7 @@ var form = $('#EditForm');
                 $(".modal-backdrop").remove();
                 // Success
                 // Do something like redirect them to the dashboard...
-                $('#updatemsg').removeClass('d-none');
-                    setTimeout(function(){
-                        $('#updatemsg').addClass('d-none'); }, 5000
-                );
                 $('.surats').html(json);
-                console.log(json);
             },
             error: function( json )
             {
@@ -133,7 +128,7 @@ var form = $('#EditForm');
                                 .append('<span class="text-danger">'+ value[0] +'</span>');
                     });
                 }
-            }
+            },
         });
     });
 });

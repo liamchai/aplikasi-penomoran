@@ -62,7 +62,7 @@ $(document).ready(function () {
     //end populate modal
     
     // sent http request
-    $(document).on('click', '#edit-btn', function (e) {
+    $('#edit-btn').one('click', function (e) {
     
         $('#UpdateModal').on('hidden.bs.modal', function () {
             $(".text-danger").remove();
@@ -81,7 +81,7 @@ $(document).ready(function () {
         
             $.ajax({
                 url     : form.attr('action') + "/" +  $('#username_edit').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
-                type    : 'PATCH',
+                type    : 'POST',
                 data    : form.serialize(),
                 success : function ( json )
                 {
@@ -90,14 +90,13 @@ $(document).ready(function () {
                     $(".modal-backdrop").remove();
                     // Success
                     console.log(json);
-                    $('#updatemsg').removeClass('d-none');
-                        setTimeout(function(){
-                            $('#updatemsg').addClass('d-none'); }, 5000
-                    );
+                    $('.users').html(json);
                     // Do something like redirect them to the dashboard...
                 },
                 error: function( json )
                 {
+                    console.log(this.url);
+                    console.log(json);
                     form.find('.text-danger').remove();
                     if(json.status === 422) {
                         var res = json.responseJSON;

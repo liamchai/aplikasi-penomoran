@@ -11100,3 +11100,12 @@ a.text-dark:focus {
   }
 }
 
+html,
+body {
+  height: 100%;
+}
+
+.aside {
+  min-height: 100vh;
+}
+

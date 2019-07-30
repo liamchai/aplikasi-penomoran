@@ -11,6 +11,10 @@
                 <div class="modal-body">
                         {{-- <input type="hidden" name="username_edit_access" id="username_edit_access"> --}}
                         <table class="table">
+                            <tr>
+                                <td></td>
+                                <td><input type="checkbox" name="checkedAll" id="checkedAll">Check Semua</td>
+                            </tr>
                             <tr class="items">
                                 <td>Nama</td>
                                 <td>Akses</td>
@@ -32,6 +36,7 @@
 
 <script>
 $(document).ready(function () {
+
     $('#EditAccessModal').on('hidden.bs.modal', function () {
         $(".item").remove();
         $(this).find('form').trigger('reset');
@@ -53,17 +58,43 @@ $(document).ready(function () {
                 var checked = '';
                 for (i = 0; i<count; i++){
                     if (usergranted[i] == value['id']){
-                        checked = "checked";
+                        checked = 'checked="checked"';
                     }
                 }
                     $('.items').closest('.table')
                             .append('<tr class="item">' 
-                                    + '<td>' + value['name'] + '</td>'
-                                    + '<td>' + '<input type="checkbox"' + checked + ' name="access[]"' + 'value=' + value['id']
+                                    + '<td><label for="label' + value['id'] + '" >' + value['name'] + '</label></td>'
+                                    + '<td>' + '<input type="checkbox"' + checked + ' class="checkSingle" name="access[]" id="label' + value['id'] + '" value=' + value['id']  
                                     + '></td>'
                                     + '</tr>');
                 });
+                $("#checkedAll").change(function(){
+                    if(this.checked){
+                        $(".checkSingle").each(function(){
+                            this.checked=true;
+                        })              
+                    }else{
+                        $(".checkSingle").each(function(){
+                            this.checked=false;
+                        })              
+                    }
+                });
+
+                $(".checkSingle").click(function () {
+                    console.log("abc");
+                    if ($(this).is(':checked')){
+                    var isAllChecked = 0;
+                    $(".checkSingle").each(function(){
+                        if(!this.checked)
+                        isAllChecked = 1;
+                    })              
+                    if(isAllChecked == 0){ $("#checkedAll").prop("checked", true); }     
+                    }else {
+                    $("#checkedAll").prop("checked", false);
+                    }
+                });
                 $('#EditAccessModal').modal('show');
+
             }) 
         })
         //end populate modal

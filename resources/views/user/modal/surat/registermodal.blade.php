@@ -121,6 +121,12 @@ var form = $('#SuratForm');
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
                 }
+                else if(json.status === 403) {
+                    alert('Terjadi error Silahkan refresh');
+                    $('#SuratModal').modal('hide');
+                    $(document.body).removeClass("modal-open");
+                    $(".modal-backdrop").remove();
+                }
             }
         });
     });

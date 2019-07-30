@@ -2,10 +2,10 @@
 
 @section('title', 'List Surat')
 
-@include('layouts.header')
-@include('layouts.nav')
 
 @section('content')
+@include('layouts.header')
+@include('layouts.nav')
 <h1 class="display-4">{{$title}}</h1>
 <div class="row">
     <div class="col-2">
@@ -23,6 +23,7 @@
         <input type="hidden" name="url_hidden" id="url_hidden">
         <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="id" />
         <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="asc" />
+        <input type="hidden" name="hidden_reverse_type" id="hidden_reverse_type" value="desc" />
     </div>
 </div>
 
@@ -40,6 +41,27 @@
 <script>
 $(document).ready(function () {
 // pagination function start
+    $('body').on('click', '.sorting', function(){
+        var column_name = $(this).data('column_name');
+        var order_type = $('#hidden_reverse_type').val();
+        var reverse_order = '';
+        if (order_type == 'asc'){
+            reverse_order = 'desc';
+        }
+        if(order_type == 'desc'){
+            reverse_order = 'asc';  
+        }
+        $('#hidden_column_name').val(column_name);
+        $('#hidden_sort_type').val(reverse_order);
+        $('#hidden_reverse_type').val(reverse_order);
+        var page = $('#hidden_page').val();
+        var query = $('#filter').val();
+        var url = $('#url_hidden').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        fetch_data(url, page, query, start_date, end_date, column_name, reverse_order);
+    });
+
     $('body').on('click', '.pagination a', function(e) {
         e.preventDefault();
         var url = $(this).attr('href').split('page=')[0];
@@ -48,11 +70,12 @@ $(document).ready(function () {
 
         var page = $(this).attr('href').split('page=')[1];
         $('#page_hidden').val(page);
-
+        var column_name = $('#hidden_column_name').val();
+        var order_type = $('#hidden_sort_type').val();
         var query = $('#filter').val();  
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
-        fetch_data(url, page, query, start_date, end_date);
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
         window.history.pushState("", "", url);
     });
 // pagination function ends
@@ -65,7 +88,9 @@ $(document).ready(function () {
         var url = $('#url_hidden').val();
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
-        fetch_data(url, page, query, start_date, end_date);
+        var column_name = $('#hidden_column_name').val();
+        var order_type = $('#hidden_sort_type').val();
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
 // end search
     });
 
@@ -73,12 +98,16 @@ $(document).ready(function () {
         $('#filter').val('');
         $('#start_date').val('');
         $('#end_date').val('');
+        $('#hidden_column_name').val('');
+        $('#hidden_sort_type').val('');
         var query = "";
         var start_date = "";
         var end_date = "";
-        var page = $('#page_hidden').val();
+        var page = "";
+        var column_name = "";
+        var order_type = "";
         var url = $('#url_hidden').val();
-        fetch_data(url, page, query, start_date, end_date);
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
     });
 
     $('#filter_date').on('click',function(e) {
@@ -88,19 +117,27 @@ $(document).ready(function () {
         var url = $('#url_hidden').val();
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
-        fetch_data(url, page, query, start_date, end_date);
+        var column_name = $('#hidden_column_name').val();
+        var order_type = $('#hidden_sort_type').val();
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
 // end search
     });
 
-    function fetch_data(url, page, query='', start_date='', end_date='') {
+    function fetch_data(url, page, query='', start_date='', end_date='', column_name='', order_type= '') {
         $.ajax({
-            url : url + '?page=' + page + '&filter=' + query + '&start_date=' + start_date + '&end_date=' + end_date 
+            url : url + '?page=' + page + '&filter=' + query + '&start_date=' + start_date + '&end_date=' + end_date + '&sortby=' + column_name + '&sorttype=' + order_type
         }).done(function (data) {
             if (data == ""){
                 alert('No Data Found');
             }
             $('.surats').html(data);
-            console.log(data);
+            if (order_type == 'asc'){
+                $('#'+column_name+'_icon').html('<i class="fa fa-caret-down" aria-hidden="true"></i>');
+            }
+            if (order_type == 'desc'){
+                $('#'+column_name+'_icon').html('<i class="fa fa-caret-up" aria-hidden="true"></i>');
+            }
+            console.log(url);
         }).fail(function () {
             alert('Data Tidak Ditemukan');
         });

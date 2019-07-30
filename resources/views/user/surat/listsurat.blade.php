@@ -7,13 +7,13 @@
     <thead class="thead-light">
         <tr>
             <th class="align-middle" style="cursor:pointer;" scope="col">No</th>
-            <th class="align-middle" style="cursor:pointer;" scope="col">Nomor Surat</th>
-            <th class="align-middle" style="cursor:pointer;" scope="col">Jenis Surat</th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="nomor_surat" style="cursor:pointer;" scope="col">Nomor Surat <span id="nomor_surat_icon"></span></th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="name" style="cursor:pointer;" scope="col">Jenis Surat <span id="name_icon"></span></th>
             @if ($user == 'test')
-                <th scope="col" style="cursor:pointer;">Dibuat oleh</th>
+                <th scope="col" class="sorting" data-sorting_type="asc" data-column_name="submitted_by" style="cursor:pointer;">Dibuat oleh <span id="submitted_by_icon"></span></th>
             @endif
-            <th class="align-middle" scope="col" style="cursor:pointer;">Tanggal</th>
-            <th class="align-middle" scope="col" style="cursor:pointer;">Penerima</th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="tanggal" scope="col" style="cursor:pointer;">Tanggal <span id="tanggal_icon"></span></th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="penerima" scope="col" style="cursor:pointer;">Penerima <span id="penerima_icon"></span></th>
             <th class="align-middle text-center" scope="col" style="cursor:pointer;">Control</th>
         </tr>
     </thead>

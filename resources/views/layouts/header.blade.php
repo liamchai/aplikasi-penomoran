@@ -1,6 +1,7 @@
 
 <div class="row bg-dark text-white">
-    <header class="col-10">
-        <h1 class="float-right">Selamat Datang, {{ $username }} <a href="{{ route('logout') }}">Logout</a></h1>
+        <div class="col-10" id="menu">
+            <h2 class="float-right align-middle m-2">Selamat Datang, {{ $username }}</h2>
+        </div>
     </header>
 </div>

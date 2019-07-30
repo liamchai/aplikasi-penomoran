@@ -53,12 +53,14 @@ class LetterController extends Controller
         $title = Access::where('url', $title)->first();
         $title = $title->name;
         $filter = request('filter');
+        $sort_by = (request()->get('sortby')) ? request()->get('sortby') : 'id';
+        $sort_type = (request()->get('sorttype')) ? request()->get('sorttype') : 'desc';
         $roles = $users->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         $dropdown = $users->access()->orderby('access_id', 'asc')->where('url', 'LIKE', 'surat/%')->get();
         if ($user != "test") {
-            $surats = Letter::where('submitted_by', $user)->orderby('id', 'desc');
+            $surats = Letter::where('submitted_by', $user)->orderby($sort_by, $sort_type);
         } else {
-            $surats = Letter::orderby('id', 'desc');
+            $surats = Letter::orderby($sort_by, $sort_type);
         }
         if ($start_date != "" && $end_date != "")
             $surats = $surats->whereBetween('tanggal', array($start_date, $end_date));
@@ -97,12 +99,25 @@ class LetterController extends Controller
 
     public function store($user)
     {
+        $check = false;
         $test = request('nomor_surat');
+        $user = request()->segment(1);
+        $user = User::where('username', $user)->first();
         $penerima = request('penerima');
         $nomor = (int) ltrim(request('nomor'), "00");
         $letter = request('url');
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
+        $permissions = $user->access()->get();
+        foreach ($permissions as $permission) {
+            if ($permission->name == $letter->name) {
+                $check = true;
+                break;
+            }
+        }
+        if ($check == false) {
+            return response()->json(['message' => 'Terjadi Error Silahkan Refresh'], 403);
+        }
         $cek = Letter::where('name', $letter->name)->orderby('id', 'desc')->first();
         if ($cek->nomor == $nomor) {
             return response()->json(['message' => 'Nomor surat sudah terpakai'], 409);
@@ -113,11 +128,10 @@ class LetterController extends Controller
         $newletter->name = $letter->name;
         $newletter->nomor = $nomor;
         $newletter->penerima = $penerima;
-        $newletter->submitted_by = $user;
+        $newletter->submitted_by = $user->username;
         $newletter->save();
         $letter->update(["nomor" => $nomor]);
-
-        return redirect()->action('LetterController@index', $user)->with('message', 'Surat Baru berhasil di buat');
+        return redirect()->action('LetterController@index', $user->username)->with('message', 'Surat Baru berhasil di buat');
     }
 
     public function update($user, $id)

@@ -8,7 +8,7 @@
             <tr>
                 <th scope="col" class="align-middle">No</th>
                 <th scope="col" class="align-middle">Username</th>
-                <th scope="col" class="align-middle text-center">Control</th>
+                <th scope="col" class="align-middle text-center">Aksi</th>
             </tr>
         </thead>
         @php

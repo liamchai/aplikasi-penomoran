@@ -88,12 +88,19 @@ class LetterController extends Controller
         $url = $letter;
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
-        $month = $this->getRomawi(date('n'));
-        $no = $this->checkDigit(++$letter->nomor);
-        $year = date('Y');
-        $date =  date('d M Y', strtotime('now'));
         $departemen = $letter->departemen;
         $title = $letter->name;
+        $cekReset = Letter::where('name', $title)->first();
+        $cekReset = date('m', strtotime($cekReset->tanggal));
+        $no = ++$letter->nomor;
+        if ($cekReset != (int) date('n')) {
+            $no = 1;
+        }
+        $month = $this->getRomawi(date('n'));
+        $no = $this->checkDigit($no);
+        $year = date('Y');
+        $date =  date('d M Y', strtotime('now'));
+
         return response()->json(compact('username', 'date', 'year', 'letter', 'month', 'no', 'title', 'url', 'departemen'));
     }
 

@@ -9,7 +9,7 @@
             <th scope="col" class="align-middle" width="1%">No</th>
             <th scope="col" class="align-middle">Nama</th>
             <th scope="col" class="align-middle">URL</th>
-            <th scope="col" class="align-middle text-center">Control</th>
+            <th scope="col" class="align-middle text-center">Aksi</th>
         </tr>
     </thead>
     @php

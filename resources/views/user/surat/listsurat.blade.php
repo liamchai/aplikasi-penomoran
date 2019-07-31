@@ -14,7 +14,7 @@
             @endif
             <th class="align-middle sorting" data-sorting_type="asc" data-column_name="tanggal" scope="col" style="cursor:pointer;">Tanggal <span id="tanggal_icon"><i class="fa fa-sort"></i></span></th>
             <th class="align-middle sorting" data-sorting_type="asc" data-column_name="penerima" scope="col" style="cursor:pointer;">Penerima <span id="penerima_icon"><i class="fa fa-sort"></i></span></th>
-            <th class="align-middle text-center" scope="col" style="cursor:pointer;">Control</th>
+            <th class="align-middle text-center" scope="col" style="cursor:pointer;">Aksi</th>
         </tr>
     </thead>
     @php

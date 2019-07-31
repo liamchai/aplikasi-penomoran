@@ -3,17 +3,17 @@
         {{session('message')}}
     </div>
 @endif
-<table class="table mt-2 table-striped table-hover">
-    <thead class="thead-light">
+<table class="table mt-2 table-striped table-hover table-bordered">
+    <thead class="thead-light text-center">
         <tr>
-            <th class="align-middle" style="cursor:pointer;" scope="col">No</th>
-            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="nomor_surat" style="cursor:pointer;" scope="col">Nomor Surat <span id="nomor_surat_icon"></span></th>
-            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="name" style="cursor:pointer;" scope="col">Jenis Surat <span id="name_icon"></span></th>
+            <th class="align-middle" style="cursor:pointer;" width="1%" scope="col">No</th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="nomor_surat" style="cursor:pointer;" scope="col">Nomor Surat <span id="nomor_surat_icon"><i class="fa fa-sort"></i></span></th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="name" style="cursor:pointer;" scope="col">Jenis Surat <span id="name_icon"><i class="fa fa-sort"></i></span></th>
             @if ($user == 'test')
-                <th scope="col" class="sorting" data-sorting_type="asc" data-column_name="submitted_by" style="cursor:pointer;">Dibuat oleh <span id="submitted_by_icon"></span></th>
+                <th scope="col" class="sorting" data-sorting_type="asc" data-column_name="submitted_by" style="cursor:pointer;">Dibuat oleh <span id="submitted_by_icon"><i class="fa fa-sort"></i></span></th>
             @endif
-            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="tanggal" scope="col" style="cursor:pointer;">Tanggal <span id="tanggal_icon"></span></th>
-            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="penerima" scope="col" style="cursor:pointer;">Penerima <span id="penerima_icon"></span></th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="tanggal" scope="col" style="cursor:pointer;">Tanggal <span id="tanggal_icon"><i class="fa fa-sort"></i></span></th>
+            <th class="align-middle sorting" data-sorting_type="asc" data-column_name="penerima" scope="col" style="cursor:pointer;">Penerima <span id="penerima_icon"><i class="fa fa-sort"></i></span></th>
             <th class="align-middle text-center" scope="col" style="cursor:pointer;">Control</th>
         </tr>
     </thead>

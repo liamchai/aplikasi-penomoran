@@ -2,7 +2,6 @@
 
 @section('title', 'List Surat')
 
-
 @section('content')
 @include('layouts.header')
 @include('layouts.nav')
@@ -22,11 +21,10 @@
         <input type="hidden" name="page_hidden" id="page_hidden" value="{{ isset($page) ? '?page=$page' : ''}}">
         <input type="hidden" name="url_hidden" id="url_hidden">
         <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="id" />
-        <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="asc" />
+        <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="desc" />
         <input type="hidden" name="hidden_reverse_type" id="hidden_reverse_type" value="desc" />
     </div>
 </div>
-
 @if (count($surats) >= 0)
     <section class="surats">
         @include('user.surat.listsurat')

@@ -3,11 +3,11 @@
         {{session('message')}}
     </div>
 @endif
-<table class="table mt-2 table-striped table-hover" id="datatable">
+<table class="table mt-2 table-striped table-hover table-bordered" id="datatable">
         <thead class="thead-light">
         <tr>
-            <th scope="col" class="align-middle">No</th>
-            <th scope="col" class="align-middle">Name</th>
+            <th scope="col" class="align-middle" width="1%">No</th>
+            <th scope="col" class="align-middle">Nama</th>
             <th scope="col" class="align-middle">URL</th>
             <th scope="col" class="align-middle text-center">Control</th>
         </tr>

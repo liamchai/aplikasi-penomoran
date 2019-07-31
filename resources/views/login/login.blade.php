@@ -1,7 +1,13 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="container w-25 mt-5">
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-4"></div>
+        {{-- <div class="col-3">
+            <img src={{ asset('img/H3FDI1M8_400x400.jpg')}} class="d-block col-4">
+        </div>   --}}
+        <div class="col-4 my-auto">
         <h1 class="text-center">Login</h1>
         <form method="POST" id="login_form" action="{{ action('UserController@login') }}">
             <div class="form-group">
@@ -16,6 +22,7 @@
             <input type="submit" class="btn btn-primary w-100" value="Login">
             @csrf
         </form>
+        </div>
     </div>
 </div>
     <script>

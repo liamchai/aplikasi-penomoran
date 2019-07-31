@@ -11,6 +11,22 @@ html,
 body {
     height: 100%;
 }
+
 .aside {
-    min-height: 100vh;
+    min-height: 100vh !important;
+    background: #e6e1e1 !important;
+}
+
+// .aside,
+.list-group-item {
+    background: rgba(0, 0, 0, 0) !important;
+}
+
+.list-group-item:hover {
+    background: #cfc8c8 !important;
+}
+
+input {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
 }

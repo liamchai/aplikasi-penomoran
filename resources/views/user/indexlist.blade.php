@@ -3,7 +3,7 @@
         {{session('message')}}
     </div>
 @endif
-<table class="table mt-2 table-striped table-hover text-center" id="datatable">
+<table class="table mt-2 table-striped table-hover text-center table-bordered" id="datatable">
         <thead class="thead-light">
             <tr>
                 <th scope="col" class="align-middle">No</th>
@@ -20,7 +20,7 @@
         <tbody>
             @foreach ($users as $user)
                 <tr class="delete" id="{{$user->id}}">
-                    <td scope="row" class="text-right align-middle">{{ $i++ }} </td>
+                    <td scope="row" width="1%" class="align-middle">{{ $i++ }} </td>
                     <td class="align-middle">{{ $user->username }} <input type="hidden" value="{{$user->id}}" ></td>
                     <td class="align-middle text-center"><a href="{{"/". $username . "/editaccess/" . $user->username}}" id="edit-user-access" data-id="{{ $user->id }}" class="btn btn-success">Edit Akses</a>
                         <a href="{{"/". $username ."/" . $user->username}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Edit User</a>

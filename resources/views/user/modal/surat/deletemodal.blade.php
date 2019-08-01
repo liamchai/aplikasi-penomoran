@@ -37,7 +37,6 @@
                                 <td><span id="pembuat_delete"></span></td>
                             </tr>
                         <input type="hidden" id="delete_token"/>
-                        <input type="hidden" id="id"/>
                         </table>
                     </div>
                     <div class="modal-footer">

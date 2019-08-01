@@ -12,6 +12,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('login');
+        $this->middleware('guest')->only('login');
     }
 
     public function index()
@@ -32,6 +33,7 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         $username = $user->username;
+        $this->checkAccess();
         return response()->json(compact('name'), 200);
     }
 
@@ -75,7 +77,7 @@ class UserController extends Controller
         $user = request()->segment(1);
         $user = User::where('username', $user)->firstorfail();
         $roles = $user->access()->get();
-        $url = last(request()->segments());
+        $url = request()->segment(2);
         foreach ($roles as $roles) {
             if ($url == $roles->url) {
                 $check = true;
@@ -164,12 +166,12 @@ class UserController extends Controller
             return FALSE;
     }
 
-    public function register($user)
+    public function create($user)
     {
         $user = \Auth::user();
         $username = $user->username;
         $roles = $user->access()->orderby('access_id', 'asc')->get();
-        return view('user.register', compact('username', 'roles'));
+        return response()->json();
     }
 
     public function store($user)
@@ -209,6 +211,7 @@ class UserController extends Controller
 
     public function editAccess($user, $name)
     {
+        $this->checkAccess();
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;
@@ -239,7 +242,7 @@ class UserController extends Controller
         $user = \Auth::user();
         User::where('username', $name)->delete();
         $query = $this->getQueryString();
-        return redirect()->action('UserController@show', [$user->username, $query])->with('message', 'user berhasil di hapus');
+        return redirect()->action('UserController@show', [$user->username, $query])->with('message', 'User berhasil di hapus');
     }
 
     function getQueryString()

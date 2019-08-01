@@ -81,7 +81,6 @@ $(document).ready(function () {
                 });
 
                 $(".checkSingle").click(function () {
-                    console.log("abc");
                     if ($(this).is(':checked')){
                     var isAllChecked = 0;
                     $(".checkSingle").each(function(){

@@ -15,13 +15,20 @@ class LetterController extends Controller
         $this->middleware('auth');
     }
 
+    public function checkPermission($surat, $user)
+    {
+        if ($surat->submitted_by != $user && $user != 'test') {
+            abort(403);
+        }
+    }
+
     public function checkAccess()
     {
         $check = false;
         $user = request()->segment(1);
         $user = User::where('username', $user)->firstorfail();
         $roles = $user->access()->get();
-        $url = last(request()->segments());
+        $url = request()->segment(2);
         foreach ($roles as $roles) {
             if ($url == $roles->url) {
                 $check = true;
@@ -37,9 +44,7 @@ class LetterController extends Controller
     {
         $surat = Letter::where('id', $id)->firstOrFail();
         $surat->tanggal = date('d M Y', strtotime($surat->tanggal));
-        if ($surat->submitted_by != $user && $user != 'test') {
-            abort(403);
-        }
+        $this->checkPermission($surat, $user);
         return response()->json($surat, 200);
     }
 
@@ -90,8 +95,8 @@ class LetterController extends Controller
         $letter = Access::where('url', $letter)->first();
         $departemen = $letter->departemen;
         $title = $letter->name;
-        $cekReset = Letter::where('name', $title)->first();
-        $cekReset = date('m', strtotime($cekReset->tanggal));
+        $cekReset = Letter::where('name', $title)->orderby('id', 'desc')->first();
+        $cekReset = date('n', strtotime($cekReset->tanggal));
         $no = ++$letter->nomor;
         if ($cekReset != (int) date('n')) {
             $no = 1;
@@ -152,9 +157,10 @@ class LetterController extends Controller
 
     public function edit($user, $id)
     {
-        $letter = Letter::where('id', $id)->first();
-        $letter->tanggal = date('d M Y', strtotime($letter->tanggal));
-        return response()->json($letter, 200);
+        $surat = Letter::where('id', $id)->first();
+        $surat->tanggal = date('d M Y', strtotime($surat->tanggal));
+        $this->checkPermission($surat, $user);
+        return response()->json($surat, 200);
     }
 
     public function destroy($user, $id)

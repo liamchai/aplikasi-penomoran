@@ -50,4 +50,4 @@
         </tr>
         @endforeach
     </table>
-<div class="d-flex justify-content-center">{{ $surats->links() }}</div>
+<div class="d-flex justify-content-center">{{ $surats->onEachSide(1)->links() }}</div>

@@ -39,7 +39,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary" id="register-btn">Simpan</button>
                 </div>
             @csrf
             </form>
@@ -81,6 +81,7 @@ $(document).ready(function () {
 var form = $('#SuratForm');
     form.submit(function(e) {
         e.preventDefault();
+        $('#register-btn').prop('disabled', true);
         
         $.ajaxSetup({
             headers: {
@@ -97,6 +98,7 @@ var form = $('#SuratForm');
                 $('#SuratModal').modal('hide');
                 $(document.body).removeClass("modal-open");
                 $(".modal-backdrop").remove();
+                $('#register-btn').prop('disabled', false);
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.surats').html(json);

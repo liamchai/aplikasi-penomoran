@@ -11,7 +11,6 @@
                 <div class="modal-body">
                     <input type="hidden" name="user" id="user" value={{$username}}>
                     <input type="hidden" name="nomor" id="nomor">
-                    <input type="hidden" name="id" id="id">
                     <input type="hidden" name="page" id="page">
                     <input type="hidden" name="query" id="query_edit">
                     <input type="hidden" name="tanggal_mulai" id="tanggal_mulai">
@@ -60,7 +59,6 @@ $(document).ready(function () {
     $(document).on('click', '#edit-surat', function (e) {
         e.preventDefault();
         
-
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');

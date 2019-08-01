@@ -72,10 +72,6 @@ $('#btn-save').html('Register');
                 // Do something like redirect them to the dashboard...
                 $('.users').html(json);
                 console.log(json);
-                $('#registermsg').removeClass('d-none');
-                setTimeout(function(){
-                    $('#registermsg').addClass('d-none'); }, 5000
-                );
             },
             error: function( json )
             {

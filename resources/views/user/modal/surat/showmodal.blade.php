@@ -26,6 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <input type="hidden" name="id" id="id">
                 </div>
             </div>
         </div>

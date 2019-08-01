@@ -19,6 +19,7 @@ class CreateAccessesTable extends Migration
             $table->string('url');
             $table->string('departemen')->nullable();
             $table->integer('nomor')->default('0');
+            $table->string('icon')->nullable();
             $table->timestamps();
         });
     }

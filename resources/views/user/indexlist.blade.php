@@ -23,11 +23,11 @@
                     <td scope="row" width="1%" class="align-middle">{{ $i++ }} </td>
                     <td class="align-middle">{{ $user->username }} <input type="hidden" value="{{$user->id}}" ></td>
                     <td class="align-middle text-center"><a href="{{"/". $username . "/editaccess/" . $user->username}}" id="edit-user-access" data-id="{{ $user->id }}" class="btn btn-success">Edit Akses</a>
-                        <a href="{{"/". $username ."/" . $user->username}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Edit User</a>
-                        <a href="{{"/". $username ."/" . $user->username}}" id="delete-user" data-id="{{ $user->id }}" class="btn btn-danger">Hapus User</a>
+                        <a href="{{"/". $username ."/daftaruser/" . $user->username . "/edit"}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Edit User</a>
+                        <a href="{{"/". $username ."/daftaruser/" . $user->username}}" id="delete-user" data-id="{{ $user->id }}" class="btn btn-danger">Hapus User</a>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-<div class="d-flex justify-content-center">{{ $users->links() }}</div>
+<div class="d-flex justify-content-center">{{ $users->onEachSide(2)->links() }}</div>

@@ -54,6 +54,7 @@ $(document).ready(function () {
                 console.log(json);
                 if(json.status === 422) {
                     var res = json.responseJSON;
+                    form.find('.password').val("");
                     $.each(res.errors, function (key, value) {
                         $('.'+key).closest('.form-group')
                                 .append('<span class="text-danger">'+ value +'</span>');

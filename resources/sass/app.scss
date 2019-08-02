@@ -23,10 +23,28 @@ body {
 }
 
 .list-group-item:hover {
+    transition: 0.25s;
     background: #cfc8c8 !important;
 }
 
 input {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
+}
+
+.spinner {
+    display: none;
+    position: fixed;
+    z-index: 10000000000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-position: 50% 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    background-repeat: no-repeat;
+}
+
+.container-fluid.block .spinner {
+    display: block !important;
 }

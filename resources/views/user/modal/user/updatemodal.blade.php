@@ -83,6 +83,9 @@ $(document).ready(function () {
                 url     : form.attr('action') + "/" +  $('#username_edit').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
                 type    : 'POST',
                 data    : form.serialize(),
+                beforeSend : function(){
+                    $('.container-fluid').addClass('block');
+                },
                 success : function ( json )
                 {
                     $('#UpdateModal').modal('hide');
@@ -114,6 +117,9 @@ $(document).ready(function () {
                         form.find('.password').val("");
                         form.find('.password_confirmation').val("");
                     }
+                },
+                complete: function(){
+                    $('.container-fluid').removeClass('block');
                 }
             });
         });

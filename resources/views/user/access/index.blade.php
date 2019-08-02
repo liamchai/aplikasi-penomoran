@@ -61,7 +61,13 @@ $(document).ready(function () {
 
     function fetch_data(url, page, query='') {
         $.ajax({
-            url : url + '?page=' + page + '&filter=' + query
+            url : url + '?page=' + page + '&filter=' + query,
+            beforeSend : function(){
+                $('.container-fluid').addClass('block');
+            },
+            complete : function(){
+                $('.container-fluid').removeClass('block');
+            },
             // console.log(url);
         }).done(function (data) {
             $('.access').html(data);

@@ -88,6 +88,9 @@ $(document).ready(function () {
                 url     : form.attr('action') + "/" +  $('#edit_hidden_id').val() + '?page=' + $('#page_edit').val() + '&filter=' + $('#query_edit').val(),
                 type    : 'POST',
                 data    : form.serialize(),
+                beforeSend : function(){
+                    $('.container-fluid').addClass('block');
+                },
                 success : function ( json ){
                     $('.access').html(json);
                     $('#EditModal').modal('hide');
@@ -111,6 +114,9 @@ $(document).ready(function () {
                                     .append('<span class="text-danger">'+ value[0] +'</span>');
                         });
                     }
+                },
+                complete: function(){
+                    $('.container-fluid').removeClass('block');
                 }
             })
         })

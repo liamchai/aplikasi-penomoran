@@ -115,6 +115,9 @@ $(document).ready(function () {
                 url     : form.attr('action') + "/" +  $('#username_edit_access').html() + '?page=' + $('#page_edit_access').val() + '&filter=' + $('#query_edit_access').val(),
                 type    : 'POST',
                 data    : form.serialize(),
+                beforeSend : function(){
+                    $('.container-fluid').addClass('block');
+                },
                 success : function ( json ){
                     $('#EditAccessModal').modal('hide');
                     $(document.body).removeClass("modal-open");
@@ -125,6 +128,9 @@ $(document).ready(function () {
                 {
                     console.log(this.url);
                     console.log(json);
+                },
+                complete: function(){
+                    $('.container-fluid').removeClass('block');
                 }
             })
         })

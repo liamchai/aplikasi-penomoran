@@ -16,9 +16,10 @@ Route::post('/login', 'UserController@login')->name('logged');
 Route::get('/logout', 'UserController@logout')->name('logout');
 
 Route::get('/{user}', 'UserController@index');
-Route::get('/{user}/daftaruser', 'UserController@show')->name('admin');
+Route::get('/{user}/daftaruser', 'UserController@list')->name('admin');
 Route::get('/{user}/daftaruser/create', 'UserController@create');
 Route::post('/{user}/daftaruser', 'UserController@store');
+Route::get('/{user}/daftaruser/{name}', 'UserController@show');
 Route::get('/{user}/daftaruser/{name}/edit', 'UserController@edit');
 Route::patch('/{user}/daftaruser/{name}', 'UserController@update');
 Route::delete('/{user}/daftaruser/{name}', 'UserController@destroy');

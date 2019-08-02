@@ -22,7 +22,7 @@ class UserController extends Controller
         $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         foreach ($roles as $role) {
             if ($role->name === "Daftar User") {
-                return redirect()->action('UserController@show', $user->username);
+                return redirect()->action('UserController@list', $user->username);
             } else if ($role->name === "Daftar Surat") {
                 return redirect()->action('LetterController@index', $user->username);
             }
@@ -48,7 +48,7 @@ class UserController extends Controller
             $newPassword = \Hash::make(request('password_confirmation'));
             $users->update(['password' => $newPassword]);
             $query = $this->getQueryString();
-            return redirect()->action('UserController@show', [$username, $query])->with('message', 'User berhasil di edit');
+            return redirect()->action('UserController@list', [$username, $query])->with('message', 'User berhasil di edit');
         } else {
             return response()->json(['msg' => 'Password lama anda tidak sesuai'], 401);
         }
@@ -97,7 +97,7 @@ class UserController extends Controller
             $users->access()->sync($access);
         }
         $query = $this->getQueryString();
-        return redirect()->action('UserController@show', [$user, $query])->with('message', 'Akses berhasil di edit');
+        return redirect()->action('UserController@list', [$user, $query])->with('message', 'Akses berhasil di edit');
         // return response()->json(['msg' => 'User Akses berhasil di update'], 200);
     }
 
@@ -107,7 +107,7 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function show()
+    public function list()
     {
         $this->checkAccess();
         $user = \Auth::user();
@@ -166,6 +166,12 @@ class UserController extends Controller
             return FALSE;
     }
 
+    public function show($user, $name)
+    {
+        $data = User::where('username', $name)->first();
+        return response()->json($data, 200);
+    }
+
     public function create($user)
     {
         $user = \Auth::user();
@@ -183,7 +189,7 @@ class UserController extends Controller
             $newuser->password = \Hash::make(request('password'));
             $newuser->save();
             $query = $this->getQueryString();
-            return redirect()->action('UserController@show', [$user->username, $query])->with('message', 'User baru berhasil di buat');
+            return redirect()->action('UserController@list', [$user->username, $query])->with('message', 'User baru berhasil di buat');
         }
         return response()->json(["msg" => "gagal"], 402);
     }
@@ -211,7 +217,6 @@ class UserController extends Controller
 
     public function editAccess($user, $name)
     {
-        $this->checkAccess();
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;
@@ -225,16 +230,9 @@ class UserController extends Controller
             array_push($usergranted, $useraccess->id);
         }
         $count = count($usergranted);
+        // $this->checkAccess();
         return response()->json(compact('access', 'roles', 'count', 'username',  'usergranted', 'name'), 200);
         // return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
-    }
-
-    public function accesslistregister()
-    {
-        $user = \Auth::user();
-        $username = $user->username;
-        $roles = $user->access()->orderby('access_id', 'asc')->get();
-        return view('user.access.register', compact('username', 'roles'));
     }
 
     public function destroy($user, $name)
@@ -242,7 +240,7 @@ class UserController extends Controller
         $user = \Auth::user();
         User::where('username', $name)->delete();
         $query = $this->getQueryString();
-        return redirect()->action('UserController@show', [$user->username, $query])->with('message', 'User berhasil di hapus');
+        return redirect()->action('UserController@list', [$user->username, $query])->with('message', 'User berhasil di hapus');
     }
 
     function getQueryString()

@@ -110,6 +110,9 @@
                     url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query_delete').val() + '&start_date=' + $('#tanggal_mulai_delete').val() + '&end_date=' + $('#tanggal_berakhir_delete').val(),
                     type    : 'POST',
                     data    : form.serialize(),
+                    beforeSend : function(){
+                        $('.container-fluid').addClass('block');
+                    },
                     // timeout : 200,
                     success : function ( json )
                     {
@@ -123,8 +126,8 @@
                     {
                         alert('gagal menghapus.');
                     },
-                    complete: function (json){
-
+                    complete: function(){
+                        $('.container-fluid').removeClass('block');
                     }
                 });
             });

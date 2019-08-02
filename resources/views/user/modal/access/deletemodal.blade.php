@@ -90,6 +90,9 @@
                     url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page_delete').val() + '&filter=' + $('#query_delete').val(),
                     type    : 'POST',
                     data    : form.serialize(),
+                    beforeSend : function(){
+                        $('.container-fluid').addClass('block');
+                    },
                     // id      : $('#id').val(),
                     // timeout : 200,
                     success : function ( json )
@@ -108,6 +111,9 @@
                     {
                         console.log(json);
                     },
+                    complete: function(){
+                        $('.container-fluid').removeClass('block');
+                    }
                 });
             });
         });

@@ -20,6 +20,8 @@
 </head>
 <body>
     <div class="container-fluid">
+    <div class="spinner" style='background-image: url("{{asset('img/giphy.gif')}}")'>
+    </div>
     @yield('content')
 </body>
 </html>

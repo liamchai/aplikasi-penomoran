@@ -60,7 +60,13 @@ $(document).ready(function () {
 
     function fetch_data(url, page, query='') {
         $.ajax({
-            url : url + '?page=' + page + '&filter=' + query
+            url : url + '?page=' + page + '&filter=' + query,
+            beforeSend : function(){
+                $('.container-fluid').addClass('block');
+            },
+            complete : function(){
+                $('.container-fluid').removeClass('block');
+            },
         }).done(function (data) {
             $('.users').html(data);
             console.log(data);

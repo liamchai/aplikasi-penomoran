@@ -123,16 +123,22 @@ $(document).ready(function () {
 
     function fetch_data(url, page, query='', start_date='', end_date='', column_name='', order_type= '') {
         $.ajax({
-            url : url + '?page=' + page + '&filter=' + query + '&start_date=' + start_date + '&end_date=' + end_date + '&sortby=' + column_name + '&sorttype=' + order_type
+            url : url + '?page=' + page + '&filter=' + query + '&start_date=' + start_date + '&end_date=' + end_date + '&sortby=' + column_name + '&sorttype=' + order_type,
+            beforeSend : function(){
+                $('.container-fluid').addClass('block');
+            },
+            complete : function(){
+                $('.container-fluid').removeClass('block');
+            },
         }).done(function (data) {
             if (data == ""){
                 alert('No Data Found');
             }
             $('.surats').html(data);
-            if (order_type == 'asc'){
+            if (order_type == 'desc'){
                 $('#'+column_name+'_icon').html('<i class="fa fa-caret-down" aria-hidden="true"></i>');
             }
-            if (order_type == 'desc'){
+            if (order_type == 'asc'){
                 $('#'+column_name+'_icon').html('<i class="fa fa-caret-up" aria-hidden="true"></i>');
             }
             console.log(url);

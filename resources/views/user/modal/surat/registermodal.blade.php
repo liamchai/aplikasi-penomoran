@@ -14,11 +14,12 @@
                     <div class="form-group">
                         <label for="nama">Jenis Surat : </label>
                         <select name="nama" id="nama" name="select_nama_surat" class="form-control">
-                            <option disabled selected>Silahkan pilih Jenis Surat</option>
+                            <option readonly selected value="0">Silahkan pilih Jenis Surat</option>
                             @foreach ($dropdown as $list)
                                 <option value="{{ $list->url }}">{{ $list->name }}</option>
                             @endforeach
                         </select>
+                        <span class="nama_surat"></span>
                     </div>
                     <div class="form-group">
                         <label for="nomor">Nomor Surat : </label>
@@ -63,6 +64,7 @@ $(document).ready(function () {
 
     $('select[name="nama"]').on('change', function (e) {
         var url = "/" + $('#user').val() + "/" + $('#nama').val();
+        $('.nama_surat').find(".text-danger").remove();
         console.log(url);
         $.get(url, function (data) {
             var nomor = data.no + "/" + data.departemen + "/" + data.month + "/" + data.year;
@@ -81,7 +83,6 @@ $(document).ready(function () {
 var form = $('#SuratForm');
     form.submit(function(e) {
         e.preventDefault();
-        $('#register-btn').prop('disabled', true);
         
         $.ajaxSetup({
             headers: {
@@ -93,20 +94,24 @@ var form = $('#SuratForm');
             url     : form.attr('action'),
             type    : form.attr('method'),
             data    : form.serialize(),
+            beforeSend : function(){
+                if( $('select[name="nama"]').val() != 0 ){
+                    $('.container-fluid').addClass('block');
+                }
+            },
             success : function ( json )
             {
                 $('#SuratModal').modal('hide');
                 $(document.body).removeClass("modal-open");
                 $(".modal-backdrop").remove();
                 $('#register-btn').prop('disabled', false);
+                $('#nomor').val('');
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.surats').html(json);
-                console.log(json);
             },
             error: function( json )
             {
-                console.log(json);
                 form.find('.text-danger').remove();
                 if(json.status === 422) {
                     var res = json.responseJSON;
@@ -129,6 +134,12 @@ var form = $('#SuratForm');
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
                 }
+                else if(json.status === 500) {
+                    $('.nama_surat').append('<span class="text-danger">Harap Pilih Jenis Surat</span>');
+                }
+            },
+            complete: function(){
+                $('.container-fluid').removeClass('block');
             }
         });
     });

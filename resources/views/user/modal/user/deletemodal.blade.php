@@ -31,13 +31,13 @@
 $(document).ready(function () {
     $(document).on('click', '#delete-user', function (e) {
         e.preventDefault();
-        $('#DeleteModal').modal('show');
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
         var page = $('#page_hidden').val();
         var filter = $('#filter').val();
         $.get(url, function (data) {
+                console.log(data);
                 // success data
                 // utk pagination
                 $('#delete_page').val(page);
@@ -45,7 +45,7 @@ $(document).ready(function () {
                 // akhir pagination
                 // console.log(id);
                 $('#id').val(id);
-                $('#username_delete').html(data.name);
+                $('#username_delete').html(data.username);
                 $('#DeleteModal').modal('show');
             }) 
         })
@@ -75,6 +75,9 @@ $(document).ready(function () {
                 data    : form.serialize(),
                 id      : $('#id').val(),
                 // timeout : 200,
+                beforeSend : function(){
+                    $('.container-fluid').addClass('block');
+                },
                 success : function ( json )
                 {
                     $('#DeleteModal').modal('hide');
@@ -90,6 +93,9 @@ $(document).ready(function () {
                 {
                     alert('gagal menghapus.');
                 },
+                complete: function(){
+                    $('.container-fluid').removeClass('block');
+                }
             });
         });
     });

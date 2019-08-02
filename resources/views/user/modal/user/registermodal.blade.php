@@ -52,7 +52,7 @@ var form = $('#register_form');
 $('#btn-save').html('Register');
     form.submit(function(e) {
         e.preventDefault();
-        
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -63,31 +63,41 @@ $('#btn-save').html('Register');
             url     : form.attr('action'),
             type    : form.attr('method'),
             data    : form.serialize(),
+            length  : 0,
+            beforeSend : function( json ){
+                if(( $('#username_register').val() != '' && $('#password_register').val() != '' && $('#password_confirmation_register').val() != '') && length == 2 ) {
+                    $('.container-fluid').addClass('block');
+                }
+                console.log(length);
+            },
             success : function ( json )
             {
+                // length ;
                 $('#exampleModal').modal('hide');
                 $(document.body).removeClass("modal-open");
                 $(".modal-backdrop").remove();
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.users').html(json);
-                console.log(json);
             },
             error: function( json )
             {
-                console.log(this.url);
+                length = 0;
+                console.log(json.responseJSON);
                 form.find('.text-danger').remove();
                 if(json.status === 422) {
                     var res = json.responseJSON;
-                    console.log(res);
                     form.find('.password').val("");
                     form.find('.password_confirmation').val("");
                     $.each(res.errors, function (key, value) {
-                        console.log(value);
+                        length++;
                         $('.'+key).closest('.form-group')
                                 .append('<span class="text-danger">'+ value[0] +'</span>');
                     });
                 }
+            },
+            complete: function(){
+                $('.container-fluid').removeClass('block');
             }
         });
     });

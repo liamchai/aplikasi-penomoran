@@ -104,6 +104,9 @@ var form = $('#EditForm');
             url     : form.attr('action') + "/" + $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val() + '&start_date=' + $('#tanggal_mulai').val() + '&end_date=' + $('#tanggal_berakhir').val(),
             type    : 'POST',
             data    : form.serialize(),
+            beforeSend : function(){
+                $('.container-fluid').addClass('block');
+            },
             success : function ( json )
             {
                 $('#EditModal').modal('hide');
@@ -115,7 +118,6 @@ var form = $('#EditForm');
             },
             error: function( json )
             {
-                console.log(json);
                 form.find('.text-danger').remove();
                 if(json.status === 422) {
                     var res = json.responseJSON;
@@ -127,6 +129,9 @@ var form = $('#EditForm');
                     });
                 }
             },
+            complete: function(){
+                $('.container-fluid').removeClass('block');
+            }
         });
     });
 });

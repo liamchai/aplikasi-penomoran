@@ -18,11 +18,11 @@
                             <input type="text" class="form-control username" readonly id="username_edit" name="username">
                     </div>
                     <div class="form-group">
-                            <label for="password">Password Lama: </label>
+                            <label for="password">Password Lama<span class="text-red">* </span>: </label>
                             <input type="password" class="form-control password" id="password_edit" name="password">
                     </div>
                     <div class="form-group">
-                            <label for="password_confirmation">Password Baru: </label>
+                            <label for="password_confirmation">Password Baru<span class="text-red">* </span>: </label>
                             <input type="password" class="form-control password_confirmation" id="password_confirmation_edit" name="password_confirmation">
                     </div>
                 </div>
@@ -84,7 +84,8 @@ $(document).ready(function () {
                 type    : 'POST',
                 data    : form.serialize(),
                 beforeSend : function(){
-                    $('.container-fluid').addClass('block');
+                    if ( $('#password_edit').val() != '' && $('#password_confirmation_edit').val() != '')
+                        $('.container-fluid').addClass('block');
                 },
                 success : function ( json )
                 {

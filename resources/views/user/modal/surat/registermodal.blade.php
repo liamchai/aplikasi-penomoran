@@ -12,7 +12,7 @@
                     <input type="hidden" name="url" id="url">
                     <input type="hidden" name="nomor" id="nomor">
                     <div class="form-group">
-                        <label for="nama">Jenis Surat : </label>
+                        <label for="nama">Jenis Surat<span class="text-red">* </span> : </label>
                         <select name="nama" id="nama" name="select_nama_surat" class="form-control">
                             <option readonly selected value="0">Silahkan pilih Jenis Surat</option>
                             @foreach ($dropdown as $list)

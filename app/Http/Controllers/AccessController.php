@@ -76,13 +76,15 @@ class AccessController extends Controller
         $data = request()->validate(
             [
                 'name' => ['required', Rule::unique('accesses')->ignore($id)],
-                'URL' => ['required', Rule::unique('accesses')->ignore($id)]
+                'URL' => ['required', Rule::unique('accesses')->ignore($id)],
+                'departemen' => 'required'
             ],
             [
                 'name.required' => 'Access harus di isi',
                 'URL.required' => 'URL harus di isi',
                 'name.unique' => 'Access sudah terdaftar',
-                'URL.unique' => 'URL sudah terdaftar'
+                'URL.unique' => 'URL sudah terdaftar',
+                'departemen.required' => 'Departemen harus di isi'
             ]
         );
         return $data;

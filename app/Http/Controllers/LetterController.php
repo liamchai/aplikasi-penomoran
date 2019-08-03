@@ -58,6 +58,7 @@ class LetterController extends Controller
         $title = Access::where('url', $title)->first();
         $title = $title->name;
         $filter = request('filter');
+        $pagination = request('show_data') ? request('show_data') : 10;
         $sort_by = (request()->get('sortby')) ? request()->get('sortby') : 'id';
         $sort_type = (request()->get('sorttype')) ? request()->get('sorttype') : 'desc';
         $roles = $users->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
@@ -75,7 +76,7 @@ class LetterController extends Controller
                 ->orWhere('name', 'LIKE', '%' . $filter . '%')
                 ->orWhere('submitted_by', 'LIKE', '%' . $filter . '%')
                 ->orWhere('tanggal', 'LIKE', '%' . $filter . '%');
-        })->orderby('id', 'desc')->paginate(10);
+        })->orderby('id', 'desc')->paginate($pagination);
 
         $count = $surats->count();
         if (request()->ajax()) {

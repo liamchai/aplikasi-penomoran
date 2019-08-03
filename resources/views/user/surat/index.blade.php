@@ -11,9 +11,21 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SuratModal">Surat Baru</button>
     </div>
     <div class="col-2">
+        
     </div>
     <div class="col-8">
+        <label for="show_data">Banyak Data :</label>
+        <select name="show_data" id="show_data">
+            <option selected value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <label for="filter_data">Filter Data :</label>
         <input type="text" name="filter" id="filter" class="pl-2" placeholder="Cari Data">
+        <br>
+        <label for="filter_tanggal">Filter Tanggal :</label>
         <input type="date" name="start_date" id="start_date" class="pl-2 mr-1"><sup>s</sup>/<sub>d</sub>
         <input type="date" name="end_date" id="end_date" class="pl-2">
         <input type="button" name="filter_date" id="filter_date" class="btn btn-primary" value="Filter">
@@ -38,10 +50,24 @@
 
 <script>
 $(document).ready(function () {
+
+    $('select[name="show_data"]').on('change', function (e) {
+        $('#page_hidden').val('');
+        var show_data = $('#show_data').val();
+        var query = $('#filter').val();
+        var page = "";
+        var url = $('#url_hidden').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        var column_name = $('#hidden_column_name').val();
+        var order_type = $('#hidden_sort_type').val();
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type, show_data);
+    });
 // pagination function start
     $('body').on('click', '.sorting', function(){
         var column_name = $(this).data('column_name');
         var order_type = $('#hidden_reverse_type').val();
+        var show_data = $('#show_data').val();
         var reverse_order = '';
         if (order_type == 'asc'){
             reverse_order = 'desc';
@@ -57,7 +83,7 @@ $(document).ready(function () {
         var url = $('#url_hidden').val();
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
-        fetch_data(url, page, query, start_date, end_date, column_name, reverse_order);
+        fetch_data(url, page, query, start_date, end_date, column_name, reverse_order, show_data);
     });
 
     $('body').on('click', '.pagination a', function(e) {
@@ -73,7 +99,8 @@ $(document).ready(function () {
         var query = $('#filter').val();  
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
-        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
+        var show_data = $('#show_data').val();
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type, show_data);
         window.history.pushState("", "", url);
     });
 // pagination function ends
@@ -88,7 +115,8 @@ $(document).ready(function () {
         var end_date = $('#end_date').val();
         var column_name = $('#hidden_column_name').val();
         var order_type = $('#hidden_sort_type').val();
-        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
+        var show_data = $('#show_data').val();
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type, show_data);
 // end search
     });
 
@@ -98,6 +126,8 @@ $(document).ready(function () {
         $('#end_date').val('');
         $('#hidden_column_name').val('');
         $('#hidden_sort_type').val('');
+        $('#show_data').val(10);
+        var show_data = 10;
         var query = "";
         var start_date = "";
         var end_date = "";
@@ -105,7 +135,7 @@ $(document).ready(function () {
         var column_name = "";
         var order_type = "";
         var url = $('#url_hidden').val();
-        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type, show_data);
     });
 
     $('#filter_date').on('click',function(e) {
@@ -116,14 +146,15 @@ $(document).ready(function () {
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
         var column_name = $('#hidden_column_name').val();
+        var show_data = $('#show_data').val();
         var order_type = $('#hidden_sort_type').val();
-        fetch_data(url, page, query, start_date, end_date, column_name, order_type);
+        fetch_data(url, page, query, start_date, end_date, column_name, order_type, show_data);
 // end search
     });
 
-    function fetch_data(url, page, query='', start_date='', end_date='', column_name='', order_type= '') {
+    function fetch_data(url, page, query='', start_date='', end_date='', column_name='', order_type= '', show_data='') {
         $.ajax({
-            url : url + '?page=' + page + '&filter=' + query + '&start_date=' + start_date + '&end_date=' + end_date + '&sortby=' + column_name + '&sorttype=' + order_type,
+            url : url + '?page=' + page + '&filter=' + query + '&start_date=' + start_date + '&end_date=' + end_date + '&sortby=' + column_name + '&sorttype=' + order_type + '&show_data=' + show_data,
             beforeSend : function(){
                 $('.container-fluid').addClass('block');
             },

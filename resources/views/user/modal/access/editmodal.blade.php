@@ -13,15 +13,15 @@
                     <input type="hidden" name="query" id="query_edit">
                     <input type="hidden" id="edit_hidden_id" name="id">
                     <div class="form-group">
-                        <label for="name">Nama Akses : </label>
+                        <label for="name">Nama Akses<span class="text-red">* </span> : </label>
                         <input autocomplete="off" type="text" class="form-control name" id="edit_name" name="name" placeholder="Contoh : Surat Referensi, Surat Peringatan">
                     </div>
                     <div class="form-group">
-                        <label for="URL">URL : </label>
+                        <label for="URL">URL<span class="text-red">* </span> : </label>
                         <input autocomplete="off" type="text" class="form-control URL" id="edit_URL" name="URL" placeholder="Contoh : surat/suratreferensi, surat/suratperingatan">
                     </div>
                     <div class="form-group">
-                        <label for="departemen">Departemen <span class="text-muted font-italic">Optional </span>: </label>
+                        <label for="departemen">Departemen<span class="text-red">* </span>: </label>
                         <input autocomplete="off" type="text" class="form-control" id="edit_departemen" name="departemen" placeholder="Contoh: HRD, Admin">
                     </div>
                 </div>

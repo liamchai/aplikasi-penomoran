@@ -9,16 +9,16 @@
             <form role="form" id="RegisterAccessForm" method="POST" action={{ action('AccessController@store', $username) }}>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name">Nama Akses : </label>
+                        <label for="name">Nama Akses<span class="text-red">* </span> : </label>
                         <input autocomplete="off" type="text" class="form-control name" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh : Surat Referensi, Surat Peringatan">
                     </div>
                     <div class="form-group">
-                        <label for="URL">URL : </label>
+                        <label for="URL">URL<span class="text-red">* </span> : </label>
                         <input autocomplete="off" type="text" class="form-control URL" id="URL" name="URL" value="{{ old('URL') }}" placeholder="Contoh : surat/suratreferensi, surat/suratperingatan">
                     </div>
                     <div class="form-group">
-                        <label for="departemen">Departemen <span class="text-muted font-italic">Optional </span>: </label>
-                        <input autocomplete="off" type="text" class="form-control" id="departemen" name="departemen" value="{{ old('departemen') }}" placeholder="Contoh: HRD, Admin">
+                        <label for="departemen">Departemen<span class="text-red">* </span>: </label>
+                        <input autocomplete="off" type="text" class="form-control departemen" id="departemen" name="departemen" value="{{ old('departemen') }}" placeholder="Contoh: HRD, Admin">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -59,6 +59,11 @@ var form = $('#RegisterAccessForm');
             url     : form.attr('action'),
             type    : form.attr('method'),
             data    : form.serialize(),
+            beforeSend : function(){
+                if( $('#name').val() != '' && $('#URL').val() != '' && $('#departemen').val() != ''){
+                    $('.container-fluid').addClass('block');
+                }
+            },
             success : function ( json )
             {
                 $('#RegisterAccessModal').modal('hide');
@@ -67,9 +72,6 @@ var form = $('#RegisterAccessForm');
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('#registermsg').removeClass('d-none');
-                setTimeout(function(){
-                    $('#registermsg').addClass('d-none'); }, 5000
-                );
                 $('.access').html(json);
                 console.log(json);
             },

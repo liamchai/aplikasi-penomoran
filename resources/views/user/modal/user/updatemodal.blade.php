@@ -54,7 +54,6 @@ $(document).ready(function () {
                 $('#query').val(filter);
                 // akhir pagination
                 //success data
-                console.log(data);
                 $('#username_edit').val(data.name);
                 $('#UpdateModal').modal('show');
             }) 
@@ -80,7 +79,7 @@ $(document).ready(function () {
             });
         
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_edit').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val(),
+                url     : form.attr('action') + "/" +  $('#username_edit').val() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 beforeSend : function(){
@@ -93,14 +92,12 @@ $(document).ready(function () {
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
                     // Success
-                    console.log(json);
+                    // console.log(url);
                     $('.users').html(json);
                     // Do something like redirect them to the dashboard...
                 },
                 error: function( json )
                 {
-                    console.log(this.url);
-                    console.log(json);
                     form.find('.text-danger').remove();
                     if(json.status === 422) {
                         var res = json.responseJSON;

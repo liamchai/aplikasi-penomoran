@@ -113,8 +113,15 @@ class UserController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $filter = request('filter');
-        $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
-        $users = User::orderby('id', 'desc')->where('username', 'like', '%' . $filter . '%')->paginate(10);
+        $pagination = request('show_data') ? request('show_data') : 10;
+        $sort_by = (request()->get('sortby')) ? request()->get('sortby') : 'id';
+        $sort_type = (request()->get('sorttype')) ? request()->get('sorttype') : 'desc';
+        $roles = $user->access()->orderby('access_id', 'asc')
+            ->where('url', 'NOT LIKE', 'surat/%')
+            ->get();
+        $users = User::orderby($sort_by, $sort_type)
+            ->where('username', 'like', '%' . $filter . '%')
+            ->paginate($pagination);
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
@@ -247,6 +254,9 @@ class UserController extends Controller
     {
         $page = '?page=' . request()->get('page');
         $query = '&filter=' . request()->get('query');
-        return $page . $query;
+        $sortby = '&sortby=' . request()->get('sortby');
+        $sorttype = '&sorttype=' . request()->get('sorttype');
+        $show_data = '&show_data=' . request()->get('show_data');
+        return $page . $query . $sortby . $sorttype . $show_data;
     }
 }

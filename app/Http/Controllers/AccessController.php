@@ -20,11 +20,19 @@ class AccessController extends Controller
         $user = \Auth::user();
         $username = $user->username;
         $filter = request('filter');
-        $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
+        $sort_by = (request()->get('sortby')) ? request()->get('sortby') : 'id';
+        $sort_type = (request()->get('sorttype')) ? request()->get('sorttype') : 'desc';
+        $pagination = request('show_data') ? request('show_data') : 5;
+        $roles = $user->access()->orderby('access_id', 'asc')
+            ->where('url', 'NOT LIKE', 'surat/%')
+            ->get();
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
-        $access = Access::where('name', 'LIKE', '%' . $filter . '%')->orWhere('URL', 'LIKE', '%' . $filter . '%')->orderby('id', 'desc')->paginate(10);
+        $access = Access::where('name', 'LIKE', '%' . $filter . '%')
+            ->orWhere('URL', 'LIKE', '%' . $filter . '%')
+            ->orderby($sort_by, $sort_type)
+            ->paginate($pagination);
 
         $count = $access->count();
         if (request()->ajax()) {
@@ -64,7 +72,8 @@ class AccessController extends Controller
             $newaccess->url = request('URL');
             $newaccess->departemen = request('departemen');
             $newaccess->save();
-            return redirect()->action('AccessController@index', $username)->with('message', 'Access baru berhasil di tambahkan');
+            $query = $this->getQueryString();
+            return redirect()->action('AccessController@index', [$username, $query])->with('message', 'Access baru berhasil di tambahkan');
         } else {
             return response()->json(['msg' => 'Terjadi Kesalahan silahkan contact admin'], 401);
         }
@@ -126,6 +135,9 @@ class AccessController extends Controller
     {
         $page = '?page=' . request()->get('page');
         $query = '&filter=' . request()->get('query');
-        return $page . $query;
+        $sortby = '&sortby=' . request()->get('sortby');
+        $sorttype = '&sorttype=' . request()->get('sorttype');
+        $show_data = '&show_data=' . request()->get('show_data');
+        return $page . $query . $sortby . $sorttype . $show_data;
     }
 }

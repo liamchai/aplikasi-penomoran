@@ -87,14 +87,12 @@
                 });
             
                 $.ajax({
-                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page_delete').val() + '&filter=' + $('#query_delete').val(),
+                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                     type    : 'POST',
                     data    : form.serialize(),
                     beforeSend : function(){
                         $('.container-fluid').addClass('block');
                     },
-                    // id      : $('#id').val(),
-                    // timeout : 200,
                     success : function ( json )
                     {
                         console.log(json);

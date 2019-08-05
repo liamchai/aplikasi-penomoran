@@ -11120,7 +11120,8 @@ body {
   background: #cfc8c8 !important;
 }
 
-input {
+input,
+select {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }

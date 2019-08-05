@@ -16,7 +16,7 @@
                         <input readonly autocomplete="off" type="text" class="form-control URL" id="show_URL" name="URL" value="{{ old('URL') }}" placeholder="Contoh : surat/suratreferensi, surat/suratperingatan">
                     </div>
                     <div class="form-group">
-                        <label for="departemen">Departemen <span class="text-muted font-italic">Optional </span>: </label>
+                        <label for="departemen">Departemen : </label>
                         <input readonly autocomplete="off" type="text" class="form-control" id="show_departemen" name="departemen" value="{{ old('departemen') }}" placeholder="Contoh: HRD, Admin">
                     </div>
                 </div>

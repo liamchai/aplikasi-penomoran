@@ -56,7 +56,7 @@ var form = $('#RegisterAccessForm');
         });
 
         $.ajax({
-            url     : form.attr('action'),
+            url     : form.attr('action') + '?page=' + '&filter=' + $('#filter').val() + '&start_date=' + $('#start_date').val() + '&end_date=' + '&sortby=' + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
             type    : form.attr('method'),
             data    : form.serialize(),
             beforeSend : function(){
@@ -73,6 +73,9 @@ var form = $('#RegisterAccessForm');
                 // Do something like redirect them to the dashboard...
                 $('#registermsg').removeClass('d-none');
                 $('.access').html(json);
+                $('#page_hidden').val('');
+                $('#hidden_column_name').val('');
+                $('#hidden_sort_type').val('');
                 console.log(json);
             },
             error: function( json )
@@ -88,6 +91,10 @@ var form = $('#RegisterAccessForm');
                                 .append('<span class="text-danger">'+ value[0] +'</span>');
                     });
                 }
+            },
+            complete: function()
+            {
+                $('.container-fluid').removeClass('block');
             }
         });
     });

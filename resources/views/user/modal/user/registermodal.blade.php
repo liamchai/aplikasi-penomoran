@@ -60,15 +60,13 @@ $('#btn-save').html('Register');
         });
 
         $.ajax({
-            url     : form.attr('action'),
+            url     : form.attr('action') +'/' + '?page=' + '&filter=' + $('#filter').val() + '&sortby=' + '&sorttype=' + '&show_data=' + $('#show_data').val(),
             type    : form.attr('method'),
             data    : form.serialize(),
-            length  : 0,
             beforeSend : function( json ){
-                if(( $('#username_register').val() != '' && $('#password_register').val() != '' && $('#password_confirmation_register').val() != '') && length == 2 ) {
+                if(( $('#username_register').val() != '' && $('#password_register').val() != '' && $('#password_confirmation_register').val() != '')) {
                     $('.container-fluid').addClass('block');
                 }
-                console.log(length);
             },
             success : function ( json )
             {
@@ -76,21 +74,21 @@ $('#btn-save').html('Register');
                 $('#exampleModal').modal('hide');
                 $(document.body).removeClass("modal-open");
                 $(".modal-backdrop").remove();
+                $('#hidden_column_name').val('');
+                $('#hidden_sort_type').val('');
+                $('#page_hidden').val('');
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.users').html(json);
             },
             error: function( json )
             {
-                length = 0;
-                console.log(json.responseJSON);
                 form.find('.text-danger').remove();
                 if(json.status === 422) {
                     var res = json.responseJSON;
                     form.find('.password').val("");
                     form.find('.password_confirmation').val("");
                     $.each(res.errors, function (key, value) {
-                        length++;
                         $('.'+key).closest('.form-group')
                                 .append('<span class="text-danger">'+ value[0] +'</span>');
                     });

@@ -75,6 +75,7 @@ class LetterController extends Controller
             $query->where('nomor_surat', 'LIKE', '%' . $filter . '%')
                 ->orWhere('name', 'LIKE', '%' . $filter . '%')
                 ->orWhere('submitted_by', 'LIKE', '%' . $filter . '%')
+                ->orWhere('penerima', 'LIKE', '%' . $filter . '%')
                 ->orWhere('tanggal', 'LIKE', '%' . $filter . '%');
         })->orderby('id', 'desc')->paginate($pagination);
 
@@ -144,7 +145,8 @@ class LetterController extends Controller
         $newletter->submitted_by = $user->username;
         $newletter->save();
         $letter->update(["nomor" => $nomor]);
-        return redirect()->action('LetterController@index', $user->username)->with('message', 'Surat Baru berhasil di buat');
+        $query = $this->getQueryString();
+        return redirect()->action('LetterController@index', [$user->username, $query])->with('message', 'Surat Baru berhasil di buat');
     }
 
     public function update($user, $id)
@@ -174,10 +176,13 @@ class LetterController extends Controller
     function getQueryString()
     {
         $page = '?page=' . request()->get('page');
-        $query = '&filter=' . request()->get('query');
-        $start_date = '&start_date=' . request()->get('tanggal_mulai');
-        $end_date = '&end_date=' . request()->get('tanggal_berakhir');
-        return $page . $query . $start_date . $end_date;
+        $query = '&filter=' . request()->get('filter');
+        $start_date = '&start_date=' . request()->get('start_date');
+        $end_date = '&end_date=' . request()->get('end_date');
+        $sortby = '&sortby=' . request()->get('sortby');
+        $sorttype = '&sorttype=' . request()->get('sorttype');
+        $show_data = '&show_data=' . request()->get('show_data');
+        return $page . $query . $start_date . $end_date . $sortby . $sorttype . $show_data;
     }
 
     function getRomawi($bln)

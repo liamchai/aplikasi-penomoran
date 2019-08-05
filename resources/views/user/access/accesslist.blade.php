@@ -7,9 +7,9 @@
         <thead class="thead-light">
         <tr>
             <th scope="col" class="align-middle" width="1%">No</th>
-            <th scope="col" class="align-middle">Nama</th>
-            <th scope="col" class="align-middle">URL</th>
-            <th scope="col" class="align-middle">Departemen</th>
+            <th scope="col" class="align-middle sorting" data-column_name="name" data-sorting_type="asc" style="cursor:pointer;">Nama <span id="name_icon"><i class="fa fa-sort"></i></th>
+            <th scope="col" class="align-middle sorting" data-column_name="URL" data-sorting_type="asc" style="cursor:pointer;">URL <span id="URL_icon"><i class="fa fa-sort"></i></th>
+            <th scope="col" class="align-middle sorting" data-column_name="departemen" data-sorting_type="asc" style="cursor:pointer;">Departemen <span id="departemen_icon"><i class="fa fa-sort"></i></th>
             <th scope="col" class="align-middle text-center">Aksi</th>
         </tr>
     </thead>
@@ -17,7 +17,7 @@
     $i = ($access->currentPage()-1) * $access->perPage()+1 
     @endphp
     @if (isset($msg) && $msg != "")
-        <tr><td colspan=4 class="text-center">{{$msg}}</td></tr>
+        <tr><td colspan=5 class="text-center">{{$msg}}</td></tr>
     @endif
         @foreach ($access as $acc)
         <tr>

@@ -9,8 +9,6 @@
             <form role="form" id="EditForm" method="POST" action={{ action('AccessController@update', [$username, request('name')]) }}>
                 @method('PATCH')
                 <div class="modal-body">
-                    <input type="hidden" name="page" id="page_edit">
-                    <input type="hidden" name="query" id="query_edit">
                     <input type="hidden" id="edit_hidden_id" name="id">
                     <div class="form-group">
                         <label for="name">Nama Akses<span class="text-red">* </span> : </label>
@@ -55,12 +53,8 @@ $(document).ready(function () {
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
-        var page = $('#page_hidden').val();
-        var filter = $('#filter').val();
         $.get(url, function (data) {
                 // success data
-                $('#page_edit').val(page);
-                $('#query_edit').val(filter);
                 console.log(data);
                 $('#edit_hidden_id').val(data.id);
                 $('#edit_name').val(data.name);
@@ -85,7 +79,7 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#edit_hidden_id').val() + '?page=' + $('#page_edit').val() + '&filter=' + $('#query_edit').val(),
+                url     : form.attr('action') + "/" +  $('#edit_hidden_id').val() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 beforeSend : function(){

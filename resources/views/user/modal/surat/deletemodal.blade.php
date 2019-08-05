@@ -10,10 +10,6 @@
                 <form id="delete_form" method="POST" action={{ action('LetterController@destroy', [$username, request('username')]) }}>
                     @method('DELETE')
                     <div class="modal-body">
-                        <input type="hidden" name="page" id="page">
-                        <input type="hidden" name="query" id="query_delete">
-                        <input type="hidden" name="tanggal_mulai" id="tanggal_mulai_delete">
-                        <input type="hidden" name="tanggal_berakhir" id="tanggal_berakhir_delete">
                         <p>Apakah Anda yakin ingin menghapus data ini?</p>
                         <table>
                             <tr>
@@ -65,19 +61,10 @@
         // populate modal
             var id = $(this).data('id');
             var url = $(this).attr('href');
-            var page = $('#page_hidden').val();
-            var filter = $('#filter').val();
-            var tanggal_mulai = $('#start_date').val();        
-            var tanggal_berakhir = $('#end_date').val();  
             $.get(url, function (data) {
                     // success data
                     console.log(data);
                     // untuk pagination
-                    $('#page').val(page);
-                    $('#query_delete').val(filter);
-                    $('#tanggal_mulai_delete').val(tanggal_mulai);
-                    $('#tanggal_berakhir_delete').val(tanggal_berakhir);
-                    // akhir pagination
                     $('#id').val(id);
                     $('#nama_delete').html(data.name);
                     $('#nomor_delete').html(data.nomor_surat);
@@ -105,9 +92,10 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-            
+                var order_type = $('#hidden_sort_type').val();
+                var column_name = $('#hidden_column_name').val();
                 $.ajax({
-                    url     : form.attr('action') + "/" +  $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query_delete').val() + '&start_date=' + $('#tanggal_mulai_delete').val() + '&end_date=' + $('#tanggal_berakhir_delete').val(),
+                    url     : form.attr('action') + "/" + $('#id').val() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&start_date=' + $('#start_date').val() + '&end_date=' + $('#end_date').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                     type    : 'POST',
                     data    : form.serialize(),
                     beforeSend : function(){
@@ -116,11 +104,17 @@
                     // timeout : 200,
                     success : function ( json )
                     {
-                        console.log(json);
+                        console.log(url);
                         $('#DeleteModal').modal('hide');
                         $(document.body).removeClass("modal-open");
                         $(".modal-backdrop").remove();
                         $('.surats').html(json);
+                        if (order_type == 'desc'){
+                            $('#'+column_name+'_icon').html('<i class="fa fa-caret-down" aria-hidden="true"></i>');
+                        }
+                        if (order_type == 'asc'){
+                            $('#'+column_name+'_icon').html('<i class="fa fa-caret-up" aria-hidden="true"></i>');
+                        }
                     },
                     error: function (json)
                     {

@@ -34,14 +34,10 @@ $(document).ready(function () {
     // populate modal
         var id = $(this).data('id');
         var url = $(this).attr('href');
-        var page = $('#page_hidden').val();
-        var filter = $('#filter').val();
         $.get(url, function (data) {
                 console.log(data);
                 // success data
                 // utk pagination
-                $('#delete_page').val(page);
-                $('#delete_query').val(filter);
                 // akhir pagination
                 // console.log(id);
                 $('#id').val(id);
@@ -62,15 +58,15 @@ $(document).ready(function () {
     var form = $('#delete_form');
         form.submit(function(e) {
             e.preventDefault();
-            
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        
+
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_delete').html()  + '?page=' + $('#delete_page').val() + '&filter=' + $('#delete_query').val(),
+                url     : form.attr('action') + "/" +  $('#username_delete').html() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 id      : $('#id').val(),

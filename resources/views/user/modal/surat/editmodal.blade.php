@@ -11,10 +11,6 @@
                 <div class="modal-body">
                     <input type="hidden" name="user" id="user" value={{$username}}>
                     <input type="hidden" name="nomor" id="nomor">
-                    <input type="hidden" name="page" id="page">
-                    <input type="hidden" name="query" id="query_edit">
-                    <input type="hidden" name="tanggal_mulai" id="tanggal_mulai">
-                    <input type="hidden" name="tanggal_berakhir" id="tanggal_berakhir">
                     <div class="form-group">
                         <label for="nomor">Nomor Surat : </label>
                         <input readonly autocomplete="off" type="text" class="form-control" id="edit_nomor" name="nomor_surat">
@@ -61,22 +57,12 @@ $(document).ready(function () {
         
     // populate modal
         var id = $(this).data('id');
-        var url = $(this).attr('href');
-        var page = $('#page_hidden').val();
-        var filter = $('#filter').val();
-        var tanggal_mulai = $('#start_date').val();        
-        var tanggal_berakhir = $('#end_date').val();        
+        var url = $(this).attr('href');     
         $.get(url, function (data) {
                 //success data
-                console.log(page);
+                // console.log(page);
                 
                 $('#id').val(id);
-                // untuk pagination
-                $('#page').val(page);
-                $('#query_edit').val(filter);
-                $('#tanggal_mulai').val(tanggal_mulai);
-                $('#tanggal_berakhir').val(tanggal_berakhir);
-                // akhir pagination
                 $('#nama_surat').html(data.name);
                 $('#edit_penerima').val(data.penerima);
                 $('#edit_nomor').val(data.nomor_surat);
@@ -99,9 +85,10 @@ var form = $('#EditForm');
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
+        var order_type = $('#hidden_sort_type').val();
+        var column_name = $('#hidden_column_name').val();
         $.ajax({
-            url     : form.attr('action') + "/" + $('#id').val() + '?page=' + $('#page').val() + '&filter=' + $('#query').val() + '&start_date=' + $('#tanggal_mulai').val() + '&end_date=' + $('#tanggal_berakhir').val(),
+            url     : form.attr('action') + "/" + $('#id').val() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&start_date=' + $('#start_date').val() + '&end_date=' + $('#end_date').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
             type    : 'POST',
             data    : form.serialize(),
             beforeSend : function(){
@@ -115,6 +102,12 @@ var form = $('#EditForm');
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.surats').html(json);
+                if (order_type == 'desc'){
+                    $('#'+column_name+'_icon').html('<i class="fa fa-caret-down" aria-hidden="true"></i>');
+                }
+                if (order_type == 'asc'){
+                    $('#'+column_name+'_icon').html('<i class="fa fa-caret-up" aria-hidden="true"></i>');
+                }
             },
             error: function( json )
             {

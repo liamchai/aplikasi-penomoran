@@ -20,8 +20,6 @@
                                 <td>Akses</td>
                             </tr>
                         </table>
-                        <input type="hidden" name="page" id="page_edit_access">
-                        <input type="hidden" name="query" id="query_edit_access">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -45,13 +43,9 @@ $(document).ready(function () {
     $(document).on('click', '#edit-user-access', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
-        var page = $('#page_hidden').val();
-        var filter = $('#filter').val();
         var url = $(this).attr('href');
         $.get(url, function (data) {
                 $('#username_edit_access').html(data.name);
-                $('#page_edit_access').val(page);
-                $('#query_edit_access').val(filter);
                 var count = data.count;
                 var usergranted = data.usergranted;
                 $.each(data.access, function (key, value){
@@ -112,7 +106,7 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_edit_access').html() + '?page=' + $('#page_edit_access').val() + '&filter=' + $('#query_edit_access').val(),
+                url     : form.attr('action') + "/" +  $('#username_edit_access').html() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 beforeSend : function(){

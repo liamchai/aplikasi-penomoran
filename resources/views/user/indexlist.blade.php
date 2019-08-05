@@ -7,7 +7,7 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col" class="align-middle">No</th>
-                <th scope="col" class="align-middle">Username</th>
+                <th scope="col" class="align-middle sorting" data-sorting_type="asc" data-column_name="username" style="cursor:pointer;">Username <span id="username_icon"><i class="fa fa-sort"></i></span></th>
                 <th scope="col" class="align-middle text-center">Aksi</th>
             </tr>
         </thead>

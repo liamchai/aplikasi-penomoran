@@ -22,10 +22,6 @@
                         <span class="nama_surat"></span>
                     </div>
                     <div class="form-group">
-                        <label for="nomor">Nomor Surat : </label>
-                        <input readonly autocomplete="off" type="text" class="form-control" id="register_nomor" name="nomor_surat">
-                    </div>
-                    <div class="form-group">
                         <label for="tanggal">Tanggal Keluar : </label>
                         <input readonly autocomplete="off" type="text" class="form-control" id="register_tanggal" name="tanggal">
                     </div>
@@ -49,6 +45,51 @@
     </div>
 </div>
 
+<div class="modal fade" id="showSurat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span class="nama_register"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>Nama Surat</td>
+                            <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                            <td><span class="nama_register"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Nomor Surat</td>
+                            <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                            <td><span id="nomor_register"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Keluar</td>
+                            <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                            <td><span id="tanggal_register"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Dikeluarkan oleh</td>
+                            <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                            <td><span id="pembuat_register"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Kepada</td>
+                            <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                            <td><span id="penerima_register"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function () {
 // modal function start
@@ -67,14 +108,12 @@ $(document).ready(function () {
         $('.nama_surat').find(".text-danger").remove();
         console.log(url);
         $.get(url, function (data) {
-            var nomor = data.no + "/" + data.departemen + "/" + data.month + "/" + data.year;
+            // console.log(json);
             var tanggal = data.date;
             var pembuat = data.username;
             var url = data.url;
-            console.log(data);
             $('#url').val(url);
             $('#nomor').val(data.no);
-            $('#register_nomor').val(nomor);
             $('#register_tanggal').val(tanggal);
             $('#register_pembuat').val(pembuat);
         })
@@ -109,6 +148,19 @@ var form = $('#SuratForm');
                 $('#page_hidden').val('');
                 $('#hidden_column_name').val('');
                 $('#hidden_sort_type').val('');
+                var url = "/" + $('#user').val() + "/infosurat/" + $('#url').val();
+                $.get(url, function(data){
+                    $('.nama_register').html(data[0].name);
+                    $('#nomor_register').html(data[0].nomor_surat);
+                    $('#tanggal_register').html(data[1]);
+                    $('#pembuat_register').html(data[0].submitted_by);
+                    if(data.penerima == null){
+                        data.penerima = "-";
+                    }
+                    $('#penerima_register').html(data.penerima);
+                    $('#showSurat').modal('show');
+                })
+                
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.surats').html(json);
@@ -120,7 +172,6 @@ var form = $('#SuratForm');
                     var res = json.responseJSON;
                     // console.log(res);
                     $.each(res.errors, function (key, value) {
-                        console.log(key,value);
                         $('.'+key).closest('.form-group')
                                 .append('<span class="text-danger">'+ value[0] +'</span>');
                     });

@@ -18,8 +18,8 @@
     <div class="col-6">
     <label for="show_data">Banyak Data :</label>
     <select name="show_data" id="show_data">
-        <option selected value="5">5</option>
-        <option value="2">2</option>
+        <option selected value="10">10</option>
+        <option value="25">25</option>
         <option value="50">50</option>
         <option value="100">100</option>
     </select>

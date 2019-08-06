@@ -6,10 +6,10 @@
                     <h4 class="modal-title" id="userCrudModal">Edit Akses <span id="username_edit_access"></h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form method="POST" id="edit_access_form" action={{ action('UserController@updateAccess', [$username, request('username')]) }}>
+                <form method="POST" id="edit_access_form" action={{ action('UserController@updateAccess', [request('username'), request('username')]) }}>
                 @method('PATCH')
                 <div class="modal-body">
-                        {{-- <input type="hidden" name="username_edit_access" id="username_edit_access"> --}}
+                        <input type="hidden" name="name_edit" id="name_edit">
                         <table class="table">
                             <tr>
                                 <td></td>
@@ -46,6 +46,7 @@ $(document).ready(function () {
         var url = $(this).attr('href');
         $.get(url, function (data) {
                 $('#username_edit_access').html(data.name);
+                $('#name_edit').val(data.username);
                 var count = data.count;
                 var usergranted = data.usergranted;
                 $.each(data.access, function (key, value){
@@ -106,7 +107,7 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                url     : form.attr('action') + "/" +  $('#username_edit_access').html() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
+                url     : "/" + $('#name_edit').val() + "/daftaruser/" +  $('#username_edit_access').html() + '/editaccess?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                 type    : 'POST',
                 data    : form.serialize(),
                 beforeSend : function(){

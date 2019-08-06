@@ -22,7 +22,7 @@
                 <tr class="delete" id="{{$user->id}}">
                     <td scope="row" width="1%" class="align-middle">{{ $i++ }} </td>
                     <td class="align-middle">{{ $user->username }} <input type="hidden" value="{{$user->id}}" ></td>
-                    <td class="align-middle text-center"><a href="{{"/". $username . "/editaccess/" . $user->username}}" id="edit-user-access" data-id="{{ $user->id }}" class="btn btn-success">Edit Akses</a>
+                    <td class="align-middle text-center"><a href="{{"/". $username . "/daftaruser/" . $user->username . "/editaccess"}}" id="edit-user-access" data-id="{{ $user->id }}" class="btn btn-success">Edit Akses</a>
                         <a href="{{"/". $username ."/daftaruser/" . $user->username . "/edit"}}" id="edit-user" data-id="{{ $user->id }}" class="btn btn-info">Edit User</a>
                         <a href="{{"/". $username ."/daftaruser/" . $user->username}}" id="delete-user" data-id="{{ $user->id }}" class="btn btn-danger">Hapus User</a>
                     </td>

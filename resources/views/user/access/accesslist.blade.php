@@ -3,7 +3,7 @@
         {{session('message')}}
     </div>
 @endif
-<table class="table mt-2 table-striped table-hover table-bordered" id="datatable">
+<table class="table mt-2 table-striped table-hover table-bordered table-responsive" id="datatable">
         <thead class="thead-light">
         <tr>
             <th scope="col" class="align-middle" width="1%">No</th>

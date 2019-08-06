@@ -98,7 +98,6 @@ class UserController extends Controller
         }
         $query = $this->getQueryString();
         return redirect()->action('UserController@list', [$user, $query])->with('message', 'Akses berhasil di edit');
-        // return response()->json(['msg' => 'User Akses berhasil di update'], 200);
     }
 
     public function logout()
@@ -224,6 +223,7 @@ class UserController extends Controller
 
     public function editAccess($user, $name)
     {
+        $this->checkAccess();
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;
@@ -237,9 +237,7 @@ class UserController extends Controller
             array_push($usergranted, $useraccess->id);
         }
         $count = count($usergranted);
-        // $this->checkAccess();
         return response()->json(compact('access', 'roles', 'count', 'username',  'usergranted', 'name'), 200);
-        // return view('user.access.access', compact('access', 'roles', 'username', 'name', 'usergranted', 'count'));
     }
 
     public function destroy($user, $name)
@@ -253,7 +251,7 @@ class UserController extends Controller
     function getQueryString()
     {
         $page = '?page=' . request()->get('page');
-        $query = '&filter=' . request()->get('query');
+        $query = '&filter=' . request()->get('filter');
         $sortby = '&sortby=' . request()->get('sortby');
         $sorttype = '&sorttype=' . request()->get('sorttype');
         $show_data = '&show_data=' . request()->get('show_data');

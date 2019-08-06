@@ -77,7 +77,8 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            var order_type = $('#hidden_sort_type').val();
+            var column_name = $('#hidden_column_name').val();
             $.ajax({
                 url     : form.attr('action') + "/" +  $('#edit_hidden_id').val() + '?page=' + $('#page_hidden').val() + '&filter=' + $('#filter').val() + '&sortby=' + $('#hidden_column_name').val() + '&sorttype=' + $('#hidden_sort_type').val() + '&show_data=' + $('#show_data').val(),
                 type    : 'POST',
@@ -90,10 +91,12 @@ $(document).ready(function () {
                     $('#EditModal').modal('hide');
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
-                    $('#updatemsg').removeClass('d-none');
-                        setTimeout(function(){
-                            $('#updatemsg').addClass('d-none'); }, 5000
-                    );
+                    if (order_type == 'desc'){
+                        $('#'+column_name+'_icon').html('<i class="fa fa-caret-down" aria-hidden="true"></i>');
+                    }
+                    if (order_type == 'asc'){
+                        $('#'+column_name+'_icon').html('<i class="fa fa-caret-up" aria-hidden="true"></i>');
+                    }
                 },
                 error: function( json )
                 {

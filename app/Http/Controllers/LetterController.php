@@ -97,31 +97,36 @@ class LetterController extends Controller
         $letter = Access::where('url', $letter)->first();
         $departemen = $letter->departemen;
         $title = $letter->name;
-        $cekReset = Letter::where('name', $title)->orderby('id', 'desc')->first();
-        $cekReset = date('n', strtotime($cekReset->tanggal));
-        $no = ++$letter->nomor;
-        if ($cekReset != (int) date('n')) {
-            $no = 1;
-        }
-        $month = $this->getRomawi(date('n'));
-        $no = $this->checkDigit($no);
-        $year = date('Y');
         $date =  date('d M Y', strtotime('now'));
-
-        return response()->json(compact('username', 'date', 'year', 'letter', 'month', 'no', 'title', 'url', 'departemen'));
+        return response()->json(compact('username', 'date', 'letter', 'title', 'url', 'departemen'));
     }
 
     public function store($user)
     {
         $check = false;
-        $test = request('nomor_surat');
         $user = request()->segment(1);
         $user = User::where('username', $user)->first();
         $penerima = request('penerima');
-        $nomor = (int) ltrim(request('nomor'), "00");
         $letter = request('url');
         $letter = "surat/" . $letter;
         $letter = Access::where('url', $letter)->first();
+        $name = $letter->name;
+        $departemen = $letter->departemen;
+        $cekReset = Letter::where('name', $name)->orderby('id', 'desc')->first();
+        if ($cekReset == "") {
+            $cekReset = date('n', strtotime('now'));
+        } else {
+            $cekReset = date('n', strtotime($cekReset->tanggal));
+        }
+        $nomor = ++$letter->nomor;
+        if ($cekReset != (int) date('n')) {
+            $nomor = 1;
+        }
+        $no = $nomor;
+        $month = $this->getRomawi(date('n'));
+        $nomor = $this->checkDigit($nomor);
+        $year = date('Y');
+        $nomor_surat = $nomor . "/" . $departemen . "/" . $month . "/" . $year;
         $permissions = $user->access()->get();
         foreach ($permissions as $permission) {
             if ($permission->name == $letter->name) {
@@ -132,19 +137,15 @@ class LetterController extends Controller
         if ($check == false) {
             return response()->json(['message' => 'Terjadi Error Silahkan Refresh'], 403);
         }
-        $cek = Letter::where('name', $letter->name)->orderby('id', 'desc')->first();
-        if ($cek->nomor == $nomor) {
-            return response()->json(['message' => 'Nomor surat sudah terpakai'], 409);
-        }
         $newletter = new Letter;
         $newletter->tanggal = Carbon::now();
-        $newletter->nomor_surat = $test;
-        $newletter->name = $letter->name;
-        $newletter->nomor = $nomor;
+        $newletter->nomor_surat = $nomor_surat;
+        $newletter->name = $name;
+        $newletter->nomor = $no;
         $newletter->penerima = $penerima;
         $newletter->submitted_by = $user->username;
         $newletter->save();
-        $letter->update(["nomor" => $nomor]);
+        $letter->update(["nomor" => $no]);
         $query = $this->getQueryString();
         return redirect()->action('LetterController@index', [$user->username, $query])->with('message', 'Surat Baru berhasil di buat');
     }
@@ -171,6 +172,16 @@ class LetterController extends Controller
         Letter::where('id', $id)->delete();
         $query = $this->getQueryString();
         return redirect()->action('LetterController@index', [$user, $query])->with('message', 'Surat berhasil di hapus');;
+    }
+
+    public function getInfo($user, $letter)
+    {
+        $letter = "surat/" . $letter;
+        $letter = Access::where('url', $letter)->first();
+        $nomor = $letter->nomor;
+        $data = Letter::where('nomor', $nomor)->latest()->first();
+        $tanggal = date('d M Y', strtotime($data->tanggal));
+        return response()->json([$data, $tanggal]);
     }
 
     function getQueryString()

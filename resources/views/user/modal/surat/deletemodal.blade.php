@@ -1,49 +1,49 @@
 <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Hapus</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="delete_form" method="POST" action={{ action('LetterController@destroy', [$username, request('username')]) }}>
-                    @method('DELETE')
-                    <div class="modal-body">
-                        <p>Apakah Anda yakin ingin menghapus data ini?</p>
-                        <table>
-                            <tr>
-                                <td>Nama Surat</td>
-                                <td>:</td>
-                                <td><span id="nama_delete"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Nomor Surat</td>
-                                <td>:</td>
-                                <td><span id="nomor_delete"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Keluar</td>
-                                <td>:</td>
-                                <td><span id="tanggal_delete"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Dikeluarkan oleh</td>
-                                <td>:</td>
-                                <td><span id="pembuat_delete"></span></td>
-                            </tr>
-                        <input type="hidden" id="delete_token"/>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-danger" id="delete-surat-btn">Hapus</button>
-                    </div>
-                    @csrf
-                </form>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form id="delete_form" method="POST" action={{ action('LetterController@destroy', [$username, request('username')]) }}>
+                @method('DELETE')
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                    <table>
+                        <tr>
+                            <td>Nama Surat</td>
+                            <td>:</td>
+                            <td><span id="nama_delete"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Nomor Surat</td>
+                            <td>:</td>
+                            <td><span id="nomor_delete"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Keluar</td>
+                            <td>:</td>
+                            <td><span id="tanggal_delete"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Dikeluarkan oleh</td>
+                            <td>:</td>
+                            <td><span id="pembuat_delete"></span></td>
+                        </tr>
+                    <input type="hidden" id="delete_token"/>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-danger" id="delete-surat-btn">Hapus</button>
+                </div>
+                @csrf
+            </form>
         </div>
     </div>
+</div>
     
     <script>
     $(document).ready(function () {

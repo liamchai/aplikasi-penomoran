@@ -23,8 +23,8 @@ Route::get('/{user}/daftaruser/{name}', 'UserController@show');
 Route::get('/{user}/daftaruser/{name}/edit', 'UserController@edit');
 Route::patch('/{user}/daftaruser/{name}', 'UserController@update');
 Route::delete('/{user}/daftaruser/{name}', 'UserController@destroy');
-Route::get('/{user}/editaccess/{name}', 'UserController@editAccess');
-Route::patch('/{user}/editaccess/{name}', 'UserController@updateAccess');
+Route::get('/{user}/daftaruser/{name}/editaccess', 'UserController@editAccess');
+Route::patch('/{user}/daftaruser/{name}/editaccess', 'UserController@updateAccess');
 
 Route::get('/{user}/daftarakses', 'AccessController@index')->name('accesslist');
 Route::get('/{user}/daftarakses/create', 'UserController@create')->name('accesslist');
@@ -43,3 +43,4 @@ Route::patch('/{user}/daftarsurat/{id}', 'LetterController@update');
 Route::delete('/{user}/daftarsurat/{id}', 'LetterController@destroy');
 
 Route::get('/{user}/surat/{namasurat}', 'LetterController@list');
+Route::get('/{user}/infosurat/{namasurat}', 'LetterController@getInfo');

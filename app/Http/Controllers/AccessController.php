@@ -22,7 +22,7 @@ class AccessController extends Controller
         $filter = request('filter');
         $sort_by = (request()->get('sortby')) ? request()->get('sortby') : 'id';
         $sort_type = (request()->get('sorttype')) ? request()->get('sorttype') : 'desc';
-        $pagination = request('show_data') ? request('show_data') : 5;
+        $pagination = request('show_data') ? request('show_data') : 10;
         $roles = $user->access()->orderby('access_id', 'asc')
             ->where('url', 'NOT LIKE', 'surat/%')
             ->get();
@@ -134,7 +134,7 @@ class AccessController extends Controller
     function getQueryString()
     {
         $page = '?page=' . request()->get('page');
-        $query = '&filter=' . request()->get('query');
+        $query = '&filter=' . request()->get('filter');
         $sortby = '&sortby=' . request()->get('sortby');
         $sorttype = '&sorttype=' . request()->get('sorttype');
         $show_data = '&show_data=' . request()->get('show_data');

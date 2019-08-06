@@ -10,8 +10,6 @@
             <form id="delete_form" method="POST" action={{ action('UserController@destroy', [$username, request('username')]) }}>
                 @method('DELETE')
                 <div class="modal-body">
-                    <input type="hidden" name="page" id="delete_page">
-                    <input type="hidden" name="query" id="delete_query">
                     <p>Apakah Anda yakin ingin menghapus data ini?</p>
                     <p>Username : <span id="username_delete"></span><br>
                     <input type="hidden" id="delete_token"/>
@@ -80,10 +78,6 @@ $(document).ready(function () {
                     $(document.body).removeClass("modal-open");
                     $(".modal-backdrop").remove();
                     $('.users').html(json);
-                    $('#deletemsg').removeClass('d-none');
-                    setTimeout(function(){
-                        $('#deletemsg').addClass('d-none'); }, 5000
-                    );
                 },
                 error: function (json)
                 {

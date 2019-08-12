@@ -22,7 +22,7 @@
             <option value="50">50</option>
             <option value="100">100</option>
         </select>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <label for="filter">Filter Data :</label>
         <input type="text" name="filter" id="filter" class="pl-2" placeholder="Cari Data">
         <input type="hidden" name="page_hidden" id="page_hidden">

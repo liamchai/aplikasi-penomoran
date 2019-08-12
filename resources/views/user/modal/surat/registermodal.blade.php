@@ -13,7 +13,7 @@
                     <input type="hidden" name="nomor" id="nomor">
                     <div class="form-group">
                         <label for="nama">Jenis Surat<span class="text-red">* </span> : </label>
-                        <select name="nama" id="nama" name="select_nama_surat" class="form-control">
+                        <select name="nama" id="nama" class="form-control">
                             <option readonly selected value="0">Silahkan pilih Jenis Surat</option>
                             @foreach ($dropdown as $list)
                                 <option value="{{ $list->url }}">{{ $list->name }}</option>
@@ -95,6 +95,7 @@ $(document).ready(function () {
 // modal function start
     $('#SuratModal').on('hidden.bs.modal', function () {
         $(".text-danger").remove();
+        $('#url').val('');
         $(this).find('form').trigger('reset');
     })
 
@@ -160,7 +161,6 @@ var form = $('#SuratForm');
                     $('#penerima_register').html(data.penerima);
                     $('#showSurat').modal('show');
                 })
-                
                 // Success
                 // Do something like redirect them to the dashboard...
                 $('.surats').html(json);

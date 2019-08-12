@@ -5,10 +5,21 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
     use Notifiable;
+
+    // protected $connection = 'mysql';
+
+    public function changeConnection($conn)
+    {
+        $this->connection = $conn;
+        if (DB::connection()->getDatabaseName()) {
+            echo 'Connected to the DB: ' . DB::connection()->getDatabaseName();
+        }
+    }
 
     /**
      * The attributes that are mass assignable.

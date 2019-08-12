@@ -135,12 +135,18 @@ class UserController extends Controller
 
     public function login()
     {
+        // kalau database local ada usernya pakai yang local
+        // kalau database local gk ada tapi dari database lain ada usernya
+        // cek id, password dari database lain jika cocok login
         $this->validation();
         if ($this->checkData()) {
             $username = request('username');
-            $user = User::where('username', $username)->firstorFail();
-            \Auth::login($user, true);
-            return redirect()->action('UserController@index', $user->username);
+            $users = new User;
+            $users->setConnection('mysql2');
+            $users = $users->where('username', $username)->firstorFail();
+            // return $user;
+            \Auth::login($users, true);
+            return redirect()->action('UserController@index', $users->username);
         } else {
             return response()->json(['message' => 'Username atau password anda salah'], $status = 401);
         }
@@ -165,7 +171,7 @@ class UserController extends Controller
     {
         $username = request('username');
         $password = request('password');
-        $login = User::where('username', $username)->first();
+        $login = User::on('mysql2')->where('username', $username)->first();
         if ($login != NULL)
             return (password_verify($password, $login->password)) ? TRUE : FALSE;
         else

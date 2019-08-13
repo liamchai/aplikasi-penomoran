@@ -83,6 +83,7 @@ $('#btn-save').html('Register');
             },
             error: function( json )
             {
+                console.log(json);
                 form.find('.text-danger').remove();
                 if(json.status === 422) {
                     var res = json.responseJSON;

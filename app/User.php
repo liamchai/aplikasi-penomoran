@@ -11,14 +11,16 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    // protected $connection = 'mysql';
+    protected $connection = 'mysql2';
 
     public function changeConnection($conn)
     {
         $this->connection = $conn;
-        if (DB::connection()->getDatabaseName()) {
-            echo 'Connected to the DB: ' . DB::connection()->getDatabaseName();
-        }
+    }
+
+    public function showConnection()
+    {
+        return $this->connection;
     }
 
     /**

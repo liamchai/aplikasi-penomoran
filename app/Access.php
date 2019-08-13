@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Access extends Model
 {
+    protected $connection = 'mysql';
+
     protected $guarded = [];
     public function users()
     {

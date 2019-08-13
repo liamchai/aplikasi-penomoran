@@ -6,6 +6,9 @@ use App\User;
 use App\Access;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use League\Flysystem\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,7 +20,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         $username = $user->username;
         $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
         foreach ($roles as $role) {
@@ -142,9 +145,8 @@ class UserController extends Controller
         if ($this->checkData()) {
             $username = request('username');
             $users = new User;
-            $users->setConnection('mysql2');
+            $users->changeConnection('mysql2');
             $users = $users->where('username', $username)->firstorFail();
-            // return $user;
             \Auth::login($users, true);
             return redirect()->action('UserController@index', $users->username);
         } else {
@@ -197,6 +199,7 @@ class UserController extends Controller
         $user = \Auth::user();
         if ($this->validateRegister()) {
             $newuser = new User;
+            $newuser->setConnection('mysql2');
             $newuser->username = request('username');
             $newuser->password = \Hash::make(request('password'));
             $newuser->save();
@@ -210,7 +213,7 @@ class UserController extends Controller
     {
         $data = request()->validate(
             [
-                'username' => 'required|unique:users',
+                'username' => 'required|unique:mysql2.users',
                 'password' => 'required|min:6|same:password_confirmation',
                 'password_confirmation' => 'same:password|required'
             ],

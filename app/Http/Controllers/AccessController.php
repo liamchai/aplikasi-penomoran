@@ -16,7 +16,7 @@ class AccessController extends Controller
 
     public function index($user, $query = '')
     {
-        $this->checkAccess();
+        // $this->checkAccess();
         $user = \Auth::user();
         $username = $user->username;
         $filter = request('filter');

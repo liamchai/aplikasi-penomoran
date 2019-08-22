@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Input;
 use League\Flysystem\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Session\Session;
+// use Session;
 
 class UserController extends Controller
 {
@@ -18,25 +20,60 @@ class UserController extends Controller
         $this->middleware('guest')->only('login');
     }
 
+
     public function index()
     {
         $user = Auth::user();
         $username = $user->username;
-        $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
-        foreach ($roles as $role) {
-            if ($role->name === "Daftar User") {
-                return redirect()->action('UserController@list', $user->username);
-            } else if ($role->name === "Daftar Surat") {
-                return redirect()->action('LetterController@index', $user->username);
-            }
+        $company = $user->pershID;
+        if ($company == 963) {
+            session()->put('company', 'CR');
+            return redirect()->action('UserController@dashboard', $username);
+        } else if ($company == 959) {
+            session()->put('company', 'MFM');
+            return redirect()->action('UserController@dashboard', $username);
+        } else {
+            return view('user.company', ['username' => $username]);
         }
+        // $roles = $user->access()->orderby('access_id', 'asc')->where('url', 'NOT LIKE', 'surat/%')->get();
+        // foreach ($roles as $role) {
+        //     if ($role->name === "Daftar User") {
+        //         return redirect()->action('UserController@list', $username);
+        //     } else if ($role->name === "Daftar Surat") {
+        //         return redirect()->action('LetterController@index', $username);
+        //     }
+        // }
+
+    }
+
+    public function company($user, $company)
+    {
+        session()->put('company', $company);
+        return redirect()->action('UserController@dashboard', $user);
+    }
+
+
+    public function dashboard($user)
+    {
+        // $this->checkAccess();
+        $user = \Auth::user();
+        $username = $user->username;
+        $roles = $user->access()->orderby('access_id', 'asc')
+            // ->where('url', 'NOT LIKE', 'surat/%')
+            ->get();
+        // $title = last(request()->segments());
+        // $title = Access::where('url', $title)->first();
+        // $title = $title->name;
+        $title = "dashboard";
+        $company = session()->get('company');
+        return view('user.dashboard', compact('username', 'roles', 'title', 'company'));
     }
 
     public function edit($user, $name)
     {
         $user = \Auth::user();
         $username = $user->username;
-        $this->checkAccess();
+        // $this->checkAccess();
         return response()->json(compact('name'), 200);
     }
 
@@ -63,7 +100,8 @@ class UserController extends Controller
             [
                 'username' => 'required',
                 'password' => 'required',
-                'password_confirmation' => 'required|min:6'
+                'password_confirmation' => 'required|min:6',
+                'perusahaan' => 'required'
             ],
             [
                 'password.required' => 'Harap masukkan password lama anda.',
@@ -106,24 +144,36 @@ class UserController extends Controller
     public function logout()
     {
         \Auth::logout();
+        session()->flush();
         return redirect('/');
     }
 
     public function list()
     {
-        $this->checkAccess();
+        // $this->checkAccess();
         $user = \Auth::user();
         $username = $user->username;
         $filter = request('filter');
         $pagination = request('show_data') ? request('show_data') : 10;
-        $sort_by = (request()->get('sortby')) ? request()->get('sortby') : 'id';
-        $sort_type = (request()->get('sorttype')) ? request()->get('sorttype') : 'desc';
+        $sort_by = request()->get('sortby') ? request()->get('sortby') : 'id';
+        $sort_type = request()->get('sorttype') ? request()->get('sorttype') : 'desc';
         $roles = $user->access()->orderby('access_id', 'asc')
-            ->where('url', 'NOT LIKE', 'surat/%')
+            // ->where('url', 'NOT LIKE', 'surat/%')
             ->get();
-        $users = User::orderby($sort_by, $sort_type)
+        $q1 = DB::table('penomoran.users')
+            ->orderby($sort_by, $sort_type)
             ->where('username', 'like', '%' . $filter . '%')
-            ->paginate($pagination);
+            ->select('*');
+        $q2 = DB::table('user.users')
+            ->orderby($sort_by, $sort_type)
+            ->where('username', 'like', '%' . $filter . '%')
+            ->select('*');
+        // dd($q1);
+        $users = $q2->union($q1)->paginate($pagination);
+        // dd($users);
+        // $users = User::orderby($sort_by, $sort_type)
+        //     ->where('username', 'like', '%' . $filter . '%')
+        //     ->paginate($pagination);
         $title = last(request()->segments());
         $title = Access::where('url', $title)->first();
         $title = $title->name;
@@ -144,11 +194,9 @@ class UserController extends Controller
         $this->validation();
         if ($this->checkData()) {
             $username = request('username');
-            $users = new User;
-            $users->changeConnection('mysql2');
-            $users = $users->where('username', $username)->firstorFail();
+            $users = User::where('username', $username)->first();
             \Auth::login($users, true);
-            return redirect()->action('UserController@index', $users->username);
+            return redirect()->action('UserController@index', $username);
         } else {
             return response()->json(['message' => 'Username atau password anda salah'], $status = 401);
         }
@@ -173,11 +221,18 @@ class UserController extends Controller
     {
         $username = request('username');
         $password = request('password');
-        $login = User::on('mysql2')->where('username', $username)->first();
-        if ($login != NULL)
+        $login = User::on('mysql')->where('username', $username)->first();
+        if ($login != NULL) {
+            Session()->put('dbname', 'mysql');
             return (password_verify($password, $login->password)) ? TRUE : FALSE;
-        else
-            return FALSE;
+        } else {
+            $login = User::on('mysql2')->where('username', $username)->first();
+            if ($login != NULL) {
+                Session()->put('dbname', 'mysql2');
+                return (password_verify($password, $login->password)) ? TRUE : FALSE;
+            } else
+                return FALSE;
+        }
     }
 
     public function show($user, $name)
@@ -199,9 +254,9 @@ class UserController extends Controller
         $user = \Auth::user();
         if ($this->validateRegister()) {
             $newuser = new User;
-            $newuser->setConnection('mysql2');
             $newuser->username = request('username');
             $newuser->password = \Hash::make(request('password'));
+            $newuser->pershID = request('perusahaan');
             $newuser->save();
             $query = $this->getQueryString();
             return redirect()->action('UserController@list', [$user->username, $query])->with('message', 'User baru berhasil di buat');
@@ -213,7 +268,7 @@ class UserController extends Controller
     {
         $data = request()->validate(
             [
-                'username' => 'required|unique:mysql2.users',
+                'username' => 'required|unique:' . session()->get('dbname') . '.users',
                 'password' => 'required|min:6|same:password_confirmation',
                 'password_confirmation' => 'same:password|required'
             ],
@@ -232,7 +287,7 @@ class UserController extends Controller
 
     public function editAccess($user, $name)
     {
-        $this->checkAccess();
+        // $this->checkAccess();
         $access = Access::all();
         $user = \Auth::user();
         $username = $user->username;

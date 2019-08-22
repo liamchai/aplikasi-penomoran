@@ -16,6 +16,8 @@ Route::post('/login', 'UserController@login')->name('logged');
 Route::get('/logout', 'UserController@logout')->name('logout');
 
 Route::get('/{user}', 'UserController@index');
+Route::get('/{user}/dashboard', 'UserController@dashboard');
+Route::post('/{user}/dashboard/{company}', 'UserController@company');
 Route::get('/{user}/daftaruser', 'UserController@list')->name('admin');
 Route::get('/{user}/daftaruser/create', 'UserController@create');
 Route::post('/{user}/daftaruser', 'UserController@store');
@@ -35,7 +37,7 @@ Route::patch('/{user}/daftarakses/{id}', 'AccessController@update');
 Route::delete('/{user}/daftarakses/{id}', 'AccessController@destroy');
 
 Route::get('/{user}/daftarsurat', 'LetterController@index');
-Route::get('/{user}/daftarsurat/create', 'LetterController@create');
+// Route::get('/{user}/daftarsurat/create', 'LetterController@create');
 Route::post('/{user}/daftarsurat', 'LetterController@store');
 Route::get('/{user}/daftarsurat/{id}', 'LetterController@show');
 Route::get('/{user}/daftarsurat/{id}/edit', 'LetterController@edit');

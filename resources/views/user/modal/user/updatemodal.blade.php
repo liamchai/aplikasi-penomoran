@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary" id="edit-btn">Edit User</button>
+                    <button type="submit" class="btn btn-primary" id="edit-btn">Simpan</button>
                 </div>
             @csrf
             </form>

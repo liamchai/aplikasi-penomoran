@@ -11,16 +11,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $connection = 'mysql2';
-
-    public function changeConnection($conn)
+    public function __construct()
     {
-        $this->connection = $conn;
-    }
-
-    public function showConnection()
-    {
-        return $this->connection;
+        $this->connection = session()->get('dbname');
     }
 
     /**

@@ -10,21 +10,29 @@
             <form role="form" id="register_form" method="POST" action="{{ action('UserController@store', $username) }}">
                 <div class="modal-body">
                     <div class="form-group">
-                            <label for="username">Username<span class="text-red">* </span> : </label>
-                            <input type="text" class="form-control username" id="username_register" name="username">
+                        <label for="username">Username<span class="text-red">* </span> : </label>
+                        <input type="text" class="form-control username" id="username_register" name="username">
                     </div>
                     <div class="form-group">
-                            <label for="password">Password<span class="text-red">* </span> : </label>
-                            <input type="password" class="form-control password" id="password_register" name="password">
+                        <label for="password">Password<span class="text-red">* </span> : </label>
+                        <input type="password" class="form-control password" id="password_register" name="password">
                     </div>
                     <div class="form-group">
-                            <label for="password_confirmation">Ulangi Password<span class="text-red">* </span> : </label>
-                            <input type="password" class="form-control password_confirmation" id="password_confirmation_register" name="password_confirmation">
+                        <label for="password_confirmation">Ulangi Password<span class="text-red">* </span> : </label>
+                        <input type="password" class="form-control password_confirmation" id="password_confirmation_register" name="password_confirmation">
+                    </div>
+                    <div class="form-group">
+                        <label for="perusahaan">Perusahaan<span class="text-red">* </span>: </label>
+                        <select name="perusahaan" id="perusahaan" class="form-control">
+                            <option value="963">Medan FM</option>
+                            <option value="959">City Radio</option>
+                            <option value="0">Keduanya</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Daftarkan User</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             @csrf
             </form>
